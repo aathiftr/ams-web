@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wanderly — Less Planning. More Exploring.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #002720;
+      --deep: #183d35;
+      --ink: #171d1a;
+      --body: #414846;
+      --label: #576159;
+      --paper: #f5fbf6;
+      --sage: #eff5f0;
+      --mint: #c3ebdf;
+      --white: #ffffff;
+      --serif: 'Liberation Serif', 'Times New Roman', Georgia, serif;
+      --sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --shadow-card: 0 1px 1px rgba(0, 0, 0, 0.05);
+      --shadow-lift: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--body);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+
+    .container { max-width: 1320px; margin: 0 auto; padding: 0 64px; }
+    .eyebrow {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      color: var(--deep);
+    }
+    .h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 40px;
+      line-height: 48px;
+      letter-spacing: -0.6px;
+      color: var(--forest);
+    }
+    .h3 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 30px;
+      color: var(--forest);
+    }
+    .section { padding: 48px 0; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 8px;
+      padding: 16px 32px;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.56px;
+      cursor: pointer;
+      border: none;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-lift); }
+    .btn-primary { background: var(--deep); color: var(--paper); }
+    .btn-ghost { background: rgba(255,255,255,0.12); color: var(--white); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(6px); }
+
+    /* ---------- HEADER ---------- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(245, 251, 246, 0.92);
+      backdrop-filter: blur(24px);
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+    }
+    .header-inner { height: 80px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand-name { font-family: var(--serif); font-weight: 700; font-size: 22px; letter-spacing: -0.55px; color: var(--forest); }
+    .nav { display: flex; gap: 28px; align-items: center; }
+    .nav a { font-weight: 600; font-size: 14px; letter-spacing: 0.56px; color: var(--body); padding: 4px 0; }
+    .nav a.active { color: var(--forest); border-bottom: 2px solid var(--deep); padding-bottom: 6px; }
+    .header-cta { display: flex; align-items: center; gap: 16px; }
+    .header-cta .pill {
+      background: var(--deep); color: #fff; border-radius: 8px;
+      padding: 8px 16px; font-weight: 600; font-size: 14px; letter-spacing: 0.56px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 9999px; background: var(--forest);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .avatar img { width: 12px; height: 12px; }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      position: relative;
+      min-height: 780px;
+      margin-top: -80px;
+      padding-top: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--forest) url("https://www.figma.com/api/mcp/asset/c115e52b-1973-4aa7-a759-0bd90e80fdcd.png") center/cover no-repeat;
+      color: var(--paper);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(0, 39, 32, 0.92) 0%, rgba(0, 39, 32, 0.6) 45%, rgba(0, 39, 32, 0.05) 100%);
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-copy { max-width: 672px; padding-top: 32px; padding-bottom: 112px; }
+    .eyebrow-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 9999px;
+      padding: 6px 14px;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase;
+    }
+    .eyebrow-badge img { width: 13px; height: 13px; }
+    .hero h1 {
+      margin-top: 24px;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 72px;
+      line-height: 64px;
+      letter-spacing: -1.2px;
+      color: var(--paper);
+    }
+    .hero p.lead {
+      margin-top: 28px;
+      max-width: 576px;
+      font-size: 18px;
+      line-height: 28px;
+      color: rgba(245, 251, 246, 0.9);
+    }
+    .hero-ctas { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-ctas .btn-primary { background: var(--paper); color: var(--forest); }
+    .hero-ctas .btn-primary img { width: 11px; height: 11px; }
+    .trust-note { margin-top: 32px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(245,251,246,0.85); }
+    .trust-note img { width: 18px; height: 18px; }
+
+    .location-bar {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+    }
+    .location-bar .container { display: flex; justify-content: space-between; align-items: center; height: 62px; }
+    .location-chip {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(0, 39, 32, 0.45);
+      backdrop-filter: blur(12px);
+      border-radius: 9999px;
+      padding: 8px 16px;
+      font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--paper);
+    }
+    .location-chip img { width: 11px; height: 13px; }
+    .location-meta { font-size: 12px; letter-spacing: 0.12px; color: rgba(245,251,246,0.85); }
+
+    /* ---------- PHILOSOPHY ---------- */
+    .intro-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; padding-bottom: 24px; }
+    .intro-header .head { display: flex; flex-direction: column; gap: 11px; max-width: 576px; padding-top: 4.5px; }
+    .intro-header .side { max-width: 448px; font-size: 16px; line-height: 26px; color: var(--body); }
+
+    .pillars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 64px; }
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-card);
+      padding: 28px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+    .icon-box {
+      width: 48px; height: 48px; border-radius: 8px; background: var(--sage);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .icon-box img { width: 20px; height: 20px; }
+    .icon-box.sm { width: 40px; height: 40px; }
+    .icon-box.sm img { width: 16px; height: 16px; }
+    .pillar-label { margin-top: 28px; font-size: 11px; font-weight: 600; letter-spacing: 0.55px; text-transform: uppercase; color: var(--label); }
+    .pillar h3 { margin-top: 12px; }
+    .pillar p { margin-top: 12px; font-size: 14px; line-height: 22.75px; letter-spacing: 0.07px; }
+    .pillar-link {
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(0,39,32,0.06);
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.72px; color: var(--forest);
+    }
+    .pillar-link img { width: 11px; height: 11px; }
+
+    /* ---------- SERVICES ---------- */
+    .muted-sage { background: rgba(219, 229, 219, 0.4); }
+    .services-head { display: flex; flex-direction: column; align-items: center; gap: 11.5px; max-width: 672px; margin: 0 auto; text-align: center; }
+    .services-head p { font-size: 16px; line-height: 26px; color: var(--body); margin-top: 4.5px; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 64px; }
+    .service { background: var(--white); border-radius: 12px; box-shadow: var(--shadow-card); padding: 28px; display: flex; flex-direction: column; gap: 10px; }
+    .service h3 { margin-top: 8px; }
+    .service p { font-size: 14px; line-height: 22.75px; letter-spacing: 0.07px; }
+    .service ul { list-style: none; margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+    .service li { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.12px; color: var(--ink); line-height: 18px; }
+    .service li img { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ---------- DESTINATIONS ---------- */
+    .dest-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+    .dest-head .head { display: flex; flex-direction: column; gap: 4px; }
+    .dest-head .side { max-width: 384px; font-size: 16px; line-height: 26px; }
+    .dest-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 56px; }
+    .dest { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-card); display: flex; flex-direction: column; transition: transform .2s ease, box-shadow .2s ease; }
+    .dest:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+    .dest-img { position: relative; height: 256px; }
+    .dest-img img { width: 100%; height: 100%; object-fit: cover; }
+    .dest-tag {
+      position: absolute; top: 16px; left: 16px;
+      background: rgba(255,255,255,0.92); color: var(--forest);
+      border-radius: 9999px; padding: 4px 12px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .dest-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+    .dest-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; letter-spacing: 0.55px; text-transform: uppercase; color: var(--label); }
+    .dest-body h3 { margin-top: 18px; }
+    .dest-body p { margin-top: 18px; font-size: 13px; line-height: 19.5px; flex: 1; }
+    .dest-foot { margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(0,39,32,0.06); display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--forest); }
+    .dest-foot img { width: 12px; height: 12px; }
+
+    /* ---------- EDITORIAL ---------- */
+    .editorial-section { background: var(--sage); padding: 48px 0; }
+    .editorial-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 48px; align-items: center; }
+    .editorial-copy { grid-column: 6 / span 7; display: flex; flex-direction: column; gap: 12px; padding-left: 24px; }
+    .editorial-copy .h2 { margin-top: 0; }
+    .editorial-copy > p { margin-top: 12px; font-size: 16px; line-height: 26px; }
+    .editorial-points { margin-top: 28px; display: flex; flex-direction: column; gap: 24px; }
+    .point { display: flex; gap: 16px; align-items: flex-start; }
+    .point-num {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 9999px;
+      background: rgba(24, 61, 53, 0.1); color: var(--deep);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; letter-spacing: 0.56px;
+    }
+    .point h3 { font-size: 22px; line-height: 30px; }
+    .point p { margin-top: 3px; font-size: 14px; line-height: 22.75px; letter-spacing: 0.07px; }
+    .editorial-visual { grid-column: 1 / span 5; grid-row: 1; position: relative; align-self: center; }
+    .editorial-photo { width: 100%; height: 480px; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lift); }
+    .editorial-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .highlight-card {
+      position: absolute; right: -24px; bottom: -24px; max-width: 320px;
+      background: var(--forest); color: var(--paper);
+      border-radius: 12px; padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .highlight-head { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.55px; text-transform: uppercase; color: var(--mint); }
+    .highlight-head img { width: 18px; height: 17px; }
+    .highlight-card p { font-size: 12px; line-height: 16.5px; letter-spacing: 0.12px; color: rgba(222,228,223,0.9); }
+
+    /* ---------- REVIEWS ---------- */
+    .reviews-head { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 56px; }
+    .review { background: var(--white); border-radius: 12px; box-shadow: var(--shadow-card); padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
+    .stars { display: flex; gap: 4px; }
+    .stars img { width: 75px; height: 14px; }
+    .review blockquote { font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 28px; color: var(--ink); }
+    .review-author { border-top: 1px solid rgba(0,39,32,0.06); padding-top: 16px; }
+    .review-author strong { display: block; font-size: 14px; font-weight: 700; color: var(--forest); }
+    .review-author span { display: block; margin-top: 4px; font-size: 12px; color: var(--label); }
+
+    /* ---------- INQUIRY FORM (3 fields only) ---------- */
+    .inquiry-section { background: rgba(219, 229, 219, 0.3); padding: 48px 160px; }
+    .inquiry-wrap { max-width: 960px; margin: 0 auto; padding: 0 64px; display: flex; flex-direction: column; gap: 48px; }
+    .inquiry-head { display: flex; flex-direction: column; align-items: center; gap: 11.5px; text-align: center; padding-top: 4.5px; }
+    .inquiry-head p { max-width: 576px; font-size: 16px; line-height: 26px; color: var(--body); }
+    .form-card {
+      position: relative;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 48px;
+      box-shadow: var(--shadow-lift);
+    }
+    .form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field label { font-size: 11px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; color: var(--label); }
+    .field input {
+      background: var(--sage);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    .field input::placeholder { color: #9ca3af; }
+    .field input:focus { border-color: var(--deep); box-shadow: 0 0 0 3px rgba(24,61,53,0.12); background: #fff; }
+    .form-footer { margin-top: 32px; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .privacy { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.12px; }
+    .privacy img { width: 12px; height: 16px; }
+    .submit-btn[disabled] { opacity: 0.7; cursor: wait; }
+    .submit-btn img { width: 12px; height: 12px; }
+    .form-status { margin-top: 20px; font-size: 14px; min-height: 20px; text-align: center; }
+    .form-status.ok { color: var(--deep); font-weight: 600; }
+    .form-status.err { color: #9b2c2c; font-weight: 600; }
+
+    /* ---------- FOOTER ---------- */
+    .site-footer { background: var(--sage); padding: 48px 0 28px; }
+    .footer-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; padding-bottom: 48px; }
+    .footer-brand { grid-column: span 2; display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px; padding-right: 28px; }
+    .footer-brand p { max-width: 384px; font-size: 14px; line-height: 22px; letter-spacing: 0.07px; }
+    .footer-tag { margin-top: 4px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.55px; text-transform: uppercase; color: var(--body); }
+    .footer-tag img { width: 16.5px; height: 15.75px; }
+    .footer-col { display: flex; flex-direction: column; gap: 4px; }
+    .footer-col h4 { font-size: 14px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--forest); margin-bottom: 4px; }
+    .footer-col a { font-size: 14px; line-height: 22px; letter-spacing: 0.07px; color: var(--body); }
+    .footer-col a:hover { color: var(--forest); }
+    .dispatch p { font-size: 12px; line-height: 18px; letter-spacing: 0.12px; }
+    .dispatch-form { margin-top: 4px; display: flex; align-items: center; background: #fff; border-radius: 8px; padding: 4px; box-shadow: var(--shadow-card); }
+    .dispatch-form input { flex: 1; border: none; outline: none; background: transparent; padding: 6px 4px; font-size: 12px; color: var(--ink); min-width: 0; }
+    .dispatch-form input::placeholder { color: #717976; }
+    .dispatch-form button { background: var(--deep); color: #fff; border: none; border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.88px; cursor: pointer; }
+    .dispatch small { display: block; margin-top: 6px; font-size: 11px; letter-spacing: 0.88px; color: #717976; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(0,39,32,0.06); font-size: 12px; letter-spacing: 0.12px; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom nav { display: flex; gap: 16px; }
+    .footer-bottom a:hover { color: var(--forest); }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 1100px) {
+      .container, .inquiry-section { padding-left: 32px; padding-right: 32px; }
+      .inquiry-section { padding-left: 32px; padding-right: 32px; }
+      .nav { display: none; }
+      .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .editorial-grid { grid-template-columns: 1fr; }
+      .editorial-copy, .editorial-visual { grid-column: auto; padding-left: 0; }
+      .highlight-card { right: 16px; bottom: -24px; }
+      .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .footer-brand { grid-column: span 2; padding-right: 0; }
+    }
+    @media (max-width: 800px) {
+      .hero h1 { font-size: 52px; line-height: 56px; }
+      .intro-header, .dest-head { flex-direction: column; align-items: flex-start; }
+      .services-grid, .reviews-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 28px; }
+      .inquiry-wrap { padding: 0; }
+    }
+    @media (max-width: 560px) {
+      .container { padding: 0 20px; }
+      .header-inner { height: 68px; }
+      .hero { min-height: 680px; }
+      .hero h1 { font-size: 40px; line-height: 46px; }
+      .h2 { font-size: 32px; line-height: 40px; }
+      .pillars, .dest-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-brand { grid-column: auto; }
+      .location-meta { display: none; }
+      .highlight-card { position: static; max-width: none; margin-top: 16px; }
+      .editorial-photo { height: 340px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">
+        <span class="brand-name">Wanderly</span>
+      </a>
+      <nav class="nav">
+        <a class="active" href="#">Home</a>
+        <a href="#services">Our Services</a>
+        <a href="#destinations">Destinations</a>
+        <a href="#about">About Us</a>
+        <a href="#reviews">Reviews</a>
+      </nav>
+      <div class="header-cta">
+        <a class="pill" href="#inquiry">Plan Your Trip ↗</a>
+        <div class="avatar" aria-hidden="true">
+          <img alt="" src="https://www.figma.com/api/mcp/asset/ef6c1053-0ec2-445f-85bf-65c0362aaa3c.svg">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow-badge">
+            <img alt="" src="https://www.figma.com/api/mcp/asset/d6744adb-2368-43a0-9458-7aaabf15c8b8.svg">
+            YOUR JOURNEY, YOUR WAY
+          </span>
+          <h1>Less Planning.<br>More Exploring.</h1>
+          <p class="lead">Every great trip starts with a thoughtful plan. From tailored itineraries and seamless bookings to the understated details that elevate a getaway, we take care of it all — so you can simply arrive and immerse.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#inquiry">Plan My Trip
+              <img alt="" src="https://www.figma.com/api/mcp/asset/c765fa3e-4240-4475-aeea-35aea1130a9d.svg">
+            </a>
+            <a class="btn btn-ghost" href="#services">Discover Our Services
+              <img alt="" src="https://www.figma.com/api/mcp/asset/5675debe-e0c9-49e5-ae8d-4aa7dddd20b1.svg">
+            </a>
+          </div>
+          <div class="trust-note">
+            <img alt="" src="https://www.figma.com/api/mcp/asset/6ac7ebae-a3ca-4277-b8e9-441776b5c1be.svg">
+            <span>Thoughtfully planned journeys. Personal concierge. Lasting memories.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="location-bar">
+        <div class="container">
+          <span class="location-chip">
+            <img alt="" src="https://www.figma.com/api/mcp/asset/2107f62b-6801-45eb-849f-ce4d3016848d.png">
+            Cala Deià, Mallorca • 39°45'N 2°38'E
+          </span>
+          <span class="location-meta">Curated Private Travel • Monograph Edition</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHILOSOPHY & AUDIENCE PILLARS -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="intro-header">
+          <div class="head">
+            <span class="eyebrow">THE PHILOSOPHY</span>
+            <h2 class="h2">Travel crafted around who you are,<br>not a standard itinerary.</h2>
+          </div>
+          <p class="side">Mass-market packages prioritize tourist quotas. We craft singular narratives: quiet hideaways, unscripted afternoon walks, and doors unlocked by personal relationships.</p>
+        </div>
+
+        <div class="pillars">
+          <article class="card pillar">
+            <div>
+              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/f54d9200-5240-4b85-a664-2cece405568d.svg"></div>
+              <div class="pillar-label">For Couples</div>
+              <h3 class="h3">Romantic Retreats</h3>
+              <p>Private cliffside terraces, candlelit vineyard dinners, and secluded coastline charters designed without rushing.</p>
+            </div>
+            <a class="pillar-link" href="#destinations">Explore Intimate Stays <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
+          </article>
+
+          <article class="card pillar">
+            <div>
+              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/f9a91b79-451e-4db3-9d79-be55348d29fe.svg"></div>
+              <div class="pillar-label">For Families</div>
+              <h3 class="h3">Unhurried Holidays</h3>
+              <p>Spacious heritage villas, engaging hands-on discoveries for all generations, and zero logistics friction.</p>
+            </div>
+            <a class="pillar-link" href="#destinations">Discover Family Escapes <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
+          </article>
+
+          <article class="card pillar">
+            <div>
+              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/7b2e79ed-a19a-4cb4-aff2-3a03c2f1c738.svg"></div>
+              <div class="pillar-label">For Professionals</div>
+              <h3 class="h3">Restorative Reset</h3>
+              <p>High-touch sanctuary escapes with seamless connectivity when needed, and complete stillness when you step away.</p>
+            </div>
+            <a class="pillar-link" href="#destinations">Explore Sanctuary Havens <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
+          </article>
+
+          <article class="card pillar">
+            <div>
+              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/1a9e6e62-6dc1-442f-a04a-ed6b8e7c35a0.svg"></div>
+              <div class="pillar-label">For Solo Explorers</div>
+              <h3 class="h3">Mindful Horizons</h3>
+              <p>Curated artist residencies, ancient mountain pathways, and authentic local studio connections with trusted guides.</p>
+            </div>
+            <a class="pillar-link" href="#destinations">Curate Solo Journey <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section muted-sage" id="services">
+      <div class="container">
+        <div class="services-head">
+          <span class="eyebrow">OUR EXPERTISE</span>
+          <h2 class="h2">Tailored From Start to Finish</h2>
+          <p>Every itinerary is authored collaboratively by a dedicated travel designer who listens first,<br>then curates with precision.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service">
+            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/a4926d80-3558-4e10-a580-72ff99bda9cd.svg"></div>
+            <h3 class="h3">Custom Itineraries</h3>
+            <p>Pacing tailored to your natural rhythm. Hand-written daily guides highlighting quiet morning cafes, hidden vista points, and verified insider tables.</p>
+            <ul>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Tailored day-by-day pacing</li>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Hard-to-get culinary reservations</li>
+            </ul>
+          </article>
+
+          <article class="service">
+            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/920b74d9-4eb5-43da-8727-4c5ed8618faf.svg"></div>
+            <h3 class="h3">Destination Advisory</h3>
+            <p>Unbiased insight into weather nuances, micro-seasons, regional festivals, and authentic cultural etiquette across 40+ global territories.</p>
+            <ul>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Micro-climate seasonality analysis</li>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Off-the-beaten-path validation</li>
+            </ul>
+          </article>
+
+          <article class="service">
+            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/45fc86d6-2f3f-4d4b-aa9a-68854ed857a9.svg"></div>
+            <h3 class="h3">Luxury Stays &amp; Boutique Villas</h3>
+            <p>Independent boutique hotels, restored olive fincas, and design-led sanctuaries vetted personally for character, architecture, and serenity.</p>
+            <ul>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Complimentary room upgrades when available</li>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Dedicated hotel liaison privileges</li>
+            </ul>
+          </article>
+
+          <article class="service">
+            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/ee14beb6-2957-460c-8014-f8a08ca0e584.svg"></div>
+            <h3 class="h3">Private Logistics &amp; Transport</h3>
+            <p>Chauffeured Mercedes transfers, private catamaran charters, scenic luxury rail coordination, and flight monitoring from takeoff to touchdown.</p>
+            <ul>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Seamless baggage door-to-door</li>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Private high-speed rail cabins</li>
+            </ul>
+          </article>
+
+          <article class="service">
+            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/b9b59a73-c9d8-4f89-b6d0-758afc09e441.svg"></div>
+            <h3 class="h3">Exclusive Experiences</h3>
+            <p>Private cellar tastings with master vintners, after-hours museum entries, ceramic studio workshops, and guided alpine botanical treks.</p>
+            <ul>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Direct access to local artisans</li>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Private chartered coastal voyages</li>
+            </ul>
+          </article>
+
+          <article class="service">
+            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/ebc8f743-2a15-4f8c-8a3d-658fd64aa285.svg"></div>
+            <h3 class="h3">24/7 Dedicated Concierge</h3>
+            <p>A single WhatsApp or phone touchpoint to handle flight changes, table re-bookings, doctor coordination, or spontaneous whims in real time.</p>
+            <ul>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Average response time under 4 minutes</li>
+              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Proactive weather and delay rerouting</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CURATED DESTINATIONS -->
+    <section class="section" id="destinations">
+      <div class="container">
+        <div class="dest-head">
+          <div class="head">
+            <span class="eyebrow">SEASONAL PORTFOLIOS</span>
+            <h2 class="h2">Curated Sanctuaries</h2>
+          </div>
+          <p class="side">A glimpse into the regions where our resident network holds deep-rooted relationships.</p>
+        </div>
+
+        <div class="dest-grid">
+          <article class="dest">
+            <div class="dest-img">
+              <img alt="Amalfi Coast" src="https://www.figma.com/api/mcp/asset/6e2a0f22-446e-448c-8399-82669f099732.png">
+              <span class="dest-tag">Coastal Romance</span>
+            </div>
+            <div class="dest-body">
+              <div class="dest-meta"><span>Italy • Tyrrhenian Sea</span><span>May – Oct</span></div>
+              <h3 class="h3">Amalfi &amp; Capri</h3>
+              <p>Lemon groves of Ravello, private boat access to tucked sea grottos, and heirloom cliffside sanctuaries.</p>
+              <div class="dest-foot"><span>From 7 Days</span><img alt="" src="https://www.figma.com/api/mcp/asset/8160778f-0aeb-493d-9ffa-536901ab9539.svg"></div>
+            </div>
+          </article>
+
+          <article class="dest">
+            <div class="dest-img">
+              <img alt="Kyoto and Hakone" src="https://www.figma.com/api/mcp/asset/cd91ea0d-e47e-4b3c-9002-bf3d36150038.png">
+              <span class="dest-tag">Cultural Stillness</span>
+            </div>
+            <div class="dest-body">
+              <div class="dest-meta"><span>Japan • Kansai &amp; Fuji</span><span>Year-round</span></div>
+              <h3 class="h3">Kyoto &amp; Hakone</h3>
+              <p>Private tea ceremonies, serene hot-spring onsens nestled in cedar woods, and Michelin kaiseki experiences.</p>
+              <div class="dest-foot"><span>From 10 Days</span><img alt="" src="https://www.figma.com/api/mcp/asset/8160778f-0aeb-493d-9ffa-536901ab9539.svg"></div>
+            </div>
+          </article>
+
+          <article class="dest">
+            <div class="dest-img">
+              <img alt="The Quiet Cyclades" src="https://www.figma.com/api/mcp/asset/2d773f3e-e70c-40b5-970b-511f5239ed70.png">
+              <span class="dest-tag">Slow Island Life</span>
+            </div>
+            <div class="dest-body">
+              <div class="dest-meta"><span>Greece • Sifnos &amp; Milos</span><span>Jun – Sep</span></div>
+              <h3 class="h3">The Quiet Cyclades</h3>
+              <p>Whitewashed hillside villages, terracotta ceramicists, secret coves reachable solely by private rib tender.</p>
+              <div class="dest-foot"><span>From 8 Days</span><img alt="" src="https://www.figma.com/api/mcp/asset/8160778f-0aeb-493d-9ffa-536901ab9539.svg"></div>
+            </div>
+          </article>
+
+          <article class="dest">
+            <div class="dest-img">
+              <img alt="Engadin Valley" src="https://www.figma.com/api/mcp/asset/5a9890d2-a478-44af-8296-ac8435af366d.png">
+              <span class="dest-tag">Alpine Wellness</span>
+            </div>
+            <div class="dest-body">
+              <div class="dest-meta"><span>Switzerland • Engadin</span><span>Dec – Sep</span></div>
+              <h3 class="h3">Engadin Valley</h3>
+              <p>Glacier panoramic express journeys, historic thermal spa pavilions, and high-altitude forest sanctuaries.</p>
+              <div class="dest-foot"><span>From 6 Days</span><img alt="" src="https://www.figma.com/api/mcp/asset/8160778f-0aeb-493d-9ffa-536901ab9539.svg"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDITORIAL STORY -->
+    <section class="editorial-section">
+      <div class="container">
+        <div class="editorial-grid">
+          <div class="editorial-copy">
+            <span class="eyebrow">THE WANDERLY STANDARD</span>
+            <h2 class="h2">The Art of Thoughtful Travel</h2>
+            <p>Algorithmic booking engines have made planning feel like endless homework: fifty open browser tabs, conflicting review blogs, and generic hotel chains. Wanderly restores travel planning to an unhurried, artful dialogue.</p>
+
+            <div class="editorial-points">
+              <div class="point">
+                <div class="point-num">01</div>
+                <div>
+                  <h3 class="h3">Human Intuition Over Algorithms</h3>
+                  <p>We match you based on how you feel like waking up, what you enjoy tasting, and your desired cadence — not sponsored search rankings.</p>
+                </div>
+              </div>
+              <div class="point">
+                <div class="point-num">02</div>
+                <div>
+                  <h3 class="h3">Zero Surcharge Transparency</h3>
+                  <p>Our private client advisory fees are clear and upfront. You pay the direct negotiated property rates with zero hidden markups.</p>
+                </div>
+              </div>
+              <div class="point">
+                <div class="point-num">03</div>
+                <div>
+                  <h3 class="h3">Effortless Peace of Mind</h3>
+                  <p>Weather anomalies, unexpected strikes, or last-minute table changes are proactively resolved before your breakfast espresso is poured.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="editorial-visual">
+            <div class="editorial-photo">
+              <img alt="Thoughtful travel" src="https://www.figma.com/api/mcp/asset/37a95cb4-f734-461c-a847-e9445b775a98.png">
+            </div>
+            <div class="highlight-card">
+              <div class="highlight-head">
+                <img alt="" src="https://www.figma.com/api/mcp/asset/e5415988-52e0-4cb1-9ce7-33cedb9f1e5c.svg">
+                Direct Relationships
+              </div>
+              <p>We work directly with property custodians, local boat captains, and private sommeliers — never middle brokers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="section" id="reviews">
+      <div class="container">
+        <div class="reviews-head">
+          <span class="eyebrow">REFLECTIONS</span>
+          <h2 class="h2">Words from Our Travelers</h2>
+        </div>
+
+        <div class="reviews-grid">
+          <article class="review">
+            <div>
+              <div class="stars"><img alt="5 stars" src="https://www.figma.com/api/mcp/asset/b7734005-5249-4a5b-8f24-8f2eab33f42b.svg"></div>
+              <blockquote style="margin-top:20px;">“Wanderly planned our Mallorca sabbatical down to the exact late afternoon golden-hour light at Cala Deià. It felt like travelling with a discerning friend.”</blockquote>
+            </div>
+            <div class="review-author">
+              <strong>Clara &amp; Marcus Vance</strong>
+              <span>London • 12-day Balearic Retrospective</span>
+            </div>
+          </article>
+
+          <article class="review">
+            <div>
+              <div class="stars"><img alt="5 stars" src="https://www.figma.com/api/mcp/asset/b7734005-5249-4a5b-8f24-8f2eab33f42b.svg"></div>
+              <blockquote style="margin-top:20px;">“Travelling with three kids across Japan sounded terrifying. Wanderly curated family-friendly ryokans and private luggage transfers that made every day effortless.”</blockquote>
+            </div>
+            <div class="review-author">
+              <strong>David &amp; Sarah Chen</strong>
+              <span>San Francisco • 14-day Japan Family Odyssey</span>
+            </div>
+          </article>
+
+          <article class="review">
+            <div>
+              <div class="stars"><img alt="5 stars" src="https://www.figma.com/api/mcp/asset/b7734005-5249-4a5b-8f24-8f2eab33f42b.svg"></div>
+              <blockquote style="margin-top:20px;">“I wanted two weeks of pure solitude and writing time in the Engadin valley. The mountain chalet and guided trails chosen for me were beyond exceptional.”</blockquote>
+            </div>
+            <div class="review-author">
+              <strong>Elena Rostova</strong>
+              <span>Zurich • 10-day Solo Creative Residency</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- INQUIRY FORM -->
+    <section class="inquiry-section" id="inquiry">
+      <div class="inquiry-wrap">
+        <div class="inquiry-head">
+          <span class="eyebrow">YOUR NEXT CHAPTER</span>
+          <h2 class="h2">Let’s Begin Your Next Story</h2>
+          <p>Share your initial vision, preferred rhythms, and dream destinations. Our curators will respond with an initial personalized travel vision within 24 hours.</p>
+        </div>
+
+        <div class="form-card">
+          <form id="inquiryForm" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Full Name</label>
+                <input id="name" name="name" type="text" placeholder="Eleanor Vance" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="email">Email Address</label>
+                <input id="email" name="email" type="email" placeholder="eleanor@example.com" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="phone">Phone Number (Optional)</label>
+                <input id="phone" name="phone" type="tel" placeholder="+1 (555) 000-0000" autocomplete="tel">
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <div class="privacy">
+                <img alt="" src="https://www.figma.com/api/mcp/asset/abf89aff-e51e-4c9d-8d41-e504643d4c10.svg">
+                <span>100% confidential. No spam or unsolicited mail.</span>
+              </div>
+              <button class="btn btn-primary submit-btn" id="submitBtn" type="submit">
+                Request Personalized Proposal
+                <img alt="" src="https://www.figma.com/api/mcp/asset/2cc25f4b-3c3c-436c-8195-b7f822223e43.svg">
+              </button>
+            </div>
+            <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-name">Wanderly</span>
+          <p>Slow travel, unhurried discoveries, and tailored sanctuaries designed for mindful explorers.</p>
+          <div class="footer-tag">
+            <img alt="" src="https://www.figma.com/api/mcp/asset/f45923bc-e2a5-4f25-a5f2-2c6ef8a7fe48.svg">
+            Bespoke Curated Itineraries
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="#home">Home</a>
+          <a href="#services">Our Services</a>
+          <a href="#destinations">Destinations</a>
+          <a href="#reviews">Reviews</a>
+        </div>
+
+        <div class="footer-col" id="about-links">
+          <h4>Editorial</h4>
+          <a href="#about">About Us</a>
+          <a href="#">Journal &amp; Guides</a>
+          <a href="#">Private Stays</a>
+          <a href="#">Conscious Stays</a>
+        </div>
+
+        <div class="footer-col dispatch">
+          <h4>The Wanderly Dispatch</h4>
+          <p>Private invitations, seasonal releases, and thoughtful essays delivered fortnightly.</p>
+          <form class="dispatch-form" onsubmit="event.preventDefault();">
+            <input type="email" placeholder="Your email address" aria-label="Email for dispatch">
+            <button type="submit">Join</button>
+          </form>
+          <small>Zero spam. Unsubscribe at any hour.</small>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2025 Wanderly Collectives Ltd. All rights reserved.</span>
+        <nav>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Concierge Desk</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Google Apps Script Web App URL (deployed) ----
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsKZ8iKGPkeZO0oTG1rqxIS8woF0l3EDPq8-QDve-Yn833J-VFGjlCXMcwjtRuXvbJbg/exec";
+
+    const form = document.getElementById("inquiryForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusEl = document.getElementById("formStatus");
+
+    function setStatus(type, message) {
+      statusEl.className = "form-status " + type;
+      statusEl.textContent = message;
+    }
+
+    function showSuccess() {
+      setStatus("ok", "Thank you — your curator will be in touch within 24 hours.");
+      form.reset();
+      submitBtn.disabled = false;
+      submitBtn.firstChild.textContent = "Request Personalized Proposal ";
+    }
+
+    function showError() {
+      setStatus("err", "Something went wrong. Please try again in a moment.");
+      submitBtn.disabled = false;
+      submitBtn.firstChild.textContent = "Request Personalized Proposal ";
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+
+      if (!name || !email) {
+        setStatus("err", "Please enter your name and email address.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.firstChild.textContent = "Sending… ";
+      setStatus("", "");
+
+      const url = SCRIPT_URL + "?" + new URLSearchParams({ name: name, email: email, phone: phone });
+
+      fetch(url, { method: "GET", mode: "no-cors" })
+        .then(() => showSuccess())
+        .catch(() => showError());
+    });
+  </script>
+</body>
+</html>

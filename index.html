@@ -92,15 +92,58 @@
     .header-inner { height: 80px; display: flex; align-items: center; justify-content: space-between; }
     .brand { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none; }
     .brand-name { font-family: var(--serif); font-weight: 700; font-size: 22px; letter-spacing: -0.55px; color: var(--forest); }
+    .brand-logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      will-change: transform;
+      transform: translateZ(0);
+    }
     .brand-logo {
       display: block;
-      height: 46px;
+      height: 56px;
       width: auto;
-      max-width: min(260px, 34vw);
+      max-width: min(220px, 34vw);
       object-fit: contain;
-      background: #fff;
-      padding: 4px 8px;
-      border-radius: 8px;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      opacity: 0;
+      transform: translateY(-20px) scale(0.6);
+      filter: blur(12px);
+      transform-origin: center;
+      will-change: transform, opacity, filter;
+    }
+    .brand-logo.is-animated {
+      animation:
+        logoReveal 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+        logoFloat 4s ease-in-out 1.6s infinite;
+    }
+    .footer-brand-logo {
+      height: 60px;
+      max-width: min(280px, 100%);
+      opacity: 1;
+      transform: none;
+      filter: none;
+      animation: none;
+    }
+    @keyframes logoReveal {
+      0% { opacity: 0; transform: translateY(-20px) scale(0.6); filter: blur(12px); }
+      60% { opacity: 1; transform: translateY(0) scale(1.06); filter: blur(0); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .brand-logo, .brand-logo.is-animated {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        animation: none !important;
+      }
     }
     .nav { display: flex; gap: 28px; align-items: center; }
     .nav a { font-weight: 600; font-size: 14px; letter-spacing: 0.56px; color: var(--body); padding: 4px 0; }
@@ -940,10 +983,10 @@
     @media (max-width: 560px) {
       .container { padding: 0 20px; }
       .header-inner { height: 68px; gap: 12px; }
-      .brand-logo { height: 38px; max-width: min(180px, 48vw); padding: 3px 6px; border-radius: 6px; }
+      .brand-logo { height: 42px; max-width: min(170px, 46vw); }
       .header-cta { gap: 10px; }
       .header-cta .pill { padding: 8px 12px; font-size: 13px; letter-spacing: 0.2px; white-space: nowrap; }
-      .footer-brand-logo { height: 48px; max-width: min(240px, 100%); }
+      .footer-brand-logo { height: 52px; max-width: min(240px, 100%); }
       .hero-scroll { height: 200vh; }
       .hero-sticky { min-height: 600px; padding-top: 68px; }
       .hero-copy { padding: 0 0 1.5rem; }
@@ -1015,7 +1058,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#" aria-label="AMS Travel Services home">
-        <img class="brand-logo" src="assets/ams-travel-services-logo.png" alt="AMS Travel Services logo" width="1024" height="1024" decoding="async">
+        <span class="brand-logo-wrap" aria-hidden="true"><img class="brand-logo is-animated" src="assets/ams-travel-services-logo.png" alt="AMS Travel Services logo" width="938" height="603" decoding="async" fetchpriority="high"></span>
       </a>
       <nav class="nav">
         <a class="active" href="#">Home</a>
@@ -1545,7 +1588,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a class="brand" href="#" aria-label="AMS Travel Services home">
-            <img class="brand-logo footer-brand-logo" src="assets/ams-travel-services-logo.png" alt="AMS Travel Services logo" width="1024" height="1024" loading="lazy" decoding="async">
+            <img class="brand-logo footer-brand-logo" src="assets/ams-travel-services-logo.png" alt="AMS Travel Services logo" width="938" height="603" loading="lazy" decoding="async">
           </a>
           <p>Slow travel, unhurried discoveries, and tailored sanctuaries designed for mindful explorers.</p>
           <div class="footer-col" id="contact">

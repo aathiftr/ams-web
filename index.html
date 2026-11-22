@@ -269,7 +269,7 @@
     .highlight-head img { width: 18px; height: 17px; }
     .highlight-card p { font-size: 12px; line-height: 16.5px; letter-spacing: 0.12px; color: rgba(222,228,223,0.9); }
 
-    /* ---------- WHY CHOOSE AMS FEATURES ---------- */
+    /* ---------- WHY CHOOSE AMS FEATURES / 21ST.DEV FeatureSteps ---------- */
     .ams-feature-section { background: var(--sage); padding: 72px 0 80px; }
     .ams-feature-head {
       max-width: 720px; margin: 0 auto 48px; text-align: center;
@@ -277,43 +277,70 @@
     }
     .ams-feature-head .h2 { margin-top: 0; }
     .ams-feature-head > p { margin-top: 4px; font-size: 16px; line-height: 26px; color: var(--body); }
-    .ams-feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start; }
-    .ams-feature-card {
-      max-width: 320px; width: 100%; margin: 0 auto; padding: 14px 14px 22px;
-      background: var(--white); border: 1px solid rgba(0,39,32,0.06); border-radius: 18px;
-      box-shadow: var(--shadow-card); transition: transform .2s ease, box-shadow .2s ease;
+
+    .ams-feature-layout { display: flex; flex-direction: column; gap: 24px; }
+    .ams-feature-steps { order: 2; display: flex; flex-direction: column; gap: 32px; }
+    .ams-feature-step {
+      display: flex; align-items: center; gap: 24px;
+      opacity: .3; transition: opacity .5s ease;
     }
-    .ams-feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
-    .ams-feature-media {
-      position: relative; height: 220px; border-radius: 14px; overflow: hidden;
-      background: var(--mint);
-    }
-    .ams-feature-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .ams-feature-num {
-      position: absolute; left: 14px; top: 14px; min-width: 44px; height: 44px; padding: 0 10px;
-      border-radius: 9999px; background: rgba(255,255,255,0.92); color: var(--forest);
+    .ams-feature-step.is-active { opacity: 1; }
+    .ams-feature-step-badge {
+      flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9999px;
+      border: 2px solid var(--label); background: var(--white); color: var(--forest);
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: 0.72px;
-      box-shadow: 0 2px 8px rgba(0,39,32,0.08);
+      font-family: var(--sans); font-size: 18px; font-weight: 600; line-height: 1;
+      transition: transform .5s ease, background-color .5s ease, border-color .5s ease, color .5s ease;
     }
-    .ams-feature-body { padding: 20px 8px 0; }
-    .ams-feature-body h3 { margin: 0; }
-    .ams-feature-body > p {
-      margin-top: 10px; font-size: 14px; line-height: 22.75px; letter-spacing: 0.07px; color: var(--body);
+    .ams-feature-step.is-active .ams-feature-step-badge {
+      background: var(--deep); border-color: var(--deep); color: var(--white);
+      font-weight: 700; transform: scale(1.1);
     }
-    @media (max-width: 900px) {
-      .ams-feature-head { margin-bottom: 40px; }
-      .ams-feature-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
-      .ams-feature-card { max-width: none; }
+    .ams-feature-step-copy { flex: 1; min-width: 0; }
+    .ams-feature-step-copy h3 { margin: 0; font-size: 22px; line-height: 30px; }
+    .ams-feature-step-copy p { margin-top: 10px; font-size: 15px; line-height: 25px; color: var(--body); }
+
+    .ams-feature-media {
+      order: 1; position: relative; height: 200px; border-radius: 8px;
+      overflow: hidden; background: var(--mint);
+    }
+    .ams-feature-image {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; transform: translateY(100px) rotateX(-20deg);
+      transition: opacity .5s ease-in-out, transform .5s ease-in-out;
+    }
+    .ams-feature-image.is-active { opacity: 1; transform: translateY(0) rotateX(0); }
+    .ams-feature-image.is-exiting { opacity: 0; transform: translateY(-100px) rotateX(20deg); }
+    .ams-feature-media-gradient {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 66.6667%;
+      background: linear-gradient(to top, var(--sage) 0%, rgba(239,245,240,0.5) 50%, rgba(239,245,240,0) 100%);
+      pointer-events: none;
+    }
+
+    @media (min-width: 768px) {
+      .ams-feature-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+      .ams-feature-steps, .ams-feature-media { order: initial; }
+      .ams-feature-step { gap: 32px; }
+      .ams-feature-step-badge { width: 40px; height: 40px; }
+      .ams-feature-step-copy h3 { font-size: 24px; line-height: 32px; }
+      .ams-feature-step-copy p { font-size: 17px; line-height: 28px; }
+      .ams-feature-media { height: 300px; }
+    }
+    @media (min-width: 1024px) {
+      .ams-feature-media { height: 400px; }
     }
     @media (max-width: 560px) {
       .ams-feature-section { padding: 56px 0 64px; }
       .ams-feature-head { margin-bottom: 32px; gap: 10px; }
       .ams-feature-head > p { font-size: 15px; line-height: 24px; }
-      .ams-feature-grid { gap: 28px; }
-      .ams-feature-card { padding: 12px 12px 20px; }
-      .ams-feature-media { height: 200px; }
-      .ams-feature-body { padding: 18px 4px 0; }
+      .ams-feature-steps { gap: 24px; }
+      .ams-feature-step { gap: 16px; }
+      .ams-feature-step-copy h3 { font-size: 20px; line-height: 28px; }
+      .ams-feature-step-copy p { font-size: 14px; line-height: 23px; }
+      .ams-feature-media { height: 220px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ams-feature-step, .ams-feature-step-badge, .ams-feature-image { transition: none; }
     }
 
     /* ---------- REVIEWS ---------- */
@@ -859,7 +886,7 @@
       </div>
     </section>
 
-    <!-- WHY CHOOSE AMS FEATURES -->
+    <!-- WHY CHOOSE AMS FEATURES — 21st.dev FeatureSteps adaptation -->
     <section class="ams-feature-section" id="ams-features">
       <div class="container">
         <div class="ams-feature-head">
@@ -868,52 +895,129 @@
           <p>Travel planning involves many details. We help you navigate your options with practical guidance for travel bookings, documentation, holidays, and pilgrimage journeys.</p>
         </div>
 
-        <div class="ams-feature-grid">
-          <article class="ams-feature-card">
-            <div class="ams-feature-media">
-              <img data-ams-feature="assistance" alt="Two people planning a journey with a detailed map" width="800" height="600">
-              <span class="ams-feature-num">01</span>
-            </div>
-            <div class="ams-feature-body">
-              <h3 class="h3">Personal Travel Assistance</h3>
-              <p>Every journey has different needs. We help you explore suitable travel options and understand the details that matter for your trip.</p>
-            </div>
-          </article>
+        <div class="ams-feature-layout">
+          <div class="ams-feature-steps">
+            <article class="ams-feature-step is-active" aria-current="step">
+              <span class="ams-feature-step-badge" aria-hidden="true">✓</span>
+              <div class="ams-feature-step-copy">
+                <h3 class="h3">Personal Travel Assistance</h3>
+                <p>Every journey has different needs. We help you explore suitable travel options and understand the details that matter for your trip.</p>
+              </div>
+            </article>
 
-          <article class="ams-feature-card">
-            <div class="ams-feature-media">
-              <img data-ams-feature="guidance" alt="Passport and ticket ready for a trip" width="800" height="600">
-              <span class="ams-feature-num">02</span>
-            </div>
-            <div class="ams-feature-body">
-              <h3 class="h3">Clear Travel Guidance</h3>
-              <p>From booking requirements to travel documents, we help you understand the relevant steps and prepare the information needed for your journey.</p>
-            </div>
-          </article>
+            <article class="ams-feature-step">
+              <span class="ams-feature-step-badge" aria-hidden="true">2</span>
+              <div class="ams-feature-step-copy">
+                <h3 class="h3">Clear Travel Guidance</h3>
+                <p>From booking requirements to travel documents, we help you understand the relevant steps and prepare the information needed for your journey.</p>
+              </div>
+            </article>
 
-          <article class="ams-feature-card">
-            <div class="ams-feature-media">
-              <img data-ams-feature="services" alt="Traveller with luggage on a train station platform" width="800" height="600">
-              <span class="ams-feature-num">03</span>
-            </div>
-            <div class="ams-feature-body">
-              <h3 class="h3">Travel Services in One Place</h3>
-              <p>Explore assistance for flight, bus and train bookings, passport services, visa guidance, tour packages, car rentals, and Umrah and Hajj journeys.</p>
-            </div>
-          </article>
+            <article class="ams-feature-step">
+              <span class="ams-feature-step-badge" aria-hidden="true">3</span>
+              <div class="ams-feature-step-copy">
+                <h3 class="h3">Travel Services in One Place</h3>
+                <p>Explore assistance for flight, bus and train bookings, passport services, visa guidance, tour packages, car rentals, and Umrah and Hajj journeys.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="ams-feature-media">
+            <img class="ams-feature-image is-active" data-ams-feature="assistance" alt="Two people planning a journey with a detailed map" width="1000" height="500">
+            <img class="ams-feature-image" data-ams-feature="guidance" alt="Passport and ticket ready for a trip" width="1000" height="500" aria-hidden="true">
+            <img class="ams-feature-image" data-ams-feature="services" alt="Traveller with luggage on a train station platform" width="1000" height="500" aria-hidden="true">
+            <span class="ams-feature-media-gradient" aria-hidden="true"></span>
+          </div>
         </div>
 
         <script>
-          // Image URLs are kept together here so they are easy to replace.
+          // Feature data is kept together here so copy and images are easy to replace.
           (function () {
-            const amsFeatureImages = {
-              assistance: "https://images.unsplash.com/photo-1781861799305-d22ee4b22795?auto=format&fit=crop&crop=faces,entropy&w=800&h=600&q=80",
-              guidance: "https://images.unsplash.com/photo-1741795850743-798cdf152542?auto=format&fit=crop&crop=entropy&w=800&h=600&q=80",
-              services: "https://images.unsplash.com/photo-1778881304957-f6fe842ad206?auto=format&fit=crop&crop=entropy&w=800&h=600&q=80"
-            };
-            document.querySelectorAll("[data-ams-feature]").forEach(function (img) {
-              img.src = amsFeatureImages[img.getAttribute("data-ams-feature")];
+            const amsFeatureSteps = [
+              {
+                step: "Step 1",
+                title: "Personal Travel Assistance",
+                content: "Every journey has different needs. We help you explore suitable travel options and understand the details that matter for your trip.",
+                image: "https://images.unsplash.com/photo-1781861799305-d22ee4b22795?auto=format&fit=crop&crop=faces,entropy&w=800&h=600&q=80",
+                alt: "Two people planning a journey with a detailed map"
+              },
+              {
+                step: "Step 2",
+                title: "Clear Travel Guidance",
+                content: "From booking requirements to travel documents, we help you understand the relevant steps and prepare the information needed for your journey.",
+                image: "https://images.unsplash.com/photo-1741795850743-798cdf152542?auto=format&fit=crop&crop=entropy&w=800&h=600&q=80",
+                alt: "Passport and ticket ready for a trip"
+              },
+              {
+                step: "Step 3",
+                title: "Travel Services in One Place",
+                content: "Explore assistance for flight, bus and train bookings, passport services, visa guidance, tour packages, car rentals, and Umrah and Hajj journeys.",
+                image: "https://images.unsplash.com/photo-1778881304957-f6fe842ad206?auto=format&fit=crop&crop=entropy&w=800&h=600&q=80",
+                alt: "Traveller with luggage on a train station platform"
+              }
+            ];
+
+            const section = document.getElementById("ams-features");
+            if (!section) return;
+            const steps = Array.prototype.slice.call(section.querySelectorAll(".ams-feature-step"));
+            const images = Array.prototype.slice.call(section.querySelectorAll(".ams-feature-image"));
+            if (steps.length !== amsFeatureSteps.length || images.length !== amsFeatureSteps.length) return;
+
+            amsFeatureSteps.forEach(function (feature, index) {
+              const copy = steps[index].querySelector(".ams-feature-step-copy");
+              copy.querySelector("h3").textContent = feature.title;
+              copy.querySelector("p").textContent = feature.content;
+              images[index].src = feature.image;
+              images[index].alt = feature.alt;
             });
+
+            const autoPlayInterval = 4000; // matches the 21st.dev demo's autoPlayInterval={4000}
+            let activeIndex = 0;
+            let progress = 0;
+            let swapTimer = null;
+
+            function renderSteps() {
+              steps.forEach(function (step, index) {
+                const badge = step.querySelector(".ams-feature-step-badge");
+                badge.textContent = index <= activeIndex ? "✓" : String(index + 1);
+                step.classList.toggle("is-active", index === activeIndex);
+                if (index === activeIndex) step.setAttribute("aria-current", "step");
+                else step.removeAttribute("aria-current");
+              });
+            }
+
+            function activate(index) {
+              if (index === activeIndex) return;
+              const outgoing = images[activeIndex];
+              const incoming = images[index];
+              activeIndex = index;
+              renderSteps();
+
+              // AnimatePresence mode="wait": exit fully, then enter the next image.
+              outgoing.classList.remove("is-active");
+              outgoing.classList.add("is-exiting");
+              outgoing.setAttribute("aria-hidden", "true");
+              window.clearTimeout(swapTimer);
+              swapTimer = window.setTimeout(function () {
+                outgoing.classList.remove("is-exiting");
+                incoming.classList.add("is-active");
+                incoming.setAttribute("aria-hidden", "false");
+              }, 500);
+            }
+
+            renderSteps();
+            images.forEach(function (img, index) {
+              img.setAttribute("aria-hidden", index === activeIndex ? "false" : "true");
+            });
+
+            window.setInterval(function () {
+              if (progress < 100) {
+                progress += 100 / (autoPlayInterval / 100);
+              } else {
+                activate((activeIndex + 1) % amsFeatureSteps.length);
+                progress = 0;
+              }
+            }, 100);
           })();
         </script>
       </div>

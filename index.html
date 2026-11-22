@@ -622,16 +622,70 @@
       .ams-feature-step, .ams-feature-step-badge, .ams-feature-image { transition: none; }
     }
 
-    /* ---------- REVIEWS ---------- */
-    .reviews-head { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
-    .reviews-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 56px; }
-    .review { background: var(--white); border-radius: 12px; box-shadow: var(--shadow-card); padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
-    .stars { display: flex; gap: 4px; }
-    .stars img { width: 75px; height: 14px; }
-    .review blockquote { font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 28px; color: var(--ink); }
-    .review-author { border-top: 1px solid rgba(0,39,32,0.06); padding-top: 16px; }
-    .review-author strong { display: block; font-size: 14px; font-weight: 700; color: var(--forest); }
-    .review-author span { display: block; margin-top: 4px; font-size: 12px; color: var(--label); }
+    /* ---------- TRAVELLER STORIES (Tilt Stack Scroll adaptation, 21st.dev @kedhareswer/tilt-stack-scroll) ---------- */
+    .tss-section { background: rgba(219,229,219,0.18); }
+    .tss-track { position: relative; width: 100%; }
+    .tss-stage {
+      position: sticky; top: 0; display: flex; flex-direction: column; overflow: hidden;
+      background: linear-gradient(180deg, rgba(245,251,246,0.98), rgba(219,229,219,0.32));
+      color: var(--forest); box-sizing: border-box;
+      padding: clamp(20px,4vh,44px) 16px clamp(20px,4vh,40px);
+    }
+    .tss-head {
+      position: relative; z-index: 5; width: 100%; max-width: 1040px; margin: 0 auto 22px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
+    }
+    .tss-eyebrow { font: 600 11px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--deep); margin: 0 0 12px; }
+    .tss-h { font: 500 clamp(30px,5.2vw,58px)/.98 var(--serif); letter-spacing: -.02em; margin: 0; max-width: 16ch; color: var(--forest); }
+    .tss-h span { display: inline-block; }
+    .tss-support { margin: 14px 0 0; max-width: 52ch; font: 400 15px/1.7 var(--sans); color: var(--body); }
+    .tss-count { flex: none; font: 500 12px/1 var(--sans); letter-spacing: .12em; color: var(--label); display: flex; align-items: center; gap: 12px; }
+    .tss-count b { font-weight: 600; color: var(--forest); font-size: 22px; letter-spacing: 0; font-family: var(--serif); }
+    .tss-rail { width: 90px; height: 2px; border-radius: 2px; background: rgba(0,56,47,0.14); overflow: hidden; }
+    .tss-rail i { display: block; height: 100%; width: 100%; background: var(--deep); transform-origin: 0 50%; transform: scaleX(0); }
+    .tss-deck { position: relative; flex: 1; width: 100%; max-width: 1040px; margin: clamp(24px,6vh,60px) auto 0; min-height: 0; }
+    .tss-card {
+      position: absolute; inset: 0; border-radius: 30px; overflow: hidden; transform-origin: 50% 0;
+      will-change: transform; backface-visibility: hidden; background: #0c0c0e; color: #fff;
+      box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 0 0 1px rgba(0,0,0,.08), 0 50px 90px -40px rgba(8,10,20,.55), 0 18px 40px -20px rgba(8,10,20,.45);
+    }
+    .tss-card > img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; display: block; transform: scale(1.06); }
+    .tss-card::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(90deg, rgba(6,18,14,.82) 0%, rgba(6,18,14,.58) 38%, rgba(6,18,14,.08) 72%), linear-gradient(0deg, rgba(6,18,14,.68), rgba(6,18,14,0) 45%);
+    }
+    .tss-shade { position: absolute; inset: 0; z-index: 4; background: #05060a; opacity: 0; pointer-events: none; }
+    .tss-body { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(22px,3.4vw,44px); }
+    .tss-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+    .tss-num { font: 400 clamp(56px,9vw,112px)/.8 var(--serif); letter-spacing: -.04em; color: rgba(255,255,255,.92); font-feature-settings: 'lnum'; }
+    .tss-kick { font: 500 11px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; padding: 9px 12px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); white-space: nowrap; }
+    .tss-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; }
+    .tss-copy { max-width: 560px; }
+    .tss-title { font: 500 clamp(28px,4vw,48px)/1.05 var(--serif); letter-spacing: -.02em; margin: 0 0 14px; color: #fff; }
+    .tss-desc { font: 400 clamp(15px,1.4vw,18px)/1.65 var(--sans); color: rgba(255,255,255,.84); margin: 0 0 18px; max-width: 58ch; }
+    .tss-quote { font-family: var(--serif); font-style: italic; font-size: clamp(20px,2.2vw,30px); line-height: 1.45; color: rgba(255,255,255,.96); margin: 0 0 20px; max-width: 24ch; }
+    .tss-author { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.16); max-width: 420px; }
+    .tss-author strong { font: 600 14px/1.3 var(--sans); color: #fff; }
+    .tss-author span { font: 400 12px/1.4 var(--sans); color: rgba(255,255,255,.72); letter-spacing: .02em; }
+    .tss-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+    .tss-tags li { display: flex; align-items: center; gap: 7px; font: 500 12px/1 var(--sans); padding: 8px 11px; border-radius: 999px; background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.92); }
+    .tss-tags li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--tss-accent, var(--sage)); }
+    .tss-static { display: grid; gap: 24px; margin-top: 32px; }
+    .tss-static-card { position: relative; min-height: 360px; border-radius: 24px; overflow: hidden; background: #0c0c0e; color: #fff; }
+    .tss-static-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .tss-static-card::before { content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(6,18,14,.15), rgba(6,18,14,.78)); }
+    .tss-static-card .tss-body { position: relative; min-height: 360px; }
+    @media (max-width: 640px) {
+      .tss-bottom { flex-direction: column; align-items: flex-start; gap: 18px; }
+      .tss-card::before { background: linear-gradient(0deg, rgba(6,18,14,.92) 0%, rgba(6,18,14,.62) 55%, rgba(6,18,14,.14) 100%); }
+      .tss-desc { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+      .tss-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .tss-card { border-radius: 24px; }
+      .tss-quote { max-width: none; font-size: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tss-rail i { transition: none; }
+    }
 
     /* ---------- INQUIRY FORM (3 fields only) ---------- */
     .inquiry-section { background: rgba(219, 229, 219, 0.3); padding: 48px 160px; }
@@ -878,7 +932,7 @@
       .hero h1 { font-size: clamp(2.75rem, 8vw, 3.75rem); }
       .hero-visual img { max-height: min(46vh, 420px); }
       .intro-header, .dest-head { flex-direction: column; align-items: flex-start; }
-      .services-grid, .reviews-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
       .form-card { padding: 28px; }
       .inquiry-wrap { padding: 0; }
@@ -1366,49 +1420,79 @@
       </div>
     </section>
 
-    <!-- REVIEWS -->
-    <section class="section" id="reviews">
-      <div class="container">
-        <div class="reviews-head">
-          <span class="eyebrow">REFLECTIONS</span>
-          <h2 class="h2">Words from Our Travelers</h2>
-        </div>
-
-        <div class="reviews-grid">
-          <article class="review">
+    <!-- TRAVELLER STORIES (Tilt Stack Scroll adaptation, 21st.dev @kedhareswer/tilt-stack-scroll) -->
+    <section class="tss-section" id="reviews" aria-label="Traveller stories">
+      <div class="tss-track" id="tssTrack">
+        <section class="tss-stage" id="tssStage" aria-roledescription="carousel" aria-label="Words from Our Travelers">
+          <header class="tss-head">
             <div>
-              <div class="stars"><img alt="5 stars" src="https://www.figma.com/api/mcp/asset/b7734005-5249-4a5b-8f24-8f2eab33f42b.svg"></div>
-              <blockquote style="margin-top:20px;">“AMS Travel Services planned our Mallorca sabbatical down to the exact late afternoon golden-hour light at Cala Deià. It felt like travelling with a discerning friend.”</blockquote>
+              <p class="tss-eyebrow">TRAVELLER STORIES</p>
+              <h2 class="tss-h" id="tssHeading"><span class="tss-w">Words</span> <span class="tss-w">from</span> <span class="tss-w">Our</span> <span class="tss-w">Travelers</span></h2>
+              <p class="tss-support">Every journey has its own story. Discover the experiences travellers share about their journeys and the support they received along the way.</p>
             </div>
-            <div class="review-author">
-              <strong>Clara &amp; Marcus Vance</strong>
-              <span>London • 12-day Balearic Retrospective</span>
-            </div>
-          </article>
-
-          <article class="review">
-            <div>
-              <div class="stars"><img alt="5 stars" src="https://www.figma.com/api/mcp/asset/b7734005-5249-4a5b-8f24-8f2eab33f42b.svg"></div>
-              <blockquote style="margin-top:20px;">“Travelling with three kids across Japan sounded terrifying. AMS Travel Services curated family-friendly ryokans and private luggage transfers that made every day effortless.”</blockquote>
-            </div>
-            <div class="review-author">
-              <strong>David &amp; Sarah Chen</strong>
-              <span>San Francisco • 14-day Japan Family Odyssey</span>
-            </div>
-          </article>
-
-          <article class="review">
-            <div>
-              <div class="stars"><img alt="5 stars" src="https://www.figma.com/api/mcp/asset/b7734005-5249-4a5b-8f24-8f2eab33f42b.svg"></div>
-              <blockquote style="margin-top:20px;">“I wanted two weeks of pure solitude and writing time in the Engadin valley. The mountain chalet and guided trails chosen for me were beyond exceptional.”</blockquote>
-            </div>
-            <div class="review-author">
-              <strong>Elena Rostova</strong>
-              <span>Zurich • 10-day Solo Creative Residency</span>
-            </div>
-          </article>
-        </div>
+            <div class="tss-count" aria-hidden="true"><b id="tssCounter">01</b> / <span id="tssTotal">03</span><span class="tss-rail"><i id="tssRail"></i></span></div>
+          </header>
+          <div class="tss-deck" id="tssDeck">
+            <article class="tss-card" style="z-index:1; --tss-accent:#b0ceb3;" aria-roledescription="slide" aria-label="1 of 3: Clara and Marcus Vance">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80" alt="Scenic coastal beach destination at golden hour" loading="eager" decoding="async" width="1400" height="933" data-fallback="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=80">
+              <div class="tss-shade"></div>
+              <div class="tss-body">
+                <div class="tss-top"><span class="tss-num">01</span><span class="tss-kick">Couple Holiday</span></div>
+                <div class="tss-bottom">
+                  <div class="tss-copy">
+                    <p class="tss-quote">“AMS Travel Services planned our Mallorca sabbatical down to the exact late afternoon golden-hour light at Cala Deià. It felt like travelling with a discerning friend.”</p>
+                    <div class="tss-author">
+                      <strong>Clara &amp; Marcus Vance</strong>
+                      <span>London • 12-day Balearic Retrospective</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="tss-card" style="z-index:2; --tss-accent:#8fb996;" aria-roledescription="slide" aria-label="2 of 3: David and Sarah Chen">
+              <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1400&q=80" alt="Family travel scene in Kyoto, Japan" loading="lazy" decoding="async" width="1400" height="933" data-fallback="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?auto=format&fit=crop&w=1400&q=80">
+              <div class="tss-shade"></div>
+              <div class="tss-body">
+                <div class="tss-top"><span class="tss-num">02</span><span class="tss-kick">Family Journey</span></div>
+                <div class="tss-bottom">
+                  <div class="tss-copy">
+                    <p class="tss-quote">“Travelling with three kids across Japan sounded terrifying. AMS Travel Services curated family-friendly ryokans and private luggage transfers that made every day effortless.”</p>
+                    <div class="tss-author">
+                      <strong>David &amp; Sarah Chen</strong>
+                      <span>San Francisco • 14-day Japan Family Odyssey</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="tss-card" style="z-index:3; --tss-accent:#dbe5db;" aria-roledescription="slide" aria-label="3 of 3: Elena Rostova">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80" alt="Mountain retreat landscape in the Alps" loading="lazy" decoding="async" width="1400" height="933" data-fallback="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1400&q=80">
+              <div class="tss-shade"></div>
+              <div class="tss-body">
+                <div class="tss-top"><span class="tss-num">03</span><span class="tss-kick">Solo Retreat</span></div>
+                <div class="tss-bottom">
+                  <div class="tss-copy">
+                    <p class="tss-quote">“I wanted two weeks of pure solitude and writing time in the Engadin valley. The mountain chalet and guided trails chosen for me were beyond exceptional.”</p>
+                    <div class="tss-author">
+                      <strong>Elena Rostova</strong>
+                      <span>Zurich • 10-day Solo Creative Residency</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
       </div>
+      <noscript>
+        <div class="container" style="padding:0 0 48px;">
+          <div class="tss-static">
+            <article class="tss-static-card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80" alt="Scenic coastal beach destination at golden hour"><div class="tss-body"><div class="tss-top"><span class="tss-num">01</span><span class="tss-kick">Couple Holiday</span></div><div class="tss-bottom"><div class="tss-copy"><p class="tss-quote">“AMS Travel Services planned our Mallorca sabbatical down to the exact late afternoon golden-hour light at Cala Deià. It felt like travelling with a discerning friend.”</p><div class="tss-author"><strong>Clara &amp; Marcus Vance</strong><span>London • 12-day Balearic Retrospective</span></div></div></div></div></article>
+            <article class="tss-static-card"><img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1400&q=80" alt="Family travel scene in Kyoto, Japan"><div class="tss-body"><div class="tss-top"><span class="tss-num">02</span><span class="tss-kick">Family Journey</span></div><div class="tss-bottom"><div class="tss-copy"><p class="tss-quote">“Travelling with three kids across Japan sounded terrifying. AMS Travel Services curated family-friendly ryokans and private luggage transfers that made every day effortless.”</p><div class="tss-author"><strong>David &amp; Sarah Chen</strong><span>San Francisco • 14-day Japan Family Odyssey</span></div></div></div></div></article>
+            <article class="tss-static-card"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80" alt="Mountain retreat landscape in the Alps"><div class="tss-body"><div class="tss-top"><span class="tss-num">03</span><span class="tss-kick">Solo Retreat</span></div><div class="tss-bottom"><div class="tss-copy"><p class="tss-quote">“I wanted two weeks of pure solitude and writing time in the Engadin valley. The mountain chalet and guided trails chosen for me were beyond exceptional.”</p><div class="tss-author"><strong>Elena Rostova</strong><span>Zurich • 10-day Solo Creative Residency</span></div></div></div></div></article>
+          </div>
+        </div>
+      </noscript>
     </section>
 
     <!-- INQUIRY FORM -->
@@ -1857,6 +1941,133 @@
     }
 
     function smeNumber(value) { return ("0" + value).slice(-2); }
+
+    // ---- Tilt Stack Scroll adaptation (21st.dev @kedhareswer/tilt-stack-scroll) ----
+    (function () {
+      var track = document.getElementById("tssTrack");
+      var stage = document.getElementById("tssStage");
+      var deck = document.getElementById("tssDeck");
+      if (!track || !stage || !deck) return;
+      var cards = Array.prototype.slice.call(deck.querySelectorAll(".tss-card"));
+      var shades = cards.map(function (c) { return c.querySelector(".tss-shade"); });
+      var counter = document.getElementById("tssCounter");
+      var rail = document.getElementById("tssRail");
+      var total = cards.length;
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      // Centralized testimonial image config (replace URLs here).
+      var TSS_IMAGES = [
+        { primary: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80", fallback: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=80" },
+        { primary: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1400&q=80", fallback: "https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?auto=format&fit=crop&w=1400&q=80" },
+        { primary: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80", fallback: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1400&q=80" }
+      ];
+      cards.forEach(function (card, i) {
+        var img = card.querySelector("img");
+        if (!img || !TSS_IMAGES[i]) return;
+        img.src = TSS_IMAGES[i].primary;
+        img.addEventListener("error", function () {
+          if (img.dataset.fallbackApplied === "true") return;
+          img.dataset.fallbackApplied = "true";
+          img.src = TSS_IMAGES[i].fallback;
+        });
+      });
+
+      var clamp01 = function (n) { return Math.min(1, Math.max(0, n)); };
+      var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
+      function pose(progress, index, reduced) {
+        var enter = index === 0 ? 1 : clamp01(progress - (index - 1));
+        var depth = clamp01(progress - index);
+        if (reduced) return { y: 0, scale: 1, rx: 0, rz: 0, shade: Math.min(depth, 1) * 0.5, opacity: enter >= 1 ? 1 : enter };
+        var e = easeOut(enter);
+        return {
+          y: (1 - e) * 130 - depth * 3.2,
+          scale: (1 - depth * 0.07) * (0.9 + 0.1 * e),
+          rx: (1 - e) * 22 - depth * 9,
+          rz: (1 - e) * (index % 2 ? 5 : -5),
+          shade: Math.min(depth, 2) * 0.34,
+          opacity: depth > 2.6 ? clamp01((3 - depth) / 0.4) : 1
+        };
+      }
+      function toTransform(p) {
+        return "translate3d(0," + p.y.toFixed(3) + "%,0) perspective(1400px) rotateX(" + p.rx.toFixed(3) + "deg) rotateZ(" + p.rz.toFixed(3) + "deg) scale(" + p.scale.toFixed(4) + ")";
+      }
+      function pad2(n) { return (n < 10 ? "0" : "") + n; }
+
+      var last = -1;
+      function update() {
+        var reduced = reduceMotion.matches;
+        var vh = window.innerHeight || 1;
+        var stickyTop = parseFloat(getComputedStyle(stage).top) || 0;
+        var start = track.offsetTop - stickyTop;
+        var end = track.offsetTop + track.offsetHeight - vh - stickyTop;
+        var scrollY = window.scrollY || window.pageYOffset || 0;
+        var p = clamp01((scrollY - start) / Math.max(1, end - start));
+        var progress = p * Math.max(total - 1, 0);
+        for (var i = 0; i < total; i++) {
+          var card = cards[i];
+          var st = pose(progress, i, reduced);
+          card.style.transform = toTransform(st);
+          card.style.opacity = String(st.opacity);
+          if (shades[i]) shades[i].style.opacity = String(st.shade);
+        }
+        var idx = Math.round(progress);
+        if (idx !== last && counter) { last = idx; counter.textContent = pad2(idx + 1); }
+        if (rail) rail.style.transform = "scaleX(" + (total > 1 ? (progress / (total - 1)) : 1).toFixed(4) + ")";
+      }
+
+      function setLayout() {
+        var vh = window.innerHeight || 800;
+        stage.style.height = vh + "px";
+        track.style.height = (vh * Math.max(total, 1)) + "px";
+        if (reduceMotion.matches) {
+          track.style.height = "auto";
+          stage.style.position = "relative";
+          stage.style.height = "auto";
+          stage.style.overflow = "visible";
+          deck.style.minHeight = "auto";
+          deck.style.display = "grid";
+          deck.style.gap = "24px";
+          deck.style.marginTop = "32px";
+          cards.forEach(function (card, i) {
+            card.style.position = "relative";
+            card.style.inset = "auto";
+            card.style.transform = "none";
+            card.style.opacity = "1";
+            card.style.minHeight = "420px";
+            if (shades[i]) shades[i].style.opacity = "0";
+          });
+          if (rail) rail.style.transform = "scaleX(1)";
+          if (counter) counter.textContent = "01";
+          return;
+        } else {
+          stage.style.position = "sticky";
+          stage.style.overflow = "hidden";
+          deck.style.display = "block";
+          deck.style.gap = "";
+          cards.forEach(function (card) {
+            card.style.position = "absolute";
+            card.style.inset = "0";
+            card.style.minHeight = "";
+          });
+        }
+        update();
+      }
+
+      var ticking = false;
+      function requestUpdate() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () { ticking = false; update(); });
+      }
+
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", function () { setLayout(); requestUpdate(); });
+      window.addEventListener("load", function () { setLayout(); requestUpdate(); });
+      if (typeof reduceMotion.addEventListener === "function") reduceMotion.addEventListener("change", function () { setLayout(); requestUpdate(); });
+      else if (typeof reduceMotion.addListener === "function") reduceMotion.addListener(function () { setLayout(); requestUpdate(); });
+      setLayout();
+      requestUpdate();
+    })();
 
     (function () {
       var track = document.getElementById("smeTrack");

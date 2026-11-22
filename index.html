@@ -269,6 +269,53 @@
     .highlight-head img { width: 18px; height: 17px; }
     .highlight-card p { font-size: 12px; line-height: 16.5px; letter-spacing: 0.12px; color: rgba(222,228,223,0.9); }
 
+    /* ---------- WHY CHOOSE AMS FEATURES ---------- */
+    .ams-feature-section { background: var(--sage); padding: 72px 0 80px; }
+    .ams-feature-head {
+      max-width: 720px; margin: 0 auto 48px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .ams-feature-head .h2 { margin-top: 0; }
+    .ams-feature-head > p { margin-top: 4px; font-size: 16px; line-height: 26px; color: var(--body); }
+    .ams-feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start; }
+    .ams-feature-card {
+      max-width: 320px; width: 100%; margin: 0 auto; padding: 14px 14px 22px;
+      background: var(--white); border: 1px solid rgba(0,39,32,0.06); border-radius: 18px;
+      box-shadow: var(--shadow-card); transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .ams-feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+    .ams-feature-media {
+      position: relative; height: 220px; border-radius: 14px; overflow: hidden;
+      background: var(--mint);
+    }
+    .ams-feature-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ams-feature-num {
+      position: absolute; left: 14px; top: 14px; min-width: 44px; height: 44px; padding: 0 10px;
+      border-radius: 9999px; background: rgba(255,255,255,0.92); color: var(--forest);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: 0.72px;
+      box-shadow: 0 2px 8px rgba(0,39,32,0.08);
+    }
+    .ams-feature-body { padding: 20px 8px 0; }
+    .ams-feature-body h3 { margin: 0; }
+    .ams-feature-body > p {
+      margin-top: 10px; font-size: 14px; line-height: 22.75px; letter-spacing: 0.07px; color: var(--body);
+    }
+    @media (max-width: 900px) {
+      .ams-feature-head { margin-bottom: 40px; }
+      .ams-feature-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+      .ams-feature-card { max-width: none; }
+    }
+    @media (max-width: 560px) {
+      .ams-feature-section { padding: 56px 0 64px; }
+      .ams-feature-head { margin-bottom: 32px; gap: 10px; }
+      .ams-feature-head > p { font-size: 15px; line-height: 24px; }
+      .ams-feature-grid { gap: 28px; }
+      .ams-feature-card { padding: 12px 12px 20px; }
+      .ams-feature-media { height: 200px; }
+      .ams-feature-body { padding: 18px 4px 0; }
+    }
+
     /* ---------- REVIEWS ---------- */
     .reviews-head { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
     .reviews-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 56px; }
@@ -812,53 +859,63 @@
       </div>
     </section>
 
-    <!-- EDITORIAL STORY -->
-    <section class="editorial-section">
+    <!-- WHY CHOOSE AMS FEATURES -->
+    <section class="ams-feature-section" id="ams-features">
       <div class="container">
-        <div class="editorial-grid">
-          <div class="editorial-copy">
-            <span class="eyebrow">THE AMS TRAVEL SERVICES STANDARD</span>
-            <h2 class="h2">The Art of Thoughtful Travel</h2>
-            <p>Algorithmic booking engines have made planning feel like endless homework: fifty open browser tabs, conflicting review blogs, and generic hotel chains. AMS Travel Services restores travel planning to an unhurried, artful dialogue.</p>
-
-            <div class="editorial-points">
-              <div class="point">
-                <div class="point-num">01</div>
-                <div>
-                  <h3 class="h3">Human Intuition Over Algorithms</h3>
-                  <p>We match you based on how you feel like waking up, what you enjoy tasting, and your desired cadence — not sponsored search rankings.</p>
-                </div>
-              </div>
-              <div class="point">
-                <div class="point-num">02</div>
-                <div>
-                  <h3 class="h3">Zero Surcharge Transparency</h3>
-                  <p>Our private client advisory fees are clear and upfront. You pay the direct negotiated property rates with zero hidden markups.</p>
-                </div>
-              </div>
-              <div class="point">
-                <div class="point-num">03</div>
-                <div>
-                  <h3 class="h3">Effortless Peace of Mind</h3>
-                  <p>Weather anomalies, unexpected strikes, or last-minute table changes are proactively resolved before your breakfast espresso is poured.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="editorial-visual">
-            <div class="editorial-photo">
-              <img alt="Thoughtful travel" src="https://www.figma.com/api/mcp/asset/37a95cb4-f734-461c-a847-e9445b775a98.png">
-            </div>
-            <div class="highlight-card">
-              <div class="highlight-head">
-                <img alt="" src="https://www.figma.com/api/mcp/asset/e5415988-52e0-4cb1-9ce7-33cedb9f1e5c.svg">
-                Direct Relationships
-              </div>
-              <p>We work directly with property custodians, local boat captains, and private sommeliers — never middle brokers.</p>
-            </div>
-          </div>
+        <div class="ams-feature-head">
+          <span class="eyebrow">WHY CHOOSE AMS TRAVEL SERVICES</span>
+          <h2 class="h2">Your Journey, Our Priority</h2>
+          <p>Travel planning involves many details. We help you navigate your options with practical guidance for travel bookings, documentation, holidays, and pilgrimage journeys.</p>
         </div>
+
+        <div class="ams-feature-grid">
+          <article class="ams-feature-card">
+            <div class="ams-feature-media">
+              <img data-ams-feature="assistance" alt="Two people planning a journey with a detailed map" width="800" height="600">
+              <span class="ams-feature-num">01</span>
+            </div>
+            <div class="ams-feature-body">
+              <h3 class="h3">Personal Travel Assistance</h3>
+              <p>Every journey has different needs. We help you explore suitable travel options and understand the details that matter for your trip.</p>
+            </div>
+          </article>
+
+          <article class="ams-feature-card">
+            <div class="ams-feature-media">
+              <img data-ams-feature="guidance" alt="Passport and ticket ready for a trip" width="800" height="600">
+              <span class="ams-feature-num">02</span>
+            </div>
+            <div class="ams-feature-body">
+              <h3 class="h3">Clear Travel Guidance</h3>
+              <p>From booking requirements to travel documents, we help you understand the relevant steps and prepare the information needed for your journey.</p>
+            </div>
+          </article>
+
+          <article class="ams-feature-card">
+            <div class="ams-feature-media">
+              <img data-ams-feature="services" alt="Traveller with luggage on a train station platform" width="800" height="600">
+              <span class="ams-feature-num">03</span>
+            </div>
+            <div class="ams-feature-body">
+              <h3 class="h3">Travel Services in One Place</h3>
+              <p>Explore assistance for flight, bus and train bookings, passport services, visa guidance, tour packages, car rentals, and Umrah and Hajj journeys.</p>
+            </div>
+          </article>
+        </div>
+
+        <script>
+          // Image URLs are kept together here so they are easy to replace.
+          (function () {
+            const amsFeatureImages = {
+              assistance: "https://images.unsplash.com/photo-1781861799305-d22ee4b22795?auto=format&fit=crop&crop=faces,entropy&w=800&h=600&q=80",
+              guidance: "https://images.unsplash.com/photo-1741795850743-798cdf152542?auto=format&fit=crop&crop=entropy&w=800&h=600&q=80",
+              services: "https://images.unsplash.com/photo-1778881304957-f6fe842ad206?auto=format&fit=crop&crop=entropy&w=800&h=600&q=80"
+            };
+            document.querySelectorAll("[data-ams-feature]").forEach(function (img) {
+              img.src = amsFeatureImages[img.getAttribute("data-ams-feature")];
+            });
+          })();
+        </script>
       </div>
     </section>
 

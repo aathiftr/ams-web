@@ -90,8 +90,18 @@
       box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
     }
     .header-inner { height: 80px; display: flex; align-items: center; justify-content: space-between; }
-    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none; }
     .brand-name { font-family: var(--serif); font-weight: 700; font-size: 22px; letter-spacing: -0.55px; color: var(--forest); }
+    .brand-logo {
+      display: block;
+      height: 46px;
+      width: auto;
+      max-width: min(260px, 34vw);
+      object-fit: contain;
+      background: #fff;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
     .nav { display: flex; gap: 28px; align-items: center; }
     .nav a { font-weight: 600; font-size: 14px; letter-spacing: 0.56px; color: var(--body); padding: 4px 0; }
     .nav a.active { color: var(--forest); border-bottom: 2px solid var(--deep); padding-bottom: 6px; }
@@ -445,6 +455,17 @@
     .footer-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; padding-bottom: 48px; }
     .footer-brand { grid-column: span 2; display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px; padding-right: 28px; }
     .footer-brand p { max-width: 384px; font-size: 14px; line-height: 22px; letter-spacing: 0.07px; }
+    .footer-brand .brand { width: fit-content; }
+    .footer-brand-logo {
+      display: block;
+      height: 56px;
+      width: auto;
+      max-width: min(280px, 100%);
+      object-fit: contain;
+      background: #fff;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
     .footer-tag { margin-top: 4px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.55px; text-transform: uppercase; color: var(--body); }
     .footer-tag img { width: 16.5px; height: 15.75px; }
     .footer-col { display: flex; flex-direction: column; gap: 4px; }
@@ -645,7 +666,11 @@
     }
     @media (max-width: 560px) {
       .container { padding: 0 20px; }
-      .header-inner { height: 68px; }
+      .header-inner { height: 68px; gap: 12px; }
+      .brand-logo { height: 38px; max-width: min(180px, 48vw); padding: 3px 6px; border-radius: 6px; }
+      .header-cta { gap: 10px; }
+      .header-cta .pill { padding: 8px 12px; font-size: 13px; letter-spacing: 0.2px; white-space: nowrap; }
+      .footer-brand-logo { height: 48px; max-width: min(240px, 100%); }
       .hero-scroll { height: 200vh; }
       .hero-sticky { min-height: 600px; padding-top: 68px; }
       .hero-copy { padding: 0 0 1.5rem; }
@@ -658,6 +683,7 @@
       .pillars, .dest-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-brand { grid-column: auto; }
+      .footer-brand-logo { height: 44px; max-width: 100%; }
       .location-meta { display: none; }
       .highlight-card { position: static; max-width: none; margin-top: 16px; }
       .editorial-photo { height: 340px; }
@@ -715,8 +741,8 @@
   <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#">
-        <span class="brand-name">AMS Travel Services</span>
+      <a class="brand" href="#" aria-label="AMS Travel Services home">
+        <img class="brand-logo" src="assets/ams-travel-services-logo.png" alt="AMS Travel Services logo" width="1024" height="1024" decoding="async">
       </a>
       <nav class="nav">
         <a class="active" href="#">Home</a>
@@ -1165,7 +1191,9 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <span class="brand-name">AMS Travel Services</span>
+          <a class="brand" href="#" aria-label="AMS Travel Services home">
+            <img class="brand-logo footer-brand-logo" src="assets/ams-travel-services-logo.png" alt="AMS Travel Services logo" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
           <p>Slow travel, unhurried discoveries, and tailored sanctuaries designed for mindful explorers.</p>
           <div class="footer-col" id="contact">
             <h4>Contact Us</h4>

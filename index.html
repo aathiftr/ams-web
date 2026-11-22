@@ -145,9 +145,11 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background: #0d1f1a;
-      clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
-      will-change: clip-path, opacity;
+      background:
+        linear-gradient(180deg, rgba(245,251,246,0.88), rgba(245,251,246,0.72)),
+        url("https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+      clip-path: polygon(12% 12%, 88% 12%, 88% 88%, 12% 88%);
+      will-change: clip-path;
     }
     .hero-bg-media {
       position: absolute;
@@ -156,14 +158,22 @@
       background-repeat: no-repeat;
       background-size: 170% auto;
       will-change: background-size;
+      transform: translateZ(0);
     }
     .hero-bg-media-mobile { display: none; }
     .hero-bg-overlay {
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(245,251,246,0.72) 0%, rgba(245,251,246,0.42) 34%, rgba(245,251,246,0.58) 72%, rgba(245,251,246,0.84) 100%),
-        radial-gradient(ellipse 70% 55% at 50% 35%, rgba(245,251,246,0.18), rgba(245,251,246,0.52) 100%);
+        linear-gradient(180deg, rgba(245,251,246,0.30) 0%, rgba(245,251,246,0.12) 28%, rgba(245,251,246,0.18) 58%, rgba(245,251,246,0.56) 100%),
+        radial-gradient(ellipse 75% 60% at 50% 40%, rgba(245,251,246,0.04), rgba(245,251,246,0.28) 100%);
+    }
+    .hero-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 140px rgba(245, 251, 246, 0.55);
+      pointer-events: none;
     }
     @media (max-width: 767px) {
       .hero-bg-media-desktop { display: none; }
@@ -174,12 +184,35 @@
       .hero-bg-media { background-size: cover !important; }
     }
     .hero-copy {
-      position: relative;
+      position: relative; /* exact: relative */
       z-index: 10; /* exact: z-10 */
-      width: min(100%, 48rem); /* max-w-3xl equivalent */
-      padding: 0 1rem; /* px-4 */
+      display: flex; /* exact: flex */
+      flex-direction: column; /* exact: flex-col */
+      align-items: center; /* exact: items-center */
+      justify-content: center; /* exact: justify-center */
       text-align: center; /* exact: text-center */
+      width: min(calc(100% - 2rem), 52rem);
+      margin: 0 auto;
+      padding: clamp(28px, 4vw, 44px) clamp(20px, 4vw, 48px);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.52), rgba(245,251,246,0.34));
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      box-shadow:
+        0 20px 60px rgba(0, 56, 47, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.72) inset,
+        0 -1px 0 rgba(176, 206, 179, 0.18) inset;
+      backdrop-filter: blur(14px) saturate(115%);
+      -webkit-backdrop-filter: blur(14px) saturate(115%);
+      overflow: clip;
     }
+    .hero-copy::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0) 42%);
+      pointer-events: none;
+    }
+    .hero-copy > * { position: relative; z-index: 1; }
     .hero-eyebrow {
       margin: 0;
       font-size: 1rem; /* text-md */
@@ -1640,10 +1673,11 @@
         }
 
         // Adapted from SmoothScrollHero demo behavior: scroll-linked clip reveal + background size.
-        // Demo props: scrollHeight=1500, initialClipPercentage=25, finalClipPercentage=75.
+        // Adapted from SmoothScrollHero props: scrollHeight, initialClipPercentage, finalClipPercentage.
+        // Tuned for full-bleed hero background (no small centered rectangle) while preserving scroll reveal.
         var scrollHeight = 1500;
-        var initialClipPercentage = 25;
-        var finalClipPercentage = 75;
+        var initialClipPercentage = 12;
+        var finalClipPercentage = 88;
         var p = getProgress();
         var virtualScrollY = p * scrollHeight;
 

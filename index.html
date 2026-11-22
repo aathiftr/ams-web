@@ -188,23 +188,25 @@
     .hero-ctas .btn-secondary:hover,
     .hero-ctas .btn-secondary:focus-visible { background: rgba(255, 255, 255, 0.96); border-color: rgba(0, 56, 47, 0.35); }
     .hero-visual {
-      position: absolute; /* exact: absolute */
-      top: 0; /* exact: top-0 */
-      left: 0; /* exact: left-0 */
-      z-index: 20; /* exact: z-20 */
-      display: flex; /* exact: flex */
-      height: 100%; /* exact: h-full */
-      width: 100%; /* exact: w-full */
-      align-items: center; /* exact: items-center */
+      position: absolute;
+      top: 0;
+      left: 50%;
+      z-index: 20;
+      display: flex;
+      height: 100%;
+      width: max-content;
+      max-width: none;
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
-      opacity: 0;
-      transform: translateX(-5000px);
+      opacity: 1;
+      transform: translateX(-50%);
       will-change: transform, opacity;
     }
     .hero-visual img {
-      width: auto; /* exact: w-auto */
-      height: auto; /* exact: h-auto */
-      max-width: none; /* exact: max-w-none */
+      width: auto;
+      height: auto;
+      max-width: min(86vw, 980px);
       max-height: min(56vh, 520px);
       object-fit: contain;
       filter: drop-shadow(0 18px 40px rgba(0, 39, 32, 0.18));
@@ -217,7 +219,7 @@
     @media (prefers-reduced-motion: reduce) {
       .hero-scroll { height: auto; min-height: 0; }
       .hero-sticky { position: relative; height: auto; min-height: 720px; padding: 136px 1rem 88px; }
-      .hero-visual { position: absolute; inset: 0; opacity: 1; transform: none; justify-content: center; }
+      .hero-visual { opacity: 1; transform: translateX(-50%); }
       .hero-visual img { max-height: min(34vh, 300px); }
     }
 
@@ -1215,9 +1217,8 @@
   </footer>
 
   <script>
-    // ---- ScrollFlyIn Hero: faithful vanilla adaptation of 21st.dev hero-section-3 by @ravikatiyar162 ----
-    // Primary source: exact ScrollFlyIn source provided by user in conversation.
-    // 21st.dev MCP retrieval was attempted earlier; full TSX source was not retrieved through MCP due exhausted free retrieval quota.
+    // ---- ScrollFlyIn Hero: corrected for centered initial load, scroll-driven rightward exit ----
+    // Based on supplied ScrollFlyIn behavior intent; initial-load mapping corrected so plane is centered/visible at top.
     (function () {
       var hero = document.getElementById("home");
       var visual = document.getElementById("heroVisual");
@@ -1259,13 +1260,13 @@
         return lerp(outMin, outMax, t);
       };
 
-      // Equivalent to: useScroll({ target, offset: ["start end", "end start"] })
-      function getScrollYProgress() {
-        var rect = hero.getBoundingClientRect();
-        var viewportH = window.innerHeight || document.documentElement.clientHeight;
-        var total = rect.height + viewportH;
-        var scrolled = viewportH - rect.top;
-        return clamp01(total > 0 ? scrolled / total : 0);
+      // Progress relative to hero's actual scrollable range: 0 at top, 1 when sticky period completes.
+      function getHeroProgress() {
+        var scrollY = window.scrollY || window.pageYOffset || 0;
+        var start = hero.offsetTop;
+        var end = hero.offsetTop + hero.offsetHeight - window.innerHeight;
+        var range = Math.max(1, end - start);
+        return clamp01((scrollY - start) / range);
       }
 
       var ticking = false;
@@ -1273,29 +1274,23 @@
         ticking = false;
         if (reduceMotion.matches) {
           visual.style.opacity = "1";
-          visual.style.transform = "none";
+          visual.style.transform = "translateX(-50%)";
           return;
         }
 
-        var scrollYProgress = getScrollYProgress();
+        var p = getHeroProgress();
         var screenWidth = window.innerWidth || document.documentElement.clientWidth;
+        var planeWidth = visual.offsetWidth || img.offsetWidth || Math.min(screenWidth * 0.8, 980);
+        var exitX = (screenWidth / 2) + (planeWidth / 2) + Math.max(120, screenWidth * 0.12);
 
-        // Exact mapping from supplied ScrollFlyIn source:
-        // const x = useTransform(scrollYProgress, [0.1, 0.8], [`-${5 * screenWidth}px`, `${2.5 * screenWidth}px`]);
-        var x = remap(scrollYProgress, 0.1, 0.8, -5 * screenWidth, 2.5 * screenWidth);
-
-        // const opacity = useTransform(scrollYProgress, [0.1, 0.25, 0.7, 0.8], [0, 1, 1, 0]);
-        var opacity;
-        if (scrollYProgress <= 0.1) opacity = 0;
-        else if (scrollYProgress <= 0.25) opacity = remap(scrollYProgress, 0.1, 0.25, 0, 1);
-        else if (scrollYProgress <= 0.7) opacity = 1;
-        else if (scrollYProgress <= 0.8) opacity = remap(scrollYProgress, 0.7, 0.8, 1, 0);
-        else opacity = 0;
-
+        // Initial state: centered and fully visible. On scroll: moves right and fades out near end.
+        var x = remap(p, 0, 0.9, 0, exitX);
+        var opacity = p <= 0.65 ? 1 : remap(p, 0.65, 0.95, 1, 0);
+        if (p >= 0.95) opacity = 0;
         if (hero.classList.contains("is-image-error")) opacity = Math.min(opacity, 0.22);
 
         visual.style.opacity = String(opacity);
-        visual.style.transform = "translateX(" + x + "px)";
+        visual.style.transform = "translateX(calc(-50% + " + x + "px))";
       }
 
       function requestUpdate() {

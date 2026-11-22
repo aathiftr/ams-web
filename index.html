@@ -786,28 +786,35 @@
     .inquiry-head p { max-width: 576px; font-size: 16px; line-height: 26px; color: var(--body); }
 
     .holo-form-shell { perspective: 1400px; max-width: 760px; margin: 0 auto; width: 100%; }
+    .holo-tilt {
+      --mx: 50%; --my: 35%; --hx: 80%; --hy: 40%; --ho: .45; --ca: 135deg;
+      position: relative; width: 100%; border-radius: 28px;
+      transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+      transition: transform .18s linear;
+      will-change: transform;
+    }
+    .holo-tilt:not(.is-tilting) { transition: transform .45s cubic-bezier(.22,1,.36,1); }
     .holo-form-card {
-      --mx: 50%; --my: 35%; --hx: 80%; --hy: 40%; --ho: .45; --ca: 135deg; --rx: 0deg; --ry: 0deg;
-      position: relative; width: 100%; min-height: 520px;
+      position: relative; width: 100%;
       transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
       transition: transform .9s cubic-bezier(.22,1,.36,1);
       border-radius: 28px;
     }
     .holo-form-card.is-flipped { transform: rotateY(180deg); }
-    .holo-form-card.is-tilting { transition: transform .12s linear; }
     .holo-face {
-      position: absolute; inset: 0; border-radius: 28px; padding: 40px;
+      position: relative; border-radius: 28px; padding: 40px 40px 44px;
       backface-visibility: hidden; -webkit-backface-visibility: hidden;
-      overflow: hidden; isolation: isolate;
+      overflow: visible; isolation: isolate;
       background:
         linear-gradient(160deg, rgba(255,255,255,.72), rgba(219,229,219,.22) 35%, rgba(0,56,47,.08)),
         linear-gradient(180deg, #f7fbf8, #e8efe8);
       border: 1px solid rgba(255,255,255,.75);
       box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 30px 80px -40px rgba(0,39,32,.45), 0 12px 30px -18px rgba(0,39,32,.25);
       color: var(--forest);
+      box-sizing: border-box;
     }
     .holo-face::before {
-      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; border-radius: inherit;
       background:
         radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.75), rgba(255,255,255,0) 28%),
         radial-gradient(circle at var(--hx) var(--hy), rgba(176,206,179,.55), rgba(126,184,196,.18) 22%, rgba(255,255,255,0) 48%),
@@ -820,7 +827,12 @@
       opacity: .55;
     }
     .holo-face > * { position: relative; z-index: 2; }
-    .holo-back { transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; text-align: center; }
+    .holo-front { min-height: 520px; }
+    .holo-back {
+      position: absolute; inset: 0; transform: rotateY(180deg);
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      min-height: 100%;
+    }
     .holo-form-head { margin-bottom: 28px; }
     .holo-form-head .eyebrow { margin-bottom: 10px; display: inline-block; }
     .holo-form-head h3 { font-family: var(--serif); font-size: clamp(30px,4vw,42px); line-height: 1.08; letter-spacing: -0.02em; color: var(--forest); margin: 0 0 10px; }
@@ -862,17 +874,18 @@
     .holo-back-btn:hover { background: rgba(255,255,255,.85); }
 
     @media (max-width: 720px) {
-      .holo-face { padding: 28px 22px; }
-      .holo-form-card { min-height: 600px; }
+      .holo-face { padding: 28px 22px 32px; }
+      .holo-front { min-height: 0; }
       .holo-form-footer { align-items: stretch; }
       .holo-submit { width: 100%; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .holo-form-card, .holo-face::before, .holo-field input { transition: none !important; }
+      .holo-tilt, .holo-form-card, .holo-face::before, .holo-field input { transition: none !important; }
+      .holo-tilt { transform: none !important; }
       .holo-form-card.is-flipped { transform: none; }
       .holo-form-card.is-flipped .holo-front { opacity: 0; visibility: hidden; pointer-events: none; }
-      .holo-form-card.is-flipped .holo-back { opacity: 1; visibility: visible; pointer-events: auto; }
-      .holo-back { opacity: 0; visibility: hidden; pointer-events: none; transform: none; }
+      .holo-form-card.is-flipped .holo-back { opacity: 1; visibility: visible; pointer-events: auto; position: relative; }
+      .holo-back { opacity: 0; visibility: hidden; pointer-events: none; transform: none; position: absolute; }
     }
 
     /* ---------- FOOTER ---------- */
@@ -1662,58 +1675,60 @@
         </div>
 
         <div class="holo-form-shell" id="holoFormShell">
-          <div class="holo-form-card" id="holoFormCard" aria-live="polite">
-            <section class="holo-face holo-front" aria-label="Travel enquiry form">
-              <div class="holo-form-head">
-                <span class="eyebrow">TRAVEL ENQUIRY</span>
-                <h3>Let's Plan Your Journey</h3>
-                <p>Tell us a little about yourself to get started with AMS Travel Services.</p>
-              </div>
-              <form id="inquiryForm" novalidate>
-                <div class="holo-fields">
-                  <div class="holo-field">
-                    <label for="name">FULL NAME</label>
-                    <input id="name" name="name" type="text" placeholder="Enter your full name" autocomplete="name" required aria-describedby="nameError">
-                    <p class="holo-field-error" id="nameError" aria-live="polite"></p>
-                  </div>
-                  <div class="holo-field">
-                    <label for="email">EMAIL ADDRESS</label>
-                    <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="emailError">
-                    <p class="holo-field-error" id="emailError" aria-live="polite"></p>
-                  </div>
-                  <div class="holo-field">
-                    <label for="phone">PHONE NUMBER (OPTIONAL)</label>
-                    <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" aria-describedby="phoneError">
-                    <p class="holo-field-error" id="phoneError" aria-live="polite"></p>
-                  </div>
+          <div class="holo-tilt" id="holoTilt">
+            <div class="holo-form-card" id="holoFormCard" aria-live="polite">
+              <section class="holo-face holo-front" aria-label="Travel enquiry form">
+                <div class="holo-form-head">
+                  <span class="eyebrow">TRAVEL ENQUIRY</span>
+                  <h3>Let's Plan Your Journey</h3>
+                  <p>Tell us a little about yourself to get started with AMS Travel Services.</p>
                 </div>
+                <form id="inquiryForm" novalidate>
+                  <div class="holo-fields">
+                    <div class="holo-field">
+                      <label for="name">FULL NAME</label>
+                      <input id="name" name="name" type="text" placeholder="Enter your full name" autocomplete="name" required aria-describedby="nameError">
+                      <p class="holo-field-error" id="nameError" aria-live="polite"></p>
+                    </div>
+                    <div class="holo-field">
+                      <label for="email">EMAIL ADDRESS</label>
+                      <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="emailError">
+                      <p class="holo-field-error" id="emailError" aria-live="polite"></p>
+                    </div>
+                    <div class="holo-field">
+                      <label for="phone">PHONE NUMBER (OPTIONAL)</label>
+                      <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" aria-describedby="phoneError">
+                      <p class="holo-field-error" id="phoneError" aria-live="polite"></p>
+                    </div>
+                  </div>
 
-                <div class="holo-form-footer">
-                  <div class="holo-privacy">
-                    <img alt="" src="https://www.figma.com/api/mcp/asset/abf89aff-e51e-4c9d-8d41-e504643d4c10.svg">
-                    <span>100% confidential. No spam or unsolicited mail.</span>
+                  <div class="holo-form-footer">
+                    <div class="holo-privacy">
+                      <img alt="" src="https://www.figma.com/api/mcp/asset/abf89aff-e51e-4c9d-8d41-e504643d4c10.svg">
+                      <span>100% confidential. No spam or unsolicited mail.</span>
+                    </div>
+                    <button class="btn btn-primary holo-submit" id="submitBtn" type="submit">Continue</button>
                   </div>
-                  <button class="btn btn-primary holo-submit" id="submitBtn" type="submit">Continue</button>
-                </div>
-                <p id="formStatus" class="holo-form-status" role="status" aria-live="polite"></p>
-              </form>
-            </section>
+                  <p id="formStatus" class="holo-form-status" role="status" aria-live="polite"></p>
+                </form>
+              </section>
 
-            <section class="holo-face holo-back" aria-label="Welcome message">
-              <div class="holo-welcome">
-                <div class="holo-welcome-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 11l19-8-8 19-2-7-9-4z"></path>
-                    <path d="M12 15l-2 4"></path>
-                  </svg>
+              <section class="holo-face holo-back" aria-label="Welcome message">
+                <div class="holo-welcome">
+                  <div class="holo-welcome-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 11l19-8-8 19-2-7-9-4z"></path>
+                      <path d="M12 15l-2 4"></path>
+                    </svg>
+                  </div>
+                  <span class="eyebrow">WELCOME TO AMS TRAVEL SERVICES</span>
+                  <h3 id="welcomeHeading">Welcome!</h3>
+                  <p>We're glad you're here. Your journey starts with a little inspiration and the right travel support.</p>
+                  <p class="holo-closing">Thank you for connecting with AMS Travel Services.</p>
+                  <button type="button" class="btn holo-back-btn" id="backToFormBtn">Back to Form</button>
                 </div>
-                <span class="eyebrow">WELCOME TO AMS TRAVEL SERVICES</span>
-                <h3 id="welcomeHeading">Welcome!</h3>
-                <p>We're glad you're here. Your journey starts with a little inspiration and the right travel support.</p>
-                <p class="holo-closing">Thank you for connecting with AMS Travel Services.</p>
-                <button type="button" class="btn holo-back-btn" id="backToFormBtn">Back to Form</button>
-              </div>
-            </section>
+              </section>
+            </div>
           </div>
         </div>
       </div>
@@ -1980,13 +1995,14 @@
 
     (function () {
       const shell = document.getElementById("holoFormShell");
+      const tilt = document.getElementById("holoTilt");
       const card = document.getElementById("holoFormCard");
       const form = document.getElementById("inquiryForm");
       const submitBtn = document.getElementById("submitBtn");
       const statusEl = document.getElementById("formStatus");
       const backBtn = document.getElementById("backToFormBtn");
       const welcomeHeading = document.getElementById("welcomeHeading");
-      if (!shell || !card || !form || !submitBtn || !statusEl || !backBtn || !welcomeHeading) return;
+      if (!shell || !tilt || !card || !form || !submitBtn || !statusEl || !backBtn || !welcomeHeading) return;
 
       const nameInput = document.getElementById("name");
       const emailInput = document.getElementById("email");
@@ -1999,21 +2015,63 @@
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       const canHoverTilt = window.matchMedia("(hover: hover) and (pointer: fine)");
       let busy = false;
-      let flipped = false;
+      let isFlipped = false;
+      let transitioning = false;
 
       function setStatus(message) { statusEl.textContent = message || ""; }
       function clearError(input, el) { if (el) el.textContent = ""; if (input) input.removeAttribute("aria-invalid"); }
       function setError(input, el, message) { if (el) el.textContent = message; if (input) input.setAttribute("aria-invalid", "true"); }
       function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
+
       function resetTilt() {
-        card.style.setProperty("--mx", "50%");
-        card.style.setProperty("--my", "35%");
-        card.style.setProperty("--hx", "80%");
-        card.style.setProperty("--hy", "40%");
-        card.style.setProperty("--ho", ".45");
-        card.style.setProperty("--ca", "135deg");
-        card.classList.remove("is-tilting");
-        card.style.transform = flipped && !reduceMotion.matches ? "rotateY(180deg)" : "";
+        tilt.style.setProperty("--mx", "50%");
+        tilt.style.setProperty("--my", "35%");
+        tilt.style.setProperty("--hx", "80%");
+        tilt.style.setProperty("--hy", "40%");
+        tilt.style.setProperty("--ho", ".45");
+        tilt.style.setProperty("--ca", "135deg");
+        tilt.classList.remove("is-tilting");
+        tilt.style.transform = "";
+      }
+
+      function applyFlipState(animateFocus) {
+        card.classList.toggle("is-flipped", isFlipped);
+        if (isFlipped) {
+          if (animateFocus && !reduceMotion.matches) setTimeout(function () { backBtn.focus({ preventScroll: true }); }, 520);
+          else backBtn.focus({ preventScroll: true });
+        } else {
+          nameInput.focus({ preventScroll: true });
+        }
+      }
+
+      function flipToWelcome(name) {
+        if (isFlipped || transitioning) return;
+        welcomeHeading.textContent = "Welcome, " + name + "!";
+        isFlipped = true;
+        transitioning = !reduceMotion.matches;
+        resetTilt();
+        applyFlipState(true);
+        if (transitioning) {
+          const done = function () { transitioning = false; card.removeEventListener("transitionend", onEnd); };
+          const onEnd = function (e) { if (e.propertyName === "transform") done(); };
+          card.addEventListener("transitionend", onEnd);
+          setTimeout(done, 1000);
+        }
+      }
+
+      function flipToForm() {
+        if (!isFlipped || busy || transitioning) return;
+        isFlipped = false;
+        transitioning = !reduceMotion.matches;
+        resetTilt();
+        setStatus("");
+        applyFlipState(false);
+        if (transitioning) {
+          const done = function () { transitioning = false; card.removeEventListener("transitionend", onEnd); };
+          const onEnd = function (e) { if (e.propertyName === "transform") done(); };
+          card.addEventListener("transitionend", onEnd);
+          setTimeout(done, 1000);
+        }
       }
 
       function validate() {
@@ -2029,43 +2087,23 @@
         return { ok, name, email, phone: phoneInput.value.trim() };
       }
 
-      function showWelcome(name) {
-        welcomeHeading.textContent = "Welcome, " + name + "!";
-        flipped = true;
-        card.classList.add("is-flipped");
-        resetTilt();
-        if (reduceMotion.matches) {
-          backBtn.focus({ preventScroll: true });
-        } else {
-          setTimeout(function () { backBtn.focus({ preventScroll: true }); }, 500);
-        }
-      }
-
-      function showFront() {
-        flipped = false;
-        card.classList.remove("is-flipped");
-        resetTilt();
-        setStatus("");
-        nameInput.focus({ preventScroll: true });
-      }
-
+      // Visual tilt only; never changes flip state.
       shell.addEventListener("pointermove", function (e) {
         if (!canHoverTilt.matches || reduceMotion.matches || busy) return;
         if (e.target.closest("input, button, a, textarea, select, label")) { resetTilt(); return; }
         const r = shell.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width;
         const py = (e.clientY - r.top) / r.height;
-        const ry = (px - 0.5) * 14;
-        const rx = -(py - 0.5) * 10;
-        card.classList.add("is-tilting");
-        card.style.setProperty("--mx", (px * 100).toFixed(2) + "%");
-        card.style.setProperty("--my", (py * 100).toFixed(2) + "%");
-        card.style.setProperty("--hx", (px * 140).toFixed(2) + "%");
-        card.style.setProperty("--hy", (py * 120).toFixed(2) + "%");
-        card.style.setProperty("--ho", ".72");
-        card.style.setProperty("--ca", (135 + ry * 4).toFixed(2) + "deg");
-        const base = flipped ? "rotateY(180deg) " : "";
-        card.style.transform = base + "rotateX(" + rx.toFixed(2) + "deg) rotateY(" + (flipped ? 180 + ry : ry).toFixed(2) + "deg)";
+        const ry = (px - 0.5) * 12;
+        const rx = -(py - 0.5) * 8;
+        tilt.classList.add("is-tilting");
+        tilt.style.setProperty("--mx", (px * 100).toFixed(2) + "%");
+        tilt.style.setProperty("--my", (py * 100).toFixed(2) + "%");
+        tilt.style.setProperty("--hx", (px * 140).toFixed(2) + "%");
+        tilt.style.setProperty("--hy", (py * 120).toFixed(2) + "%");
+        tilt.style.setProperty("--ho", ".72");
+        tilt.style.setProperty("--ca", (135 + ry * 4).toFixed(2) + "deg");
+        tilt.style.transform = "rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)";
       });
       shell.addEventListener("pointerleave", resetTilt);
       shell.addEventListener("focusin", function (e) {
@@ -2074,20 +2112,16 @@
 
       [nameInput, emailInput, phoneInput].forEach(function (input) {
         input.addEventListener("input", function () {
-          const key = input.id;
-          clearError(input, errors[key]);
+          clearError(input, errors[input.id]);
           if (statusEl.textContent) setStatus("");
         });
       });
 
-      backBtn.addEventListener("click", function () {
-        if (busy) return;
-        showFront();
-      });
+      backBtn.addEventListener("click", function () { flipToForm(); });
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
-        if (busy) return;
+        if (busy || transitioning || isFlipped) return;
         const v = validate();
         if (!v.ok) {
           setStatus("Please correct the highlighted fields.");
@@ -2101,8 +2135,7 @@
         const url = SCRIPT_URL + "?" + new URLSearchParams({ name: v.name, email: v.email, phone: v.phone });
         fetch(url, { method: "GET", mode: "no-cors" })
           .then(function () {
-            form.reset();
-            showWelcome(v.name);
+            flipToWelcome(v.name);
           })
           .catch(function () {
             setStatus("Something went wrong. Please try again in a moment.");

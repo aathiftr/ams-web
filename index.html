@@ -137,9 +137,41 @@
       align-items: center; /* exact: items-center */
       justify-content: center; /* exact: justify-center */
       overflow: clip;
+      background: var(--paper);
+    }
+    /* Smooth Scroll Hero background adaptation (21st.dev @ishamsu/smooth-scroll-hero) */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: #0d1f1a;
+      clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
+      will-change: clip-path, opacity;
+    }
+    .hero-bg-media {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 170% auto;
+      will-change: background-size;
+    }
+    .hero-bg-media-mobile { display: none; }
+    .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
       background:
-        radial-gradient(ellipse 72% 55% at 50% 0%, rgba(176, 206, 179, 0.18), transparent 72%),
-        linear-gradient(180deg, #f8fcf8 0%, var(--paper) 56%, #edf5ee 100%);
+        linear-gradient(180deg, rgba(245,251,246,0.72) 0%, rgba(245,251,246,0.42) 34%, rgba(245,251,246,0.58) 72%, rgba(245,251,246,0.84) 100%),
+        radial-gradient(ellipse 70% 55% at 50% 35%, rgba(245,251,246,0.18), rgba(245,251,246,0.52) 100%);
+    }
+    @media (max-width: 767px) {
+      .hero-bg-media-desktop { display: none; }
+      .hero-bg-media-mobile { display: block; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); }
+      .hero-bg-media { background-size: cover !important; }
     }
     .hero-copy {
       position: relative;
@@ -919,6 +951,12 @@
     <!-- HERO (adapted from 21st.dev ScrollFlyIn by @ravikatiyar162; source: official component page metadata/bundle behavior, MCP source retrieval unavailable due free retrieval quota) -->
     <section class="hero hero-scroll" id="home" aria-label="AMS Travel Services introduction">
       <div class="hero-sticky">
+        <!-- Smooth Scroll Hero background adaptation (21st.dev @ishamsu/smooth-scroll-hero) -->
+        <div class="hero-bg" id="heroBg" aria-hidden="true">
+          <div class="hero-bg-media hero-bg-media-desktop" id="heroBgDesktop"></div>
+          <div class="hero-bg-media hero-bg-media-mobile" id="heroBgMobile"></div>
+          <div class="hero-bg-overlay"></div>
+        </div>
         <div class="hero-copy">
           <p class="hero-eyebrow">YOUR JOURNEY BEGINS HERE</p>
           <h1>Every Journey Starts with a Better Plan.</h1>
@@ -1531,6 +1569,92 @@
 
         visual.style.opacity = String(opacity);
         visual.style.transform = "translateX(calc(-50% + " + x + "px))";
+      }
+
+      function requestUpdate() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate);
+      window.addEventListener("load", requestUpdate);
+      if (typeof reduceMotion.addEventListener === "function") reduceMotion.addEventListener("change", requestUpdate);
+      else if (typeof reduceMotion.addListener === "function") reduceMotion.addListener(requestUpdate);
+
+      update();
+      requestUpdate();
+    })();
+
+    // ---- Smooth Scroll Hero background adaptation (21st.dev @ishamsu/smooth-scroll-hero) ----
+    // MCP retrieval attempted; full TSX source was not retrieved through MCP due exhausted free retrieval quota.
+    // Fallback reference: official component page/demo usage + bundle behavior inspection.
+    (function () {
+      var hero = document.getElementById("home");
+      var bg = document.getElementById("heroBg");
+      var desktop = document.getElementById("heroBgDesktop");
+      var mobile = document.getElementById("heroBgMobile");
+      if (!hero || !bg || !desktop || !mobile) return;
+
+      // Centralized image config (replace URLs here). City + forest travel imagery.
+      var SMOOTH_SCROLL_HERO_IMAGES = {
+        desktopImage: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1600&q=80", // city skyline
+        mobileImage: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80",   // lush forest
+        desktopFallback: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80",
+        mobileFallback: "https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?auto=format&fit=crop&w=900&q=80"
+      };
+
+      function setBg(el, url) { el.style.backgroundImage = 'url("' + url + '")'; }
+      setBg(desktop, SMOOTH_SCROLL_HERO_IMAGES.desktopImage);
+      setBg(mobile, SMOOTH_SCROLL_HERO_IMAGES.mobileImage);
+
+      function preload(url, onErr) {
+        var im = new Image();
+        im.onerror = onErr;
+        im.src = url;
+      }
+      preload(SMOOTH_SCROLL_HERO_IMAGES.desktopImage, function () { setBg(desktop, SMOOTH_SCROLL_HERO_IMAGES.desktopFallback); });
+      preload(SMOOTH_SCROLL_HERO_IMAGES.mobileImage, function () { setBg(mobile, SMOOTH_SCROLL_HERO_IMAGES.mobileFallback); });
+
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var clamp01 = function (n) { return Math.min(1, Math.max(0, n)); };
+      var lerp = function (a, b, t) { return a + (b - a) * t; };
+
+      function getProgress() {
+        var scrollY = window.scrollY || window.pageYOffset || 0;
+        var start = hero.offsetTop;
+        var end = hero.offsetTop + hero.offsetHeight - window.innerHeight;
+        var range = Math.max(1, end - start);
+        return clamp01((scrollY - start) / range);
+      }
+
+      var ticking = false;
+      function update() {
+        ticking = false;
+        if (reduceMotion.matches) {
+          bg.style.clipPath = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
+          desktop.style.backgroundSize = "cover";
+          mobile.style.backgroundSize = "cover";
+          return;
+        }
+
+        // Adapted from SmoothScrollHero demo behavior: scroll-linked clip reveal + background size.
+        // Demo props: scrollHeight=1500, initialClipPercentage=25, finalClipPercentage=75.
+        var scrollHeight = 1500;
+        var initialClipPercentage = 25;
+        var finalClipPercentage = 75;
+        var p = getProgress();
+        var virtualScrollY = p * scrollHeight;
+
+        var g = lerp(initialClipPercentage, 0, clamp01(virtualScrollY / scrollHeight));
+        var m = lerp(finalClipPercentage, 100, clamp01(virtualScrollY / scrollHeight));
+        var bgSize = lerp(170, 100, clamp01(virtualScrollY / (scrollHeight + 500)));
+
+        bg.style.clipPath = "polygon(" + g + "% " + g + "%, " + m + "% " + g + "%, " + m + "% " + m + "%, " + g + "% " + m + "%)";
+        var sizeValue = bgSize.toFixed(2) + "% auto";
+        desktop.style.backgroundSize = sizeValue;
+        mobile.style.backgroundSize = sizeValue;
       }
 
       function requestUpdate() {

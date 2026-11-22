@@ -107,71 +107,119 @@
     }
     .avatar img { width: 12px; height: 12px; }
 
-    /* ---------- HERO ---------- */
-    .hero {
+    /* ---------- HERO (faithful vanilla adaptation of 21st.dev ScrollFlyIn by @ravikatiyar162) ---------- */
+    .hero-scroll {
+      /* Centralized ScrollFlyIn image config (imageUrl/imageAlt adaptation). */
+      --hero-image-url: url("https://pngimg.com/uploads/plane/plane_PNG5241.png");
       position: relative;
-      min-height: 780px;
+      height: 200vh; /* exact: h-[200vh] */
       margin-top: -80px;
+      background: var(--paper);
+      color: var(--forest);
+    }
+    .hero-sticky {
+      position: sticky; /* exact: sticky */
+      top: 0; /* exact: top-0 */
+      height: 100vh; /* exact: h-screen */
+      min-height: 640px;
       padding-top: 80px;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: var(--forest) url("https://www.figma.com/api/mcp/asset/c115e52b-1973-4aa7-a759-0bd90e80fdcd.png") center/cover no-repeat;
-      color: var(--paper);
-      overflow: hidden;
+      align-items: center; /* exact: items-center */
+      justify-content: center; /* exact: justify-center */
+      overflow: clip;
+      background:
+        radial-gradient(ellipse 72% 55% at 50% 0%, rgba(176, 206, 179, 0.18), transparent 72%),
+        linear-gradient(180deg, #f8fcf8 0%, var(--paper) 56%, #edf5ee 100%);
     }
-    .hero::before {
-      content: "";
-      position: absolute; inset: 0;
-      background: linear-gradient(90deg, rgba(0, 39, 32, 0.92) 0%, rgba(0, 39, 32, 0.6) 45%, rgba(0, 39, 32, 0.05) 100%);
+    .hero-copy {
+      position: relative;
+      z-index: 10; /* exact: z-10 */
+      width: min(100%, 48rem); /* max-w-3xl equivalent */
+      padding: 0 1rem; /* px-4 */
+      text-align: center; /* exact: text-center */
     }
-    .hero-inner { position: relative; z-index: 1; }
-    .hero-copy { max-width: 672px; padding-top: 32px; padding-bottom: 112px; }
-    .eyebrow-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 9999px;
-      padding: 6px 14px;
-      font-size: 11px; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase;
+    .hero-eyebrow {
+      margin: 0;
+      font-size: 1rem; /* text-md */
+      font-weight: 600; /* font-semibold */
+      letter-spacing: 0.1em; /* tracking-widest */
+      text-transform: uppercase; /* uppercase */
+      color: rgba(0, 56, 47, 0.72); /* muted brand tone */
     }
-    .eyebrow-badge img { width: 13px; height: 13px; }
     .hero h1 {
-      margin-top: 24px;
+      margin: 0.5rem auto 0; /* mt-2 */
+      max-width: 14ch;
       font-family: var(--serif);
-      font-weight: 400;
-      font-size: 72px;
-      line-height: 64px;
-      letter-spacing: -1.2px;
+      font-weight: 700; /* font-bold */
+      font-size: clamp(3rem, 7vw, 4.5rem); /* text-5xl md:text-7xl */
+      line-height: 1.1; /* leading-tight */
+      letter-spacing: -0.03em;
+      color: var(--forest);
+      text-wrap: balance;
+    }
+    .hero p.hero-lead {
+      margin: 1.75rem auto 0;
+      max-width: 42rem;
+      font-size: 1.125rem;
+      line-height: 1.75;
+      color: var(--body);
+    }
+    .hero-ctas {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-ctas .btn { min-width: 188px; }
+    .hero-ctas .btn-primary {
+      background: var(--deep);
       color: var(--paper);
+      box-shadow: 0 8px 24px rgba(0, 56, 47, 0.18);
     }
-    .hero p.lead {
-      margin-top: 28px;
-      max-width: 576px;
-      font-size: 18px;
-      line-height: 28px;
-      color: rgba(245, 251, 246, 0.9);
+    .hero-ctas .btn-primary:hover,
+    .hero-ctas .btn-primary:focus-visible { background: var(--forest); color: var(--paper); }
+    .hero-ctas .btn-secondary {
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--forest);
+      border: 1px solid rgba(0, 56, 47, 0.2);
+      backdrop-filter: blur(8px);
     }
-    .hero-ctas { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; }
-    .hero-ctas .btn-primary { background: var(--paper); color: var(--forest); }
-    .hero-ctas .btn-primary img { width: 11px; height: 11px; }
-    .trust-note { margin-top: 32px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(245,251,246,0.85); }
-    .trust-note img { width: 18px; height: 18px; }
-
-    .location-bar {
-      position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+    .hero-ctas .btn-secondary:hover,
+    .hero-ctas .btn-secondary:focus-visible { background: rgba(255, 255, 255, 0.96); border-color: rgba(0, 56, 47, 0.35); }
+    .hero-visual {
+      position: absolute; /* exact: absolute */
+      top: 0; /* exact: top-0 */
+      left: 0; /* exact: left-0 */
+      z-index: 20; /* exact: z-20 */
+      display: flex; /* exact: flex */
+      height: 100%; /* exact: h-full */
+      width: 100%; /* exact: w-full */
+      align-items: center; /* exact: items-center */
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(-5000px);
+      will-change: transform, opacity;
     }
-    .location-bar .container { display: flex; justify-content: space-between; align-items: center; height: 62px; }
-    .location-chip {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(0, 39, 32, 0.45);
-      backdrop-filter: blur(12px);
-      border-radius: 9999px;
-      padding: 8px 16px;
-      font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--paper);
+    .hero-visual img {
+      width: auto; /* exact: w-auto */
+      height: auto; /* exact: h-auto */
+      max-width: none; /* exact: max-w-none */
+      max-height: min(56vh, 520px);
+      object-fit: contain;
+      filter: drop-shadow(0 18px 40px rgba(0, 39, 32, 0.18));
+      user-select: none;
     }
-    .location-chip img { width: 11px; height: 13px; }
-    .location-meta { font-size: 12px; letter-spacing: 0.12px; color: rgba(245,251,246,0.85); }
+    .hero-scroll.is-image-error .hero-visual img {
+      max-height: min(40vh, 320px);
+      opacity: 0.9;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-scroll { height: auto; min-height: 0; }
+      .hero-sticky { position: relative; height: auto; min-height: 720px; padding: 136px 1rem 88px; }
+      .hero-visual { position: absolute; inset: 0; opacity: 1; transform: none; justify-content: center; }
+      .hero-visual img { max-height: min(34vh, 300px); }
+    }
 
     /* ---------- PHILOSOPHY ---------- */
     .intro-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; padding-bottom: 24px; }
@@ -585,7 +633,8 @@
       .footer-brand { grid-column: span 2; padding-right: 0; }
     }
     @media (max-width: 800px) {
-      .hero h1 { font-size: 52px; line-height: 56px; }
+      .hero h1 { font-size: clamp(2.75rem, 8vw, 3.75rem); }
+      .hero-visual img { max-height: min(46vh, 420px); }
       .intro-header, .dest-head { flex-direction: column; align-items: flex-start; }
       .services-grid, .reviews-grid { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
@@ -595,8 +644,14 @@
     @media (max-width: 560px) {
       .container { padding: 0 20px; }
       .header-inner { height: 68px; }
-      .hero { min-height: 680px; }
-      .hero h1 { font-size: 40px; line-height: 46px; }
+      .hero-scroll { height: 200vh; }
+      .hero-sticky { min-height: 600px; padding-top: 68px; }
+      .hero-copy { padding: 0 0 1.5rem; }
+      .hero h1 { font-size: clamp(2.5rem, 11vw, 3.25rem); max-width: 12ch; }
+      .hero p.hero-lead { font-size: 1rem; line-height: 1.7; }
+      .hero-ctas { flex-direction: column; align-items: stretch; gap: 12px; }
+      .hero-ctas .btn { width: 100%; min-width: 0; }
+      .hero-visual img { max-height: min(34vh, 260px); }
       .h2 { font-size: 32px; line-height: 40px; }
       .pillars, .dest-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
@@ -679,38 +734,29 @@
 
   <main>
 
-    <!-- HERO -->
-    <section class="hero" id="home">
-      <div class="container hero-inner">
+    <!-- HERO (adapted from 21st.dev ScrollFlyIn by @ravikatiyar162; source: official component page metadata/bundle behavior, MCP source retrieval unavailable due free retrieval quota) -->
+    <section class="hero hero-scroll" id="home" aria-label="AMS Travel Services introduction">
+      <div class="hero-sticky">
         <div class="hero-copy">
-          <span class="eyebrow-badge">
-            <img alt="" src="https://www.figma.com/api/mcp/asset/d6744adb-2368-43a0-9458-7aaabf15c8b8.svg">
-            YOUR JOURNEY, YOUR WAY
-          </span>
-          <h1>Less Planning.<br>More Exploring.</h1>
-          <p class="lead">Every great trip starts with a thoughtful plan. From tailored itineraries and seamless bookings to the understated details that elevate a getaway, we take care of it all — so you can simply arrive and immerse.</p>
+          <p class="hero-eyebrow">YOUR JOURNEY BEGINS HERE</p>
+          <h1>Every Journey Starts with a Better Plan.</h1>
+          <p class="hero-lead">From flight, bus and train bookings to passport services, visa guidance, holidays, car rentals, and Umrah and Hajj travel, AMS Travel Services helps you navigate your travel needs with confidence.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="#inquiry">Plan My Trip
-              <img alt="" src="https://www.figma.com/api/mcp/asset/c765fa3e-4240-4475-aeea-35aea1130a9d.svg">
-            </a>
-            <a class="btn btn-ghost" href="#services">Discover Our Services
-              <img alt="" src="https://www.figma.com/api/mcp/asset/5675debe-e0c9-49e5-ae8d-4aa7dddd20b1.svg">
-            </a>
-          </div>
-          <div class="trust-note">
-            <img alt="" src="https://www.figma.com/api/mcp/asset/6ac7ebae-a3ca-4277-b8e9-441776b5c1be.svg">
-            <span>Thoughtfully planned journeys. Personal concierge. Lasting memories.</span>
+            <a class="btn btn-primary" href="#services">Explore Our Services</a>
+            <a class="btn btn-secondary" href="#contact">Contact Us</a>
           </div>
         </div>
-      </div>
-
-      <div class="location-bar">
-        <div class="container">
-          <span class="location-chip">
-            <img alt="" src="https://www.figma.com/api/mcp/asset/2107f62b-6801-45eb-849f-ce4d3016848d.png">
-            Cala Deià, Mallorca • 39°45'N 2°38'E
-          </span>
-          <span class="location-meta">Curated Private Travel • Monograph Edition</span>
+        <div class="hero-visual" id="heroVisual" aria-hidden="true">
+          <img
+            id="heroFlyImage"
+            src="https://pngimg.com/uploads/plane/plane_PNG5241.png"
+            alt="Airplane flying across the screen"
+            width="1024"
+            height="341"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          >
         </div>
       </div>
     </section>
@@ -1119,7 +1165,7 @@
         <div class="footer-brand">
           <span class="brand-name">AMS Travel Services</span>
           <p>Slow travel, unhurried discoveries, and tailored sanctuaries designed for mindful explorers.</p>
-          <div class="footer-col">
+          <div class="footer-col" id="contact">
             <h4>Contact Us</h4>
             <p>49 ROYAL LODGE BUILDING, MANDAPAM ROAD<br>OLD BUS STAND, PETROL PUMP OPP.<br>RAMANATHAPURAM - 623504<br>TAMIL NADU, INDIA</p>
             <p>Mobile:<br><a href="tel:9159505957">9159505957</a><br><a href="tel:8778811716">8778811716</a></p>
@@ -1169,6 +1215,105 @@
   </footer>
 
   <script>
+    // ---- ScrollFlyIn Hero: faithful vanilla adaptation of 21st.dev hero-section-3 by @ravikatiyar162 ----
+    // Primary source: exact ScrollFlyIn source provided by user in conversation.
+    // 21st.dev MCP retrieval was attempted earlier; full TSX source was not retrieved through MCP due exhausted free retrieval quota.
+    (function () {
+      var hero = document.getElementById("home");
+      var visual = document.getElementById("heroVisual");
+      var img = document.getElementById("heroFlyImage");
+      if (!hero || !visual || !img) return;
+
+      // Centralized image config (adapted from ScrollFlyIn imageUrl/imageAlt pattern).
+      var HERO_IMAGE = {
+        url: "https://pngimg.com/uploads/plane/plane_PNG5241.png",
+        alt: "Airplane flying across the screen",
+        fallbackUrl: "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 220'%3E%3Cg fill='%2300382f' fill-opacity='0.88'%3E%3Cpath d='M602 113c8 0 15-3 15-8s-7-8-15-8l-214 2-156-78h-38l84 78-150 2-48-34H45l28 38-28 38h35l48-34 150 2-84 78h38l156-78 214 2z'/%3E%3C/g%3E%3C/svg%3E"
+      };
+
+      function applyImage(src, alt) {
+        img.alt = alt;
+        if (img.getAttribute("src") !== src) img.src = src;
+      }
+      applyImage(HERO_IMAGE.url, HERO_IMAGE.alt);
+
+      img.addEventListener("error", function () {
+        if (img.dataset.fallbackApplied === "true") {
+          hero.classList.add("is-image-error");
+          visual.style.opacity = "";
+          visual.style.transform = "";
+          return;
+        }
+        img.dataset.fallbackApplied = "true";
+        hero.classList.add("is-image-error");
+        applyImage(HERO_IMAGE.fallbackUrl, HERO_IMAGE.alt);
+      });
+
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var clamp01 = function (n) { return Math.min(1, Math.max(0, n)); };
+      var lerp = function (a, b, t) { return a + (b - a) * t; };
+      var remap = function (value, inMin, inMax, outMin, outMax) {
+        if (value <= inMin) return outMin;
+        if (value >= inMax) return outMax;
+        var t = (value - inMin) / (inMax - inMin);
+        return lerp(outMin, outMax, t);
+      };
+
+      // Equivalent to: useScroll({ target, offset: ["start end", "end start"] })
+      function getScrollYProgress() {
+        var rect = hero.getBoundingClientRect();
+        var viewportH = window.innerHeight || document.documentElement.clientHeight;
+        var total = rect.height + viewportH;
+        var scrolled = viewportH - rect.top;
+        return clamp01(total > 0 ? scrolled / total : 0);
+      }
+
+      var ticking = false;
+      function update() {
+        ticking = false;
+        if (reduceMotion.matches) {
+          visual.style.opacity = "1";
+          visual.style.transform = "none";
+          return;
+        }
+
+        var scrollYProgress = getScrollYProgress();
+        var screenWidth = window.innerWidth || document.documentElement.clientWidth;
+
+        // Exact mapping from supplied ScrollFlyIn source:
+        // const x = useTransform(scrollYProgress, [0.1, 0.8], [`-${5 * screenWidth}px`, `${2.5 * screenWidth}px`]);
+        var x = remap(scrollYProgress, 0.1, 0.8, -5 * screenWidth, 2.5 * screenWidth);
+
+        // const opacity = useTransform(scrollYProgress, [0.1, 0.25, 0.7, 0.8], [0, 1, 1, 0]);
+        var opacity;
+        if (scrollYProgress <= 0.1) opacity = 0;
+        else if (scrollYProgress <= 0.25) opacity = remap(scrollYProgress, 0.1, 0.25, 0, 1);
+        else if (scrollYProgress <= 0.7) opacity = 1;
+        else if (scrollYProgress <= 0.8) opacity = remap(scrollYProgress, 0.7, 0.8, 1, 0);
+        else opacity = 0;
+
+        if (hero.classList.contains("is-image-error")) opacity = Math.min(opacity, 0.22);
+
+        visual.style.opacity = String(opacity);
+        visual.style.transform = "translateX(" + x + "px)";
+      }
+
+      function requestUpdate() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate);
+      window.addEventListener("load", requestUpdate);
+      if (typeof reduceMotion.addEventListener === "function") reduceMotion.addEventListener("change", requestUpdate);
+      else if (typeof reduceMotion.addListener === "function") reduceMotion.addListener(requestUpdate);
+
+      update();
+      requestUpdate();
+    })();
+
     // ---- Google Apps Script Web App URL (deployed) ----
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsKZ8iKGPkeZO0oTG1rqxIS8woF0l3EDPq8-QDve-Yn833J-VFGjlCXMcwjtRuXvbJbg/exec";
 

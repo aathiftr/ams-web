@@ -337,6 +337,77 @@
     .footer-bottom nav { display: flex; gap: 16px; }
     .footer-bottom a:hover { color: var(--forest); }
 
+    /* ---------- SERVICES MORPH HERO (adapted from 21st.dev Scroll Morph Hero) ---------- */
+    .smh-track { position: relative; height: 260vh; }
+    .smh-stage {
+      position: sticky; top: 80px; height: calc(100vh - 80px); min-height: 620px;
+      overflow: hidden; background: var(--paper);
+    }
+    .smh-inner { position: relative; height: 100%; }
+    .smh-copy {
+      position: absolute; z-index: 3; top: 6%; left: 0; right: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      text-align: center; pointer-events: none;
+    }
+    .smh-copy p { max-width: 576px; font-size: 16px; line-height: 26px; color: var(--body); }
+    .smh-arc { position: absolute; inset: 0; z-index: 1; perspective: 1000px; }
+    .smh-tile {
+      position: absolute; left: 50%; top: 50%; width: 58px; height: 82px;
+      margin: -41px 0 0 -29px; padding: 0; border: 0; background: transparent;
+      cursor: pointer; opacity: 0; transform-style: preserve-3d; will-change: transform, opacity;
+    }
+    .smh-tile-inner {
+      position: relative; display: block; width: 100%; height: 100%;
+      transform-style: preserve-3d; transition: transform .55s cubic-bezier(.2,.8,.2,1);
+    }
+    .smh-tile:hover .smh-tile-inner,
+    .smh-tile:focus-visible .smh-tile-inner,
+    .smh-tile.is-active .smh-tile-inner { transform: rotateY(180deg); }
+    .smh-tile-face {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 3px; overflow: hidden;
+      border-radius: 10px; backface-visibility: hidden; box-shadow: var(--shadow-lift);
+      text-align: center;
+    }
+    .smh-tile-front { background: linear-gradient(145deg, var(--deep), var(--forest)); }
+    .smh-tile-front img { width: 100%; height: 100%; object-fit: cover; }
+    .smh-tile-back {
+      transform: rotateY(180deg); background: var(--forest); color: var(--paper); padding: 6px;
+    }
+    .smh-tile-back span { font-size: 9px; font-weight: 600; letter-spacing: 1px; color: var(--mint); }
+    .smh-tile-back strong { font-size: 9px; line-height: 12px; font-weight: 600; }
+    .smh-tile:focus-visible { outline: 2px solid var(--deep); outline-offset: 4px; border-radius: 10px; }
+    .smh-detail {
+      position: absolute; z-index: 3; bottom: 6%; left: 50%; transform: translateX(-50%);
+      width: min(560px, calc(100% - 40px)); text-align: center; pointer-events: none;
+    }
+    .smh-detail-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.1px;
+      text-transform: uppercase; color: var(--deep);
+    }
+    .smh-detail h3 { margin-top: 6px; }
+    .smh-detail p { margin-top: 6px; font-size: 14px; line-height: 22px; color: var(--body); }
+    .smh-hint {
+      margin-top: 12px; font-size: 11px; letter-spacing: .88px;
+      text-transform: uppercase; color: var(--label);
+    }
+    .smh-directory > .eyebrow { display: block; margin-bottom: 20px; }
+    .smh-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+    .smh-card-media {
+      height: 168px; border-radius: 8px; overflow: hidden;
+      background: linear-gradient(145deg, var(--deep), var(--forest));
+    }
+    .smh-card-media img { width: 100%; height: 100%; object-fit: cover; }
+    .smh-card-body h4 {
+      margin-top: 16px; font-family: var(--serif); font-size: 20px;
+      line-height: 26px; color: var(--forest);
+    }
+    .smh-card-body p { margin-top: 8px; font-size: 14px; line-height: 22.75px; letter-spacing: .07px; }
+    .smh-static .smh-track { height: auto; }
+    .smh-static .smh-stage { position: static; height: auto; min-height: 0; overflow: visible; }
+    .smh-static .smh-arc, .smh-static .smh-detail, .smh-static .smh-hint { display: none; }
+    .smh-static .smh-copy { position: static; padding: 48px 0 0; }
+
     /* ---------- RESPONSIVE ---------- */
     @media (max-width: 1100px) {
       .container, .inquiry-section { padding-left: 32px; padding-right: 32px; }
@@ -370,6 +441,19 @@
       .location-meta { display: none; }
       .highlight-card { position: static; max-width: none; margin-top: 16px; }
       .editorial-photo { height: 340px; }
+    }
+    @media (max-width: 1100px) {
+      .smh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 800px) {
+      .smh-copy p { font-size: 14px; line-height: 22px; }
+      .smh-detail h3 { font-size: 19px; }
+    }
+    @media (max-width: 560px) {
+      .smh-track { height: 220vh; }
+      .smh-stage { top: 68px; height: calc(100vh - 68px); min-height: 560px; }
+      .smh-copy { top: 5%; }
+      .smh-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -491,74 +575,81 @@
     </section>
 
     <!-- SERVICES -->
-    <section class="section muted-sage" id="services">
-      <div class="container">
-        <div class="services-head">
-          <span class="eyebrow">OUR EXPERTISE</span>
-          <h2 class="h2">Tailored From Start to Finish</h2>
-          <p>Every itinerary is authored collaboratively by a dedicated travel designer who listens first,<br>then curates with precision.</p>
+    <section class="muted-sage" id="services" aria-labelledby="services-title">
+      <div class="smh-track" id="smhTrack">
+        <div class="smh-stage" id="smhStage">
+          <div class="container smh-inner">
+            <div class="smh-copy">
+              <span class="eyebrow">OUR SERVICES</span>
+              <h2 class="h2" id="services-title">Our Travel Services</h2>
+              <p>From tickets and travel documents to holidays and pilgrimage journeys, we're here to help make your travel simpler.</p>
+            </div>
+            <div class="smh-arc" id="smhArc"></div>
+            <div class="smh-detail" aria-live="polite">
+              <span class="smh-detail-label">Selected service</span>
+              <h3 class="h3" id="smhName">Flight Ticket Booking</h3>
+              <p id="smhDesc">Domestic and international flight booking assistance.</p>
+              <p class="smh-hint">Scroll to explore · Hover or focus a card for details</p>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="services-grid">
-          <article class="service">
-            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/a4926d80-3558-4e10-a580-72ff99bda9cd.svg"></div>
-            <h3 class="h3">Custom Itineraries</h3>
-            <p>Pacing tailored to your natural rhythm. Hand-written daily guides highlighting quiet morning cafes, hidden vista points, and verified insider tables.</p>
-            <ul>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Tailored day-by-day pacing</li>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Hard-to-get culinary reservations</li>
-            </ul>
-          </article>
+      <div class="section">
+        <div class="container smh-directory">
+          <span class="eyebrow">ALL SERVICES</span>
+          <!-- Photograph URLs are defined once here and reused by the animated arc above. -->
+          <div class="smh-grid">
+            <article class="card smh-card" data-name="Flight Ticket Booking" data-desc="Domestic and international flight booking assistance.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1593182440709-4b7b56482c55?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Airplane wing above the clouds" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Flight Ticket Booking</h4><p>Domestic and international flight booking assistance.</p></div>
+            </article>
 
-          <article class="service">
-            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/920b74d9-4eb5-43da-8727-4c5ed8618faf.svg"></div>
-            <h3 class="h3">Destination Advisory</h3>
-            <p>Unbiased insight into weather nuances, micro-seasons, regional festivals, and authentic cultural etiquette across 40+ global territories.</p>
-            <ul>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Micro-climate seasonality analysis</li>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Off-the-beaten-path validation</li>
-            </ul>
-          </article>
+            <article class="card smh-card" data-name="Bus Ticket Booking" data-desc="Convenient bus ticket booking assistance.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1575393410597-bc84aa7fd98c?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Bus travelling along a road" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Bus Ticket Booking</h4><p>Convenient bus ticket booking assistance.</p></div>
+            </article>
 
-          <article class="service">
-            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/45fc86d6-2f3f-4d4b-aa9a-68854ed857a9.svg"></div>
-            <h3 class="h3">Luxury Stays &amp; Boutique Villas</h3>
-            <p>Independent boutique hotels, restored olive fincas, and design-led sanctuaries vetted personally for character, architecture, and serenity.</p>
-            <ul>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Complimentary room upgrades when available</li>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Dedicated hotel liaison privileges</li>
-            </ul>
-          </article>
+            <article class="card smh-card" data-name="Train Ticket Booking" data-desc="Train reservation assistance.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1699444118650-6d62b870a6df?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Passenger train arriving at a station" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Train Ticket Booking</h4><p>Train reservation assistance.</p></div>
+            </article>
 
-          <article class="service">
-            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/ee14beb6-2957-460c-8014-f8a08ca0e584.svg"></div>
-            <h3 class="h3">Private Logistics &amp; Transport</h3>
-            <p>Chauffeured Mercedes transfers, private catamaran charters, scenic luxury rail coordination, and flight monitoring from takeoff to touchdown.</p>
-            <ul>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Seamless baggage door-to-door</li>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Private high-speed rail cabins</li>
-            </ul>
-          </article>
+            <article class="card smh-card" data-name="Passport Services" data-desc="Fresh passport and passport renewal assistance.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1581553673739-c4906b5d0de8?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Open passport with travel stamps" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Passport Services</h4><p>Fresh passport and passport renewal assistance.</p></div>
+            </article>
 
-          <article class="service">
-            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/b9b59a73-c9d8-4f89-b6d0-758afc09e441.svg"></div>
-            <h3 class="h3">Exclusive Experiences</h3>
-            <p>Private cellar tastings with master vintners, after-hours museum entries, ceramic studio workshops, and guided alpine botanical treks.</p>
-            <ul>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Direct access to local artisans</li>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Private chartered coastal voyages</li>
-            </ul>
-          </article>
+            <article class="card smh-card" data-name="Certificate Attestation" data-desc="Certificate attestation assistance for all countries.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1589330694653-ded6df03f754?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Certificate with an official seal" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Certificate Attestation</h4><p>Certificate attestation assistance for all countries.</p></div>
+            </article>
 
-          <article class="service">
-            <div class="icon-box sm"><img alt="" src="https://www.figma.com/api/mcp/asset/ebc8f743-2a15-4f8c-8a3d-658fd64aa285.svg"></div>
-            <h3 class="h3">24/7 Dedicated Concierge</h3>
-            <p>A single WhatsApp or phone touchpoint to handle flight changes, table re-bookings, doctor coordination, or spontaneous whims in real time.</p>
-            <ul>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Average response time under 4 minutes</li>
-              <li><img alt="" src="https://www.figma.com/api/mcp/asset/12609989-a90d-418e-91bb-c2428e28a4fa.svg">Proactive weather and delay rerouting</li>
-            </ul>
-          </article>
+            <article class="card smh-card" data-name="Emigration Clearance" data-desc="Guidance for applicable emigration clearance procedures.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1771945029451-da143c6ea0e8?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Airport immigration signage" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Emigration Clearance</h4><p>Guidance for applicable emigration clearance procedures.</p></div>
+            </article>
+
+            <article class="card smh-card" data-name="Tourist Visa Services" data-desc="Tourist visa application guidance.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1655722725332-9925c96dd627?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Passport pages with visa stamps" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Tourist Visa Services</h4><p>Tourist visa application guidance.</p></div>
+            </article>
+
+            <article class="card smh-card" data-name="Tour Packages" data-desc="Domestic and international tour packages.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1771945484043-3a17fbf57a4b?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Tropical beach holiday destination" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Tour Packages</h4><p>Domestic and international tour packages.</p></div>
+            </article>
+
+            <article class="card smh-card" data-name="Car Rental Services" data-desc="Car rental options for different travel needs.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1572401611152-cf63d874b019?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Car on an open road" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Car Rental Services</h4><p>Car rental options for different travel needs.</p></div>
+            </article>
+
+            <article class="card smh-card" data-name="Umrah &amp; Hajj Services" data-desc="Umrah and Hajj pilgrimage travel arrangements.">
+              <div class="smh-card-media"><img src="https://images.unsplash.com/photo-1693590614566-1d3ea9ef32f7?w=600&amp;q=80&amp;auto=format&amp;fit=crop" alt="Pilgrims at the Kaaba in Mecca" loading="eager" onerror="this.style.display='none'"></div>
+              <div class="smh-card-body"><h4>Umrah &amp; Hajj Services</h4><p>Umrah and Hajj pilgrimage travel arrangements.</p></div>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -873,6 +964,198 @@
         .then(() => showSuccess())
         .catch(() => showError());
     });
+
+    // ---- Scroll Morph Hero: adapted from 21st.dev "Scroll Morph Hero" ----
+    (function () {
+      var section = document.getElementById("services");
+      var track = document.getElementById("smhTrack");
+      var stage = document.getElementById("smhStage");
+      var arc = document.getElementById("smhArc");
+      var nameEl = document.getElementById("smhName");
+      var descEl = document.getElementById("smhDesc");
+      var detailPanel = section.querySelector(".smh-detail");
+      if (!section || !track || !stage || !arc || !nameEl || !descEl) return;
+
+      var cards = Array.prototype.slice.call(section.querySelectorAll(".smh-card"));
+      if (!cards.length) return;
+
+      var services = cards.map(function (card) {
+        var image = card.querySelector("img");
+        return {
+          name: card.getAttribute("data-name") || "",
+          desc: card.getAttribute("data-desc") || "",
+          image: image ? image.getAttribute("src") : ""
+        };
+      });
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        section.classList.add("smh-static");
+        return;
+      }
+
+      var tiles = services.map(function (item, i) {
+        var tile = document.createElement("button");
+        tile.type = "button";
+        tile.className = "smh-tile";
+        tile.setAttribute("aria-label", item.name + ". " + item.desc);
+
+        var inner = document.createElement("span");
+        inner.className = "smh-tile-inner";
+        var front = document.createElement("span");
+        front.className = "smh-tile-face smh-tile-front";
+        var img = document.createElement("img");
+        img.alt = "";
+        img.loading = "eager";
+        img.src = item.image;
+        img.addEventListener("error", function () { img.style.display = "none"; });
+        front.appendChild(img);
+
+        var back = document.createElement("span");
+        back.className = "smh-tile-face smh-tile-back";
+        var num = document.createElement("span");
+        num.textContent = String(i + 1).padStart(2, "0");
+        var label = document.createElement("strong");
+        label.textContent = item.name;
+        back.appendChild(num);
+        back.appendChild(label);
+
+        inner.appendChild(front);
+        inner.appendChild(back);
+        tile.appendChild(inner);
+        arc.appendChild(tile);
+        return tile;
+      });
+
+      var active = -1;
+      function setActive(index) {
+        if (index === active || index < 0 || index >= services.length) return;
+        active = index;
+        nameEl.textContent = services[index].name;
+        descEl.textContent = services[index].desc;
+        for (var j = 0; j < tiles.length; j++) {
+          tiles[j].classList.toggle("is-active", j === index);
+        }
+      }
+      tiles.forEach(function (tile, i) {
+        tile.addEventListener("mouseenter", function () { setActive(i); });
+        tile.addEventListener("focus", function () { setActive(i); });
+        tile.addEventListener("click", function () { setActive(i); });
+      });
+      setActive(0);
+
+      var size = { w: 0, h: 0 };
+      var target = 0, progress = 0, introStart = 0, raf = 0, parallax = 0;
+      function measure() { size.w = stage.clientWidth; size.h = stage.clientHeight; }
+      function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function lerpObj(a, b, t) {
+        return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), r: lerp(a.r, b.r, t), s: lerp(a.s, b.s, t) };
+      }
+      function noise(i, seed) {
+        var v = Math.sin(i * 127.1 + seed * 311.7) * 43758.5453;
+        return v - Math.floor(v);
+      }
+      function onScroll() {
+        var rect = track.getBoundingClientRect();
+        var distance = track.offsetHeight - stage.offsetHeight;
+        target = distance > 0 ? clamp01(-rect.top / distance) : 0;
+      }
+
+      function update() {
+        var intro = introStart ? clamp01((performance.now() - introStart) / 1400) : 0;
+        var it = 1 - Math.pow(1 - intro, 3);
+        var morph = clamp01(progress / 0.45);
+        var rotate = clamp01((progress - 0.45) / 0.55);
+        var strip = clamp01((progress - 0.72) / 0.28);
+        var stripEase = 1 - Math.pow(1 - strip, 3);
+        var mobile = size.w < 768;
+        var radius = mobile ? Math.min(size.w * 0.37, size.h * 0.54) : Math.min(size.w * 0.42, size.h * 0.72);
+        var apex = size.h * (mobile ? 0.3 : 0.24);
+        var centerY = apex + radius * 0.95 - size.h / 2 + 41;
+        var spread = 120;
+        var startAngle = -90 - spread / 2;
+        var step = spread / (services.length - 1);
+        var boundRotation = -rotate * 28;
+        var circleRadius = Math.min(Math.min(size.w, size.h) * 0.3, 240);
+        var columns = mobile ? 5 : services.length;
+        var stripScale = mobile
+          ? Math.min(0.9, (size.w - 24) / (columns * 62))
+          : Math.min(1.05, (size.w - 40) / (columns * 62));
+
+        tiles.forEach(function (tile, i) {
+          var a = (i / services.length) * Math.PI * 2;
+          var circle = { x: Math.cos(a) * circleRadius, y: Math.sin(a) * circleRadius, r: (a * 180) / Math.PI + 90, s: 1 };
+          var angle = ((startAngle + i * step + boundRotation) * Math.PI) / 180;
+          var arcPos = {
+            x: Math.cos(angle) * radius + parallax,
+            y: Math.sin(angle) * radius + centerY,
+            r: Math.max(-55, Math.min(55, (angle * 180) / Math.PI + 90)),
+            s: mobile ? 1.15 : 1.6
+          };
+          var stripPos = {
+            x: ((i % columns) - (columns - 1) / 2) * 66,
+            y: size.h - (mobile ? 128 : 96) - size.h / 2 + 41 + Math.floor(i / columns) * (mobile ? 64 : 0),
+            r: 0,
+            s: stripScale
+          };
+          var scatter = {
+            x: (noise(i, 1) - 0.5) * size.w * 1.3,
+            y: (noise(i, 2) - 0.5) * size.h * 1.3,
+            r: (noise(i, 3) - 0.5) * 180,
+            s: 0.5
+          };
+          var p = lerpObj(lerpObj(lerpObj(scatter, circle, it), arcPos, morph), stripPos, stripEase);
+          tile.style.opacity = String(Math.min(1, it * 1.5));
+          tile.style.transform = "translate3d(" + p.x + "px," + p.y + "px,0) rotate(" + p.r + "deg) scale(" + p.s + ")";
+        });
+
+        if (detailPanel) detailPanel.style.opacity = String(1 - stripEase);
+
+        if (!arc.matches(":hover") && !arc.contains(document.activeElement)) {
+          setActive(Math.min(services.length - 1, Math.floor(progress * services.length)));
+        }
+      }
+
+      function render() {
+        rafTicked = true;
+        if (!running) return;
+        progress += (target - progress) * 0.12;
+        update();
+        raf = requestAnimationFrame(render);
+      }
+
+      function sync() {
+        progress = rafTicked ? progress + (target - progress) * 0.12 : target;
+        update();
+      }
+
+      var running = false, rafTicked = false;
+      function updateLoop() {
+        var rect = track.getBoundingClientRect();
+        var near = rect.bottom > -200 && rect.top < (window.innerHeight || 800) + 200;
+        if (near && !running) {
+          running = true;
+          measure();
+          if (!introStart) introStart = performance.now();
+          update();
+          raf = requestAnimationFrame(render);
+        } else if (!near && running) {
+          running = false;
+          if (raf) cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      }
+      window.addEventListener("scroll", function () { onScroll(); updateLoop(); if (running) sync(); }, { passive: true });
+      window.addEventListener("resize", function () { measure(); onScroll(); updateLoop(); if (running) sync(); });
+      updateLoop();
+
+      if (window.ResizeObserver) new ResizeObserver(measure).observe(stage);
+      stage.addEventListener("mousemove", function (e) {
+        var rect = stage.getBoundingClientRect();
+        parallax = ((e.clientX - rect.left) / rect.width * 2 - 1) * 30;
+      });
+      stage.addEventListener("mouseleave", function () { parallax = 0; });
+    })();
   </script>
 </body>
 </html>

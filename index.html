@@ -233,12 +233,12 @@
       .hero-visual img { max-height: min(34vh, 300px); }
     }
 
-    /* ---------- PHILOSOPHY ---------- */
+    /* ---------- TRAVEL STORIES (Notched Project Card adaptation, 21st.dev @maudbenaddi/notched-project-card) ---------- */
     .intro-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; padding-bottom: 24px; }
     .intro-header .head { display: flex; flex-direction: column; gap: 11px; max-width: 576px; padding-top: 4.5px; }
     .intro-header .side { max-width: 448px; font-size: 16px; line-height: 26px; color: var(--body); }
 
-    .pillars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 64px; }
+    .travel-stories-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 64px; }
     .card {
       background: var(--white);
       border-radius: 12px;
@@ -255,15 +255,169 @@
     .icon-box img { width: 20px; height: 20px; }
     .icon-box.sm { width: 40px; height: 40px; }
     .icon-box.sm img { width: 16px; height: 16px; }
-    .pillar-label { margin-top: 28px; font-size: 11px; font-weight: 600; letter-spacing: 0.55px; text-transform: uppercase; color: var(--label); }
-    .pillar h3 { margin-top: 12px; }
-    .pillar p { margin-top: 12px; font-size: 14px; line-height: 22.75px; letter-spacing: 0.07px; }
-    .pillar-link {
-      margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(0,39,32,0.06);
-      display: flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 600; letter-spacing: 0.72px; color: var(--forest);
+
+    .notched-card {
+      --notch-size: 74px;
+      --notch-radius: 28px;
+      --notch-btn: 52px;
+      --notch-accent: var(--deep);
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+      min-width: 0;
     }
-    .pillar-link img { width: 11px; height: 11px; }
+    .notched-card-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 4.55;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--sage);
+      isolation: isolate;
+    }
+    .notched-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .55s ease, filter .55s ease;
+    }
+    .notched-card:hover .notched-card-media img,
+    .notched-card:focus-visible .notched-card-media img {
+      transform: scale(1.035);
+      filter: saturate(1.02);
+    }
+    .notched-card-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(245, 251, 246, 0.92);
+      color: var(--forest);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.55px;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .notched-card-notch {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: var(--notch-size);
+      height: var(--notch-size);
+      background: var(--paper);
+      border-top-left-radius: var(--notch-radius);
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 0 8px 8px 0;
+      z-index: 3;
+    }
+    .notched-card-notch::before,
+    .notched-card-notch::after {
+      content: "";
+      position: absolute;
+      width: calc(var(--notch-radius) * 2);
+      height: calc(var(--notch-radius) * 2);
+      background: transparent;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .notched-card-notch::before {
+      bottom: 0;
+      left: calc(var(--notch-radius) * -2);
+      box-shadow: var(--notch-radius) var(--notch-radius) 0 0 var(--paper);
+    }
+    .notched-card-notch::after {
+      top: calc(var(--notch-radius) * -2);
+      right: 0;
+      box-shadow: var(--notch-radius) var(--notch-radius) 0 0 var(--paper);
+    }
+    .notched-card-arrow {
+      width: var(--notch-btn);
+      height: var(--notch-btn);
+      border-radius: 50%;
+      background: var(--notch-accent);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0, 56, 47, 0.18);
+      transition: transform .28s ease, background-color .28s ease;
+    }
+    .notched-card-arrow svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .notched-card:hover .notched-card-arrow,
+    .notched-card:focus-visible .notched-card-arrow {
+      transform: translate(2px, -2px);
+      background: var(--forest);
+    }
+    .notched-card-body {
+      padding: 22px 2px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .notched-card-title {
+      font-family: var(--serif);
+      font-size: clamp(24px, 2.2vw, 30px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--forest);
+      font-weight: 600;
+    }
+    .notched-card-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--body);
+      max-width: 38ch;
+    }
+    .notched-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .notched-card-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(176, 206, 179, 0.2);
+      color: var(--deep);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .notched-card-cta {
+      margin-top: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--forest);
+      letter-spacing: 0.01em;
+    }
+    .notched-card:focus-visible {
+      outline: 3px solid rgba(0, 56, 47, 0.2);
+      outline-offset: 6px;
+      border-radius: 24px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .notched-card-media img, .notched-card-arrow { transition: none; }
+    }
 
     /* ---------- SERVICES ---------- */
     .muted-sage { background: rgba(219, 229, 219, 0.4); }
@@ -647,7 +801,7 @@
       .container, .inquiry-section { padding-left: 32px; padding-right: 32px; }
       .inquiry-section { padding-left: 32px; padding-right: 32px; }
       .nav { display: none; }
-      .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .travel-stories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .dest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .editorial-grid { grid-template-columns: 1fr; }
       .editorial-copy, .editorial-visual { grid-column: auto; padding-left: 0; }
@@ -680,7 +834,7 @@
       .hero-ctas .btn { width: 100%; min-width: 0; }
       .hero-visual img { max-height: min(34vh, 260px); }
       .h2 { font-size: 32px; line-height: 40px; }
-      .pillars, .dest-grid { grid-template-columns: 1fr; }
+      .travel-stories-grid, .dest-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-brand { grid-column: auto; }
       .footer-brand-logo { height: 44px; max-width: 100%; }
@@ -789,57 +943,101 @@
       </div>
     </section>
 
-    <!-- PHILOSOPHY & AUDIENCE PILLARS -->
+    <!-- PHILOSOPHY / TRAVEL STORIES (Notched Project Card adaptation, 21st.dev @maudbenaddi) -->
     <section class="section" id="about">
       <div class="container">
         <div class="intro-header">
           <div class="head">
-            <span class="eyebrow">THE PHILOSOPHY</span>
-            <h2 class="h2">Travel crafted around who you are,<br>not a standard itinerary.</h2>
+            <span class="eyebrow">TRAVEL FOR EVERY KIND OF YOU</span>
+            <h2 class="h2">Every Traveller Has a Different Story.</h2>
           </div>
-          <p class="side">Mass-market packages prioritize tourist quotas. We craft singular narratives: quiet hideaways, unscripted afternoon walks, and doors unlocked by personal relationships.</p>
+          <p class="side">Whether it is a family holiday, a couple's getaway, a work trip, or a journey of faith, we help you navigate the travel arrangements that matter to you.</p>
         </div>
 
-        <div class="pillars">
-          <article class="card pillar">
-            <div>
-              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/f54d9200-5240-4b85-a664-2cece405568d.svg"></div>
-              <div class="pillar-label">For Couples</div>
-              <h3 class="h3">Romantic Retreats</h3>
-              <p>Private cliffside terraces, candlelit vineyard dinners, and secluded coastline charters designed without rushing.</p>
+        <div class="travel-stories-grid" aria-label="Travel stories">
+          <a class="notched-card" href="#services" aria-label="Plan Your Getaway - Couple Getaways">
+            <div class="notched-card-media">
+              <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1200&q=80" alt="Couple enjoying a scenic mountain viewpoint together" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80">
+              <span class="notched-card-badge">FOR COUPLES</span>
+              <span class="notched-card-notch" aria-hidden="true">
+                <span class="notched-card-arrow">
+                  <svg viewBox="0 0 24 24"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                </span>
+              </span>
             </div>
-            <a class="pillar-link" href="#destinations">Explore Intimate Stays <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
-          </article>
+            <div class="notched-card-body">
+              <h3 class="notched-card-title">Couple Getaways</h3>
+              <p class="notched-card-desc">Plan a getaway with assistance exploring travel options, transportation bookings, and suitable holiday arrangements.</p>
+              <div class="notched-card-tags" aria-label="Tags">
+                <span class="notched-card-tag">Travel Planning</span>
+                <span class="notched-card-tag">Couple Holidays</span>
+              </div>
+              <span class="notched-card-cta">Plan Your Getaway</span>
+            </div>
+          </a>
 
-          <article class="card pillar">
-            <div>
-              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/f9a91b79-451e-4db3-9d79-be55348d29fe.svg"></div>
-              <div class="pillar-label">For Families</div>
-              <h3 class="h3">Unhurried Holidays</h3>
-              <p>Spacious heritage villas, engaging hands-on discoveries for all generations, and zero logistics friction.</p>
+          <a class="notched-card" href="#services" aria-label="Explore Family Travel - Family Holidays">
+            <div class="notched-card-media">
+              <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&q=80" alt="Family enjoying a holiday together outdoors" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80">
+              <span class="notched-card-badge">FOR FAMILIES</span>
+              <span class="notched-card-notch" aria-hidden="true">
+                <span class="notched-card-arrow">
+                  <svg viewBox="0 0 24 24"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                </span>
+              </span>
             </div>
-            <a class="pillar-link" href="#destinations">Discover Family Escapes <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
-          </article>
+            <div class="notched-card-body">
+              <h3 class="notched-card-title">Family Holidays</h3>
+              <p class="notched-card-desc">Make family travel easier with assistance for transport bookings, trip planning, and travel documentation.</p>
+              <div class="notched-card-tags" aria-label="Tags">
+                <span class="notched-card-tag">Family Travel</span>
+                <span class="notched-card-tag">Holiday Planning</span>
+              </div>
+              <span class="notched-card-cta">Explore Family Travel</span>
+            </div>
+          </a>
 
-          <article class="card pillar">
-            <div>
-              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/7b2e79ed-a19a-4cb4-aff2-3a03c2f1c738.svg"></div>
-              <div class="pillar-label">For Professionals</div>
-              <h3 class="h3">Restorative Reset</h3>
-              <p>High-touch sanctuary escapes with seamless connectivity when needed, and complete stillness when you step away.</p>
+          <a class="notched-card" href="#services" aria-label="Plan Business Travel - Business Travel">
+            <div class="notched-card-media">
+              <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80" alt="Business traveller in a suit at an airport terminal" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80">
+              <span class="notched-card-badge">FOR PROFESSIONALS</span>
+              <span class="notched-card-notch" aria-hidden="true">
+                <span class="notched-card-arrow">
+                  <svg viewBox="0 0 24 24"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                </span>
+              </span>
             </div>
-            <a class="pillar-link" href="#destinations">Explore Sanctuary Havens <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
-          </article>
+            <div class="notched-card-body">
+              <h3 class="notched-card-title">Business Travel</h3>
+              <p class="notched-card-desc">Organise work-related journeys with guidance on transport options, bookings, and necessary travel documents.</p>
+              <div class="notched-card-tags" aria-label="Tags">
+                <span class="notched-card-tag">Work Trips</span>
+                <span class="notched-card-tag">Travel Support</span>
+              </div>
+              <span class="notched-card-cta">Plan Business Travel</span>
+            </div>
+          </a>
 
-          <article class="card pillar">
-            <div>
-              <div class="icon-box"><img alt="" src="https://www.figma.com/api/mcp/asset/1a9e6e62-6dc1-442f-a04a-ed6b8e7c35a0.svg"></div>
-              <div class="pillar-label">For Solo Explorers</div>
-              <h3 class="h3">Mindful Horizons</h3>
-              <p>Curated artist residencies, ancient mountain pathways, and authentic local studio connections with trusted guides.</p>
+          <a class="notched-card" href="#services" aria-label="Explore Pilgrimage Services - Pilgrimage Journeys">
+            <div class="notched-card-media">
+              <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80" alt="Pilgrims at Masjid al-Haram with the Kaaba in Mecca" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80">
+              <span class="notched-card-badge">FOR PILGRIMS</span>
+              <span class="notched-card-notch" aria-hidden="true">
+                <span class="notched-card-arrow">
+                  <svg viewBox="0 0 24 24"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                </span>
+              </span>
             </div>
-            <a class="pillar-link" href="#destinations">Curate Solo Journey <img alt="" src="https://www.figma.com/api/mcp/asset/70c2045f-995e-46cc-88ef-b88c770817f7.svg"></a>
-          </article>
+            <div class="notched-card-body">
+              <h3 class="notched-card-title">Pilgrimage Journeys</h3>
+              <p class="notched-card-desc">Prepare for Umrah and Hajj journeys with assistance for travel arrangements and relevant documentation.</p>
+              <div class="notched-card-tags" aria-label="Tags">
+                <span class="notched-card-tag">Umrah</span>
+                <span class="notched-card-tag">Hajj</span>
+              </div>
+              <span class="notched-card-cta">Explore Pilgrimage Services</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -1245,6 +1443,20 @@
   </footer>
 
   <script>
+    // ---- Notched travel cards: graceful image fallback ----
+    (function () {
+      var imgs = document.querySelectorAll(".notched-card-media img[data-fallback]");
+      for (var i = 0; i < imgs.length; i++) {
+        (function (img) {
+          img.addEventListener("error", function () {
+            if (img.dataset.fallbackApplied === "true") return;
+            img.dataset.fallbackApplied = "true";
+            img.src = img.dataset.fallback;
+          });
+        })(imgs[i]);
+      }
+    })();
+
     // ---- ScrollFlyIn Hero: corrected for centered initial load, scroll-driven rightward exit ----
     // Based on supplied ScrollFlyIn behavior intent; initial-load mapping corrected so plane is centered/visible at top.
     (function () {

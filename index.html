@@ -2504,6 +2504,18 @@
       function clearError(input, el) { if (el) el.textContent = ""; if (input) input.removeAttribute("aria-invalid"); }
       function setError(input, el, message) { if (el) el.textContent = message; if (input) input.setAttribute("aria-invalid", "true"); }
       function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
+      function hasLetter(value) {
+        try { return new RegExp("\\p{L}", "u").test(value); }
+        catch (e) { return /[A-Za-z]/.test(value); }
+      }
+      function validName(value) { return value.length >= 2 && hasLetter(value); }
+      function validPhone(value) {
+        if (!value) return true;
+        let local = value.trim();
+        local = local.replace(/^\+91[\s-]?/, "");
+        const digits = local.replace(/[\s-]/g, "");
+        return /^[6-9]\d{9}$/.test(digits);
+      }
 
       function resetTilt() {
         tilt.style.setProperty("--mx", "50%");
@@ -2559,14 +2571,17 @@
       function validate() {
         const name = nameInput.value.trim();
         const email = emailInput.value.trim();
+        const phone = phoneInput.value.trim();
         clearError(nameInput, errors.name);
         clearError(emailInput, errors.email);
         clearError(phoneInput, errors.phone);
         let ok = true;
         if (!name) { setError(nameInput, errors.name, "Please enter your full name."); ok = false; }
+        else if (!validName(name)) { setError(nameInput, errors.name, "Please enter a name with at least 2 characters, including a letter."); ok = false; }
         if (!email) { setError(emailInput, errors.email, "Please enter your email address."); ok = false; }
         else if (!validEmail(email)) { setError(emailInput, errors.email, "Please enter a valid email address."); ok = false; }
-        return { ok, name, email, phone: phoneInput.value.trim() };
+        if (!validPhone(phone)) { setError(phoneInput, errors.phone, "Please enter a valid 10-digit Indian mobile number."); ok = false; }
+        return { ok, name, email, phone };
       }
 
       // Visual tilt only; never changes flip state.
@@ -2607,16 +2622,22 @@
         const v = validate();
         if (!v.ok) {
           setStatus("Please correct the highlighted fields.");
-          (nameInput.getAttribute("aria-invalid") ? nameInput : emailInput).focus({ preventScroll: true });
+          const firstInvalid = [nameInput, emailInput, phoneInput].find(function (input) {
+            return input.getAttribute("aria-invalid") === "true";
+          });
+          if (firstInvalid) firstInvalid.focus({ preventScroll: true });
           return;
         }
         busy = true;
         submitBtn.disabled = true;
-        submitBtn.textContent = "Sending…";
+        submitBtn.setAttribute("aria-busy", "true");
+        submitBtn.textContent = "Submitting...";
         setStatus("");
         const url = SCRIPT_URL + "?" + new URLSearchParams({ name: v.name, email: v.email, phone: v.phone });
         fetch(url, { method: "GET", mode: "no-cors" })
           .then(function () {
+            // The existing no-cors Apps Script integration returns an opaque response,
+            // so a resolved network request is the success signal this site has always used.
             flipToWelcome(v.name);
           })
           .catch(function () {
@@ -2625,6 +2646,7 @@
           .finally(function () {
             busy = false;
             submitBtn.disabled = false;
+            submitBtn.removeAttribute("aria-busy");
             submitBtn.textContent = "Continue";
           });
       });

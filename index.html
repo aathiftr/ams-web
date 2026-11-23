@@ -879,9 +879,7 @@
     .ams-feature-steps { order: 2; display: flex; flex-direction: column; gap: 32px; }
     .ams-feature-step {
       display: flex; align-items: center; gap: 24px;
-      opacity: .3; transition: opacity .5s ease;
     }
-    .ams-feature-step.is-active { opacity: 1; }
     .ams-feature-step-badge {
       flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9999px;
       border: 2px solid var(--label); background: var(--white); color: var(--forest);
@@ -895,6 +893,7 @@
     }
     .ams-feature-step-copy { flex: 1; min-width: 0; }
     .ams-feature-step-copy h3 { margin: 0; font-size: 22px; line-height: 30px; }
+    .ams-feature-step:not(.is-active) .ams-feature-step-copy h3 { color: var(--label); }
     .ams-feature-step-copy p { margin-top: 10px; font-size: 15px; line-height: 25px; color: var(--body); }
 
     .ams-feature-media {
@@ -1190,13 +1189,17 @@
     }
     .scf-contact-links {
       display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-      gap: 8px 14px; margin-top: 18px; font-size: 14px;
+      gap: 6px 14px; margin-top: 15px; font-size: 14px;
     }
-    .scf-contact-links a { color: var(--footer-fg); transition: color .15s ease; }
+    .scf-contact-links a {
+      display: inline-flex; align-items: center; min-height: 24px;
+      color: var(--footer-fg); transition: color .15s ease;
+    }
     .scf-contact-links a:hover, .scf-contact-links a:focus-visible { color: var(--footer-primary); }
     .scf-contact-links .scf-sep { color: var(--footer-muted); }
     .scf-google-link {
-      display: inline-block; margin-top: 14px; font-size: 14px; color: var(--footer-muted);
+      display: inline-flex; align-items: center; min-height: 24px;
+      margin-top: 11px; font-size: 14px; color: var(--footer-muted);
       text-decoration: underline; text-underline-offset: 3px; transition: color .15s ease;
     }
     .scf-google-link:hover, .scf-google-link:focus-visible { color: var(--footer-primary); }
@@ -1309,7 +1312,7 @@
     .devpass-back {
       transform: rotateY(180deg);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 3px; padding: 9px 12px; text-align: center; color: var(--gp-ink);
+      gap: 2px; padding: 8px 10px; text-align: center; color: var(--gp-ink);
       border: 1px solid rgba(83,52,6,.55);
       background:
         radial-gradient(circle at 24% 16%, rgba(255,250,220,.55), transparent 42%),
@@ -1349,7 +1352,7 @@
       50% { transform: translateX(2.5px) rotate(.6deg); }
       75% { transform: translateX(-1.5px) rotate(-.35deg); }
     }
-    .devpass-back > :not(.devpass-notches) { position: relative; z-index: 3; max-width: 100%; }
+    .devpass-back > :not(.devpass-notches):not(.devpass-close) { position: relative; z-index: 3; max-width: 100%; }
     .devpass-credit {
       font-family: var(--serif); font-size: clamp(9px, 1.1vw, 10px);
       font-weight: 700; line-height: 1.25; letter-spacing: .035em;
@@ -1357,6 +1360,7 @@
       text-shadow: 0 1px 0 rgba(255,247,214,.78), 0 -1px 0 rgba(91,56,7,.42);
     }
     .devpass-name {
+      display: inline-flex; align-items: center; min-height: 24px;
       font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.1;
       color: #2f1f03; text-decoration: none;
       text-shadow: 0 1px 0 rgba(255,246,210,.6), 0 -1px 0 rgba(80,48,3,.35);
@@ -1364,12 +1368,14 @@
     }
     .devpass-links { display: flex; align-items: center; justify-content: center; gap: 10px; max-width: 100%; }
     .devpass-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 24px; min-height: 24px;
       font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
       color: #3c2705; text-decoration: none; border-bottom: 1px solid rgba(77,46,4,.35);
       text-shadow: 0 1px 0 rgba(255,246,210,.45);
     }
     .devpass-mail {
-      display: inline-grid; place-items: center; width: 19px; height: 19px; flex: 0 0 auto;
+      display: inline-grid; place-items: center; width: 24px; height: 24px; flex: 0 0 auto;
       border-radius: 50%; color: #3c2705;
       border: 1px solid rgba(83,52,6,.45); text-decoration: none;
       background: rgba(255,246,210,.18);
@@ -1379,7 +1385,7 @@
     .devpass-close {
       appearance: none; -webkit-appearance: none; font: inherit; cursor: pointer;
       position: absolute; top: 5px; right: 5px; z-index: 6;
-      display: grid; place-items: center; width: 18px; height: 18px; padding: 0;
+      display: grid; place-items: center; width: 24px; height: 24px; padding: 0;
       border-radius: 50%; border: 1px solid rgba(83,52,6,.4);
       background: rgba(255,246,210,.22); color: #3c2705;
       font-size: 13px; line-height: 1;
@@ -1397,8 +1403,8 @@
       .devpass-name { font-size: 13px; }
       .devpass-link { font-size: 8px; }
       .devpass-links { gap: 8px; }
-      .devpass-mail { width: 17px; height: 17px; }
-      .devpass-close { width: 16px; height: 16px; font-size: 11px; }
+      .devpass-mail { width: 24px; height: 24px; }
+      .devpass-close { width: 24px; height: 24px; font-size: 11px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .devpass-inner, .devpass-front, .devpass-title { transition: none !important; animation: none !important; }
@@ -1796,7 +1802,7 @@
         </div>
 
         <div class="travel-stories-grid" aria-label="Travel stories">
-          <a class="notched-card" href="#services" aria-label="Plan Your Getaway - Couple Getaways">
+          <a class="notched-card" href="#services">
             <div class="notched-card-media">
               <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1200&q=80" alt="Couple enjoying a scenic mountain viewpoint together" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80">
               <span class="notched-card-badge">FOR COUPLES</span>
@@ -1817,7 +1823,7 @@
             </div>
           </a>
 
-          <a class="notched-card" href="#services" aria-label="Explore Family Travel - Family Holidays">
+          <a class="notched-card" href="#services">
             <div class="notched-card-media">
               <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&q=80" alt="Family enjoying a holiday together outdoors" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80">
               <span class="notched-card-badge">FOR FAMILIES</span>
@@ -1838,7 +1844,7 @@
             </div>
           </a>
 
-          <a class="notched-card" href="#services" aria-label="Plan Business Travel - Business Travel">
+          <a class="notched-card" href="#services">
             <div class="notched-card-media">
               <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80" alt="Business traveller in a suit at an airport terminal" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80">
               <span class="notched-card-badge">FOR PROFESSIONALS</span>
@@ -1859,7 +1865,7 @@
             </div>
           </a>
 
-          <a class="notched-card" href="#services" aria-label="Explore Pilgrimage Services - Pilgrimage Journeys">
+          <a class="notched-card" href="#services">
             <div class="notched-card-media">
               <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80" alt="Pilgrims at Masjid al-Haram with the Kaaba in Mecca" loading="lazy" decoding="async" width="1200" height="1365" data-fallback="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80">
               <span class="notched-card-badge">FOR PILGRIMS</span>

@@ -1258,7 +1258,9 @@
        nothing here reads or writes the Holo Card form's flip state or handlers. */
     .devpass-zone { display: flex; justify-content: flex-end; margin-top: 28px; }
     .devpass {
-      --gp-gold: #e6c879; --gp-gold-bright: #fff2c4;
+      --gp-gold: #d7a63d;
+      --gp-gold-bright: #f7e2a0;
+      --gp-ink: #2f1f03;
       position: relative; flex: 0 0 auto; width: 168px; height: 104px;
       perspective: 900px; -webkit-perspective: 900px;
     }
@@ -1273,58 +1275,40 @@
       position: absolute; inset: 0; box-sizing: border-box;
       border-radius: 12px; overflow: hidden; isolation: isolate;
       backface-visibility: hidden; -webkit-backface-visibility: hidden;
-      box-shadow: 0 12px 26px -16px rgba(58,41,7,.7), 0 2px 6px rgba(58,41,7,.18);
+      box-shadow: 0 10px 24px -18px rgba(0,0,0,.9), 0 2px 5px rgba(0,0,0,.25);
     }
+    /* Resting face: deliberately quiet, almost part of the footer. */
     .devpass-front {
       appearance: none; -webkit-appearance: none; font: inherit; cursor: pointer;
       padding: 8px 12px; display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 7px;
-      border: 1px solid rgba(122,86,18,.55); color: #433006;
+      border: 1px solid rgba(186,162,106,.16);
+      color: rgba(203,184,132,.58);
       background:
-        linear-gradient(132deg, rgba(255,255,255,.6), rgba(255,255,255,0) 32%, rgba(255,255,255,.3) 52%, rgba(255,255,255,0) 72%),
-        linear-gradient(155deg, #f8e5ad 0%, #d9ad4e 42%, #b38325 68%, #efd68d 100%);
+        linear-gradient(140deg, rgba(255,255,255,.028), rgba(255,255,255,0) 42%, rgba(0,0,0,.2) 100%),
+        linear-gradient(155deg, #121a17 0%, #0c1310 55%, #080d0b 100%);
+      box-shadow: 0 8px 18px -14px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.035);
+      transition: border-color .2s ease, color .2s ease;
     }
     .devpass-front::before {
-      content: ""; position: absolute; inset: 3px; border-radius: 9px; pointer-events: none; z-index: 2;
-      border: 1px solid rgba(255,246,212,.6);
-      box-shadow: 0 1px 0 rgba(255,252,232,.65) inset;
+      content: ""; position: absolute; inset: 4px; border-radius: 8px; pointer-events: none; z-index: 2;
+      border: 1px solid rgba(203,184,132,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
     }
-    .devpass-front::after {
-      content: ""; position: absolute; z-index: 4; pointer-events: none;
-      top: -60%; bottom: -60%; left: -70%; width: 45%; opacity: 0;
-      transform: translateX(0) rotate(18deg);
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.78), transparent);
-    }
-    .devpass.is-shining .devpass-front::after { animation: devpass-sweep .55s ease-out 1; }
-    @keyframes devpass-sweep {
-      0% { opacity: 0; transform: translateX(0) rotate(18deg); }
-      22% { opacity: .85; }
-      100% { opacity: 0; transform: translateX(420%) rotate(18deg); }
-    }
-    .devpass.is-shaking .devpass-inner { animation: devpass-shake .2s ease-in-out 1; }
-    @keyframes devpass-shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-2.5px) rotate(-.6deg); }
-      50% { transform: translateX(2.5px) rotate(.6deg); }
-      75% { transform: translateX(-1.5px) rotate(-.35deg); }
-    }
+    .devpass-front:hover { border-color: rgba(203,184,132,.28); color: rgba(222,202,148,.72); }
     .devpass-front > :not(.devpass-notches) { position: relative; z-index: 3; }
     .devpass-seal {
       display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%;
-      font-size: 10px; line-height: 1; color: #70500f;
-      border: 1px solid rgba(94,64,10,.5);
-      background: linear-gradient(180deg, rgba(255,250,224,.8), rgba(214,170,74,.35));
-      box-shadow: inset 0 1px 1px rgba(255,255,255,.85), 0 1px 2px rgba(94,64,10,.22);
+      font-size: 10px; line-height: 1; color: rgba(203,184,132,.55);
+      border: 1px solid rgba(203,184,132,.18);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.18));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
     }
     .devpass-title {
       font-family: var(--sans); font-size: 13px; font-weight: 800;
-      letter-spacing: .11em; line-height: 1; white-space: nowrap; color: #3b2a06;
-      text-shadow: 0 1px 0 rgba(255,248,215,.9), 0 -1px 0 rgba(94,64,10,.28), 0 0 10px rgba(255,226,140,.7);
-      animation: devpass-glow 3.2s ease-in-out infinite;
-    }
-    @keyframes devpass-glow {
-      0%, 100% { text-shadow: 0 1px 0 rgba(255,248,215,.9), 0 -1px 0 rgba(94,64,10,.28), 0 0 8px rgba(255,226,140,.45), 0 0 16px rgba(255,210,90,.22); }
-      50% { text-shadow: 0 1px 0 rgba(255,248,215,.95), 0 -1px 0 rgba(94,64,10,.28), 0 0 13px rgba(255,232,160,.95), 0 0 24px rgba(255,210,90,.5); }
+      letter-spacing: .11em; line-height: 1; white-space: nowrap;
+      color: rgba(203,184,132,.62);
+      text-shadow: 0 1px 0 rgba(0,0,0,.35);
     }
     .devpass-notches { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
     .devpass-notches::before, .devpass-notches::after {
@@ -1333,65 +1317,105 @@
     }
     .devpass-notches::before { left: -5px; }
     .devpass-notches::after { right: -5px; }
+
+    /* Revealed face: brushed, engraved metallic gold. */
     .devpass-back {
       transform: rotateY(180deg);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 3px; padding: 8px 14px; text-align: center; color: #f5ecd2;
-      border: 1px solid rgba(226,190,104,.62);
+      gap: 3px; padding: 9px 12px; text-align: center; color: var(--gp-ink);
+      border: 1px solid rgba(83,52,6,.55);
       background:
-        radial-gradient(circle at 22% 16%, rgba(255,225,150,.18), transparent 48%),
-        linear-gradient(150deg, #1e2d27 0%, #13221d 55%, #0d1a16 100%);
+        radial-gradient(circle at 24% 16%, rgba(255,250,220,.55), transparent 42%),
+        linear-gradient(102deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 18%, rgba(255,255,255,.16) 34%, rgba(255,255,255,0) 52%, rgba(255,255,255,.22) 76%, rgba(255,255,255,0) 100%),
+        repeating-linear-gradient(96deg, rgba(255,255,255,.055) 0 1px, rgba(120,78,12,.045) 1px 3px),
+        linear-gradient(145deg, #f7e2a0 0%, #d7a63d 25%, #a9781e 48%, #e7bd62 70%, #f7e2a0 100%);
+      box-shadow:
+        0 18px 34px -18px rgba(215,166,61,.6),
+        0 0 22px rgba(255,209,99,.14),
+        inset 0 1px 0 rgba(255,248,214,.75),
+        inset 0 -2px 4px rgba(92,55,5,.35);
+    }
+    .devpass-back::before {
+      content: ""; position: absolute; inset: 4px; border-radius: 8px; pointer-events: none; z-index: 2;
+      border: 1px solid rgba(74,43,4,.62);
+      box-shadow:
+        inset 0 0 0 2px rgba(255,240,190,.34),
+        inset 0 0 0 3px rgba(83,52,6,.28),
+        0 0 0 1px rgba(255,230,150,.38);
     }
     .devpass-back::after {
-      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background: linear-gradient(125deg, rgba(255,255,255,.13), transparent 32%, transparent 70%, rgba(255,225,150,.1));
+      content: ""; position: absolute; z-index: 4; pointer-events: none;
+      top: -60%; bottom: -60%; left: -70%; width: 42%; opacity: 0;
+      transform: translateX(0) rotate(18deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.82), transparent);
     }
-    .devpass-back > :not(.devpass-notches) { position: relative; z-index: 2; }
-    .devpass-credit { font-size: 8px; line-height: 1.25; color: rgba(245,236,210,.8); }
+    .devpass.is-shining .devpass-back::after { animation: devpass-back-sweep .62s ease-out 1; }
+    @keyframes devpass-back-sweep {
+      0% { opacity: 0; transform: translateX(0) rotate(18deg); }
+      22% { opacity: .8; }
+      100% { opacity: 0; transform: translateX(460%) rotate(18deg); }
+    }
+    .devpass.is-shaking .devpass-inner { animation: devpass-shake .2s ease-in-out 1; }
+    @keyframes devpass-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2.5px) rotate(-.6deg); }
+      50% { transform: translateX(2.5px) rotate(.6deg); }
+      75% { transform: translateX(-1.5px) rotate(-.35deg); }
+    }
+    .devpass-back > :not(.devpass-notches) { position: relative; z-index: 3; max-width: 100%; }
+    .devpass-credit {
+      font-size: 8px; line-height: 1.25; color: #3c2705;
+      text-shadow: 0 1px 0 rgba(255,246,210,.55);
+    }
     .devpass-name {
-      font-family: var(--serif); font-size: 15px; font-weight: 600; line-height: 1.1;
-      color: var(--gp-gold-bright); text-decoration: none;
-      border-bottom: 1px solid rgba(255,242,196,.45);
+      font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.1;
+      color: #2f1f03; text-decoration: none;
+      text-shadow: 0 1px 0 rgba(255,246,210,.6), 0 -1px 0 rgba(80,48,3,.35);
+      border-bottom: 1px solid rgba(77,46,4,.42);
     }
-    .devpass-links { display: flex; align-items: center; gap: 10px; }
+    .devpass-links { display: flex; align-items: center; justify-content: center; gap: 10px; max-width: 100%; }
     .devpass-link {
       font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
-      color: var(--gp-gold); text-decoration: none; border-bottom: 1px solid rgba(230,200,121,.38);
+      color: #3c2705; text-decoration: none; border-bottom: 1px solid rgba(77,46,4,.35);
+      text-shadow: 0 1px 0 rgba(255,246,210,.45);
     }
     .devpass-mail {
-      display: inline-grid; place-items: center; width: 19px; height: 19px;
-      border-radius: 50%; color: var(--gp-gold);
-      border: 1px solid rgba(230,200,121,.45); text-decoration: none;
+      display: inline-grid; place-items: center; width: 19px; height: 19px; flex: 0 0 auto;
+      border-radius: 50%; color: #3c2705;
+      border: 1px solid rgba(83,52,6,.45); text-decoration: none;
+      background: rgba(255,246,210,.18);
+      box-shadow: inset 0 1px 0 rgba(255,248,214,.5);
     }
     .devpass-mail svg { display: block; width: 11px; height: 11px; }
     .devpass-close {
       appearance: none; -webkit-appearance: none; font: inherit; cursor: pointer;
       position: absolute; top: 5px; right: 5px; z-index: 6;
       display: grid; place-items: center; width: 18px; height: 18px; padding: 0;
-      border-radius: 50%; border: 1px solid rgba(230,200,121,.4);
-      background: rgba(255,255,255,.06); color: var(--gp-gold);
+      border-radius: 50%; border: 1px solid rgba(83,52,6,.4);
+      background: rgba(255,246,210,.22); color: #3c2705;
       font-size: 13px; line-height: 1;
     }
-    .devpass-front:hover { filter: brightness(1.04); }
-    .devpass-name:hover, .devpass-link:hover, .devpass-mail:hover { color: #fff6d8; }
+    .devpass-name:hover, .devpass-link:hover, .devpass-mail:hover { color: #120c01; }
     .devpass-front:focus-visible, .devpass-close:focus-visible,
     .devpass-name:focus-visible, .devpass-link:focus-visible, .devpass-mail:focus-visible {
-      outline: 2px solid var(--gp-gold-bright); outline-offset: 2px;
+      outline: 2px solid #f7e2a0; outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgba(13,19,16,.85);
     }
     .devpass-close:focus-visible { outline-offset: 1px; }
     @media (max-width: 560px) {
-      .devpass { width: 140px; height: 88px; }
+      .devpass { width: 148px; height: 92px; }
       .devpass-title { font-size: 11px; letter-spacing: .08em; }
       .devpass-seal { width: 16px; height: 16px; font-size: 9px; }
       .devpass-credit { font-size: 7px; }
       .devpass-name { font-size: 13px; }
       .devpass-link { font-size: 8px; }
+      .devpass-links { gap: 8px; }
       .devpass-mail { width: 17px; height: 17px; }
       .devpass-close { width: 16px; height: 16px; font-size: 11px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .devpass-inner, .devpass-front, .devpass-title { transition: none !important; animation: none !important; }
-      .devpass.is-shaking .devpass-inner, .devpass.is-shining .devpass-front::after { animation: none !important; }
+      .devpass.is-shaking .devpass-inner, .devpass.is-shining .devpass-back::after { animation: none !important; }
       .devpass.is-flipped .devpass-inner { transform: none !important; }
       .devpass-back { transform: none; }
       .devpass-front { opacity: 0; visibility: hidden; pointer-events: none; }
@@ -2289,7 +2313,7 @@
       <div class="devpass-zone">
         <div class="devpass" id="devPass">
           <div class="devpass-inner">
-            <button type="button" class="devpass-face devpass-front" aria-label="DON'T TOUCH - reveal developer credits" aria-controls="devPassBack">
+            <button type="button" class="devpass-face devpass-front" aria-label="DON'T TOUCH - reveal developer credits" aria-controls="devPassBack" aria-expanded="false">
               <span class="devpass-notches" aria-hidden="true"></span>
               <span class="devpass-seal" aria-hidden="true">✦</span>
               <span class="devpass-title">DON'T TOUCH</span>
@@ -3346,6 +3370,7 @@
 
       function setState() {
         card.classList.toggle("is-flipped", flipped);
+        front.setAttribute("aria-expanded", flipped ? "true" : "false");
         if (flipped) {
           front.setAttribute("inert", "");
           front.setAttribute("aria-hidden", "true");
@@ -3370,12 +3395,15 @@
           busy = false;
           return;
         }
-        card.classList.add("is-shaking", "is-shining");
-        window.setTimeout(function () { card.classList.remove("is-shining"); }, 620);
+        if (toFlipped) card.classList.add("is-shaking");
         window.setTimeout(function () {
-          card.classList.remove("is-shaking");
           flipped = toFlipped;
           setState();
+          if (toFlipped) {
+            card.classList.add("is-shining");
+            window.setTimeout(function () { card.classList.remove("is-shining"); }, 700);
+          }
+          window.setTimeout(function () { card.classList.remove("is-shaking"); }, 150);
           focusTarget.focus({ preventScroll: true });
           var done = false;
           function finish() {

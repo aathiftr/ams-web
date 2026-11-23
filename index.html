@@ -2158,8 +2158,8 @@
                       <p class="holo-field-error" id="emailError" aria-live="polite"></p>
                     </div>
                     <div class="holo-field">
-                      <label for="phone">PHONE NUMBER (OPTIONAL)</label>
-                      <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" aria-describedby="phoneError">
+                      <label for="phone">PHONE NUMBER</label>
+                      <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" required aria-required="true" aria-describedby="phoneError">
                       <p class="holo-field-error" id="phoneError" aria-live="polite"></p>
                     </div>
                   </div>
@@ -2510,7 +2510,7 @@
       }
       function validName(value) { return value.length >= 2 && hasLetter(value); }
       function validPhone(value) {
-        if (!value) return true;
+        if (!value) return false;
         let local = value.trim();
         local = local.replace(/^\+91[\s-]?/, "");
         const digits = local.replace(/[\s-]/g, "");
@@ -2580,7 +2580,8 @@
         else if (!validName(name)) { setError(nameInput, errors.name, "Please enter a name with at least 2 characters, including a letter."); ok = false; }
         if (!email) { setError(emailInput, errors.email, "Please enter your email address."); ok = false; }
         else if (!validEmail(email)) { setError(emailInput, errors.email, "Please enter a valid email address."); ok = false; }
-        if (!validPhone(phone)) { setError(phoneInput, errors.phone, "Please enter a valid 10-digit Indian mobile number."); ok = false; }
+        if (!phone) { setError(phoneInput, errors.phone, "Please enter your phone number."); ok = false; }
+        else if (!validPhone(phone)) { setError(phoneInput, errors.phone, "Please enter a valid 10-digit Indian mobile number."); ok = false; }
         return { ok, name, email, phone };
       }
 

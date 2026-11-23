@@ -1084,6 +1084,14 @@
       box-shadow: 0 18px 40px -20px rgba(0,39,32,.55);
     }
     .holo-field .iti__country-list { color: var(--ink); font-family: var(--sans); }
+    /* Honeypot: off-screen and unreachable by keyboard or assistive tech. */
+    .holo-honeypot {
+      position: absolute !important; width: 1px !important; height: 1px !important;
+      margin: -1px !important; padding: 0 !important; overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important; clip-path: inset(50%) !important;
+      white-space: nowrap !important; border: 0 !important;
+    }
+    .holo-honeypot input { width: 1px !important; height: 1px !important; padding: 0 !important; border: 0 !important; }
     .holo-form-footer { margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(0,56,47,.08); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     .holo-privacy { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--body); }
     .holo-privacy img { width: 12px; height: 16px; flex: 0 0 auto; }
@@ -2185,6 +2193,11 @@
                     </div>
                   </div>
 
+                  <div class="holo-honeypot" aria-hidden="true">
+                    <label for="website">Website</label>
+                    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="https://">
+                  </div>
+
                   <div class="holo-form-footer">
                     <div class="holo-privacy">
                       <img alt="" src="https://www.figma.com/api/mcp/asset/abf89aff-e51e-4c9d-8d41-e504643d4c10.svg">
@@ -2511,6 +2524,7 @@
       const nameInput = document.getElementById("name");
       const emailInput = document.getElementById("email");
       const phoneInput = document.getElementById("phone");
+      const honeypotInput = document.getElementById("website");
       const errors = {
         name: document.getElementById("nameError"),
         email: document.getElementById("emailError"),
@@ -2700,6 +2714,8 @@
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         if (busy || transitioning || isFlipped) return;
+        const honeypotValue = honeypotInput ? honeypotInput.value.trim() : "";
+        if (honeypotValue) return;
         const v = validate();
         if (!v.ok) {
           setStatus("Please correct the highlighted fields.");
@@ -2720,7 +2736,7 @@
             return;
           }
           v.phone = result.phone;
-          const url = SCRIPT_URL + "?" + new URLSearchParams({ name: v.name, email: v.email, phone: v.phone });
+          const url = SCRIPT_URL + "?" + new URLSearchParams({ name: v.name, email: v.email, phone: v.phone, website: honeypotValue });
           fetch(url, { method: "GET", mode: "no-cors" })
             .then(function () {
               // The existing no-cors Apps Script integration returns an opaque response,

@@ -1279,40 +1279,23 @@
       position: absolute; inset: 0; box-sizing: border-box;
       border-radius: 12px; overflow: hidden; isolation: isolate;
       backface-visibility: hidden; -webkit-backface-visibility: hidden;
-      box-shadow: 0 10px 24px -18px rgba(0,0,0,.9), 0 2px 5px rgba(0,0,0,.25);
     }
-    /* Resting face: deliberately quiet, almost part of the footer. */
+    /* Resting face: only quiet footer text, with no card surface. */
     .devpass-front {
       appearance: none; -webkit-appearance: none; font: inherit; cursor: pointer;
-      padding: 8px 12px; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 7px;
-      border: 1px solid rgba(186,162,106,.16);
-      color: rgba(203,184,132,.58);
-      background:
-        linear-gradient(140deg, rgba(255,255,255,.028), rgba(255,255,255,0) 42%, rgba(0,0,0,.2) 100%),
-        linear-gradient(155deg, #121a17 0%, #0c1310 55%, #080d0b 100%);
-      box-shadow: 0 8px 18px -14px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.035);
-      transition: border-color .2s ease, color .2s ease;
+      inset: auto 0 0 auto; width: auto; height: auto;
+      padding: 9px 10px; display: flex; align-items: center; justify-content: center;
+      border: 0; background: none; box-shadow: none;
+      color: var(--footer-fg); opacity: .78;
+      transition: opacity .2s ease;
     }
-    .devpass-front::before {
-      content: ""; position: absolute; inset: 4px; border-radius: 8px; pointer-events: none; z-index: 2;
-      border: 1px solid rgba(203,184,132,.12);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
-    }
-    .devpass-front:hover { border-color: rgba(203,184,132,.28); color: rgba(222,202,148,.72); }
+    .devpass-front:hover { opacity: 1; }
     .devpass-front > :not(.devpass-notches) { position: relative; z-index: 3; }
-    .devpass-seal {
-      display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%;
-      font-size: 10px; line-height: 1; color: rgba(203,184,132,.55);
-      border: 1px solid rgba(203,184,132,.18);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.18));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
-    }
+    .devpass-front .devpass-seal, .devpass-front .devpass-notches { display: none; }
     .devpass-title {
-      font-family: var(--sans); font-size: 13px; font-weight: 800;
-      letter-spacing: .11em; line-height: 1; white-space: nowrap;
-      color: rgba(203,184,132,.62);
-      text-shadow: 0 1px 0 rgba(0,0,0,.35);
+      font-family: var(--sans); font-size: 12px; font-weight: 600;
+      letter-spacing: .08em; line-height: 1; white-space: nowrap;
+      color: inherit; text-shadow: none;
     }
     .devpass-notches { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
     .devpass-notches::before, .devpass-notches::after {
@@ -1368,8 +1351,10 @@
     }
     .devpass-back > :not(.devpass-notches) { position: relative; z-index: 3; max-width: 100%; }
     .devpass-credit {
-      font-size: 8px; line-height: 1.25; color: #3c2705;
-      text-shadow: 0 1px 0 rgba(255,246,210,.55);
+      font-family: var(--serif); font-size: clamp(9px, 1.1vw, 10px);
+      font-weight: 700; line-height: 1.25; letter-spacing: .035em;
+      color: #3a2503; text-wrap: balance;
+      text-shadow: 0 1px 0 rgba(255,247,214,.78), 0 -1px 0 rgba(91,56,7,.42);
     }
     .devpass-name {
       font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.1;
@@ -1409,7 +1394,6 @@
     @media (max-width: 560px) {
       .devpass-title { font-size: 11px; letter-spacing: .08em; }
       .devpass-seal { width: 16px; height: 16px; font-size: 9px; }
-      .devpass-credit { font-size: 7px; }
       .devpass-name { font-size: 13px; }
       .devpass-link { font-size: 8px; }
       .devpass-links { gap: 8px; }

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-2YQXTfJ4xhiY6qEWt7A5wm6/qFGmqB9uRMA+Wj+eBag=' 'sha256-o1SSs1Ql5hV8QwAkuKsWtDxGpgGb/+02F20jwcOhf/U=' 'sha256-w4TekEMEZ9qqacY+rTW5PCz3ksNA6YxiOJ0LNsV+lQA='; style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net 'unsafe-hashes' 'sha256-G0emQ0qsAuvB8Cq1YAcd0CTpOo+0dzxTQSZ4cJ1iH3o=' 'sha256-gbAS7DeskqxyliKMPROd2XZ6FH0zwcVfcTsPccULlvw=' 'sha256-Q7iP0QgDW1OjQLNZ8MHNKSy2zTiVTmMOC4hY3OCqNac=' 'sha256-gGNy+P00RFjutmjNfr/drBcnWtJ2yGQ67tilXfRtBeA=' 'sha256-Afrg3IO7Yeh86kYj0+7+0Mx44gekgv25e5Hkw/VTlU4=' 'sha256-1kXPW4GTePYBPG87gAAp1KmaIXGs9uMSFZJcVkyjt90='; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.jsdelivr.net https://images.unsplash.com https://images.openai.com https://pngimg.com https://www.figma.com; connect-src 'self'; frame-src 'none'"
+        }
+      ]
+    }
+  ]
+}

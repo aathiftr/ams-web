@@ -2508,7 +2508,6 @@
     // ---- Inquiry form: Holo Card-inspired interaction (21st.dev @romanvasnev/holo-card reference) ----
     // MCP retrieval: component id 40220 found via 21st.dev MCP search; get_component returned locked/retrieval_limit_reached.
     // Fallback reference: official component page + public preview bundle for tilt/glare/flip behavior.
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbws7-JF8PELXJtPO_cBAC9bwV7fXlJB5cy4QYI9QDm4Ef4XFznVyDw4KYhQPKmz2DqZlA/exec";
 
     (function () {
       const shell = document.getElementById("holoFormShell");
@@ -2606,6 +2605,15 @@
           submitBtn.removeAttribute("aria-busy");
           submitBtn.textContent = "Continue";
         }
+      }
+      function submissionErrorMessage(status, data) {
+        if (status === 409 || (data && data.duplicate === true)) return "This enquiry has already been received. Please avoid submitting it again.";
+        if (status === 429 || (data && data.rateLimited === true)) return "You've submitted several enquiries recently. Please try again later.";
+        if (status === 400) {
+          const message = data && typeof data.message === "string" ? data.message.trim() : "";
+          return message || "Please check your details and try again.";
+        }
+        return "Something went wrong. Please try again in a moment.";
       }
 
       function resetTilt() {
@@ -2736,12 +2744,21 @@
             return;
           }
           v.phone = result.phone;
-          const url = SCRIPT_URL + "?" + new URLSearchParams({ name: v.name, email: v.email, phone: v.phone, website: honeypotValue });
-          fetch(url, { method: "GET", mode: "no-cors" })
-            .then(function () {
-              // The existing no-cors Apps Script integration returns an opaque response,
-              // so a resolved network request is the success signal this site has always used.
-              flipToWelcome(v.name);
+          fetch("/api/enquiry", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: v.name, email: v.email, phone: v.phone, website: honeypotValue })
+          })
+            .then(function (response) {
+              let data = null;
+              try { data = response.json(); } catch (e) {}
+              return Promise.resolve(data).then(function (parsed) {
+                if (response.ok && parsed && parsed.success === true) {
+                  flipToWelcome(v.name);
+                  return;
+                }
+                setStatus(submissionErrorMessage(response.status, parsed));
+              });
             })
             .catch(function () {
               setStatus("Something went wrong. Please try again in a moment.");

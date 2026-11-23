@@ -1256,12 +1256,16 @@
     /* ---------- GOLD DEVELOPER PASS ---------- */
     /* Standalone miniature footer signature. Own selectors, own state, own animation:
        nothing here reads or writes the Holo Card form's flip state or handlers. */
-    .devpass-zone { display: flex; justify-content: flex-end; margin-top: 28px; }
+    .devpass-zone {
+      position: absolute; right: clamp(12px, 1.7vw, 24px); bottom: clamp(8px, 1.1vw, 16px); z-index: 2;
+      display: flex; justify-content: flex-end;
+    }
     .devpass {
       --gp-gold: #d7a63d;
       --gp-gold-bright: #f7e2a0;
       --gp-ink: #2f1f03;
-      position: relative; flex: 0 0 auto; width: 168px; height: 104px;
+      position: relative; flex: 0 0 auto; width: clamp(132px, 14vw, 168px);
+      aspect-ratio: 42 / 26; height: auto;
       perspective: 900px; -webkit-perspective: 900px;
     }
     .devpass-inner {
@@ -1403,7 +1407,6 @@
     }
     .devpass-close:focus-visible { outline-offset: 1px; }
     @media (max-width: 560px) {
-      .devpass { width: 148px; height: 92px; }
       .devpass-title { font-size: 11px; letter-spacing: .08em; }
       .devpass-seal { width: 16px; height: 16px; font-size: 9px; }
       .devpass-credit { font-size: 7px; }
@@ -2309,25 +2312,26 @@
         <p class="scf-copyright">© 2026 AMS Travel Services. All rights reserved.</p>
       </div>
 
-      <!-- Miniature gold developer pass: independent of the enquiry form and all other page interactions. -->
-      <div class="devpass-zone">
-        <div class="devpass" id="devPass">
-          <div class="devpass-inner">
-            <button type="button" class="devpass-face devpass-front" aria-label="DON'T TOUCH - reveal developer credits" aria-controls="devPassBack" aria-expanded="false">
-              <span class="devpass-notches" aria-hidden="true"></span>
-              <span class="devpass-seal" aria-hidden="true">✦</span>
-              <span class="devpass-title">DON'T TOUCH</span>
-            </button>
-            <div class="devpass-face devpass-back" id="devPassBack" aria-hidden="true" inert>
-              <span class="devpass-notches" aria-hidden="true"></span>
-              <span class="devpass-credit">Website designed &amp; developed by</span>
-              <a class="devpass-name" href="https://linkedin.com/in/aathif-tr-" target="_blank" rel="noopener noreferrer">Aathif TR</a>
-              <span class="devpass-links">
-                <a class="devpass-link" href="https://github.com/aathiftr2005-debug" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a class="devpass-mail" href="mailto:aathiftr2005@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m3 6 9 7 9-7"></path></svg></a>
-              </span>
-              <button type="button" class="devpass-close" aria-label="Close developer credits">×</button>
-            </div>
+    </div>
+
+    <!-- Miniature gold developer pass: independent of the enquiry form and all other page interactions. -->
+    <div class="devpass-zone">
+      <div class="devpass" id="devPass">
+        <div class="devpass-inner">
+          <button type="button" class="devpass-face devpass-front" aria-label="DON'T TOUCH - reveal developer credits" aria-controls="devPassBack" aria-expanded="false">
+            <span class="devpass-notches" aria-hidden="true"></span>
+            <span class="devpass-seal" aria-hidden="true">✦</span>
+            <span class="devpass-title">DON'T TOUCH</span>
+          </button>
+          <div class="devpass-face devpass-back" id="devPassBack" aria-hidden="true" inert>
+            <span class="devpass-notches" aria-hidden="true"></span>
+            <span class="devpass-credit">Website designed &amp; developed by</span>
+            <a class="devpass-name" href="https://linkedin.com/in/aathif-tr-" target="_blank" rel="noopener noreferrer">Aathif TR</a>
+            <span class="devpass-links">
+              <a class="devpass-link" href="https://github.com/aathiftr2005-debug" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a class="devpass-mail" href="mailto:aathiftr2005@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m3 6 9 7 9-7"></path></svg></a>
+            </span>
+            <button type="button" class="devpass-close" aria-label="Close developer credits">×</button>
           </div>
         </div>
       </div>

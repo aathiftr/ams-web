@@ -18,6 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.11/dist/css/intlTelInput.css">
   <style>
     :root {
       --forest: #002720;
@@ -51,6 +52,12 @@
       --scf-disc: #ffffff;
       --scf-ring: rgba(0, 39, 32, 0.10);
       --scf-disc-shadow: rgba(0, 39, 32, 0.10);
+
+      /* International phone selector palette. */
+      --iti-border-color: rgba(0, 56, 47, 0.12);
+      --iti-country-selector-bg: #ffffff;
+      --iti-icon-color: #183d35;
+      --iti-hover-color: rgba(24, 61, 53, 0.07);
     }
 
     /* Coherent site-wide dark theme: only colour tokens change. */
@@ -83,6 +90,11 @@
       --scf-disc: #ffffff;
       --scf-ring: rgba(217, 242, 230, 0.18);
       --scf-disc-shadow: rgba(0, 0, 0, 0.28);
+
+      --iti-border-color: rgba(143, 216, 189, 0.18);
+      --iti-country-selector-bg: #0f2b25;
+      --iti-icon-color: #8fd8bd;
+      --iti-hover-color: rgba(143, 216, 189, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1064,6 +1076,14 @@
     .holo-field input:focus { border-color: rgba(0,56,47,.45); box-shadow: 0 0 0 4px rgba(176,206,179,.28); background: rgba(255,255,255,.88); }
     .holo-field input[aria-invalid="true"] { border-color: rgba(155,44,44,.55); box-shadow: 0 0 0 4px rgba(155,44,44,.08); }
     .holo-field-error { min-height: 18px; font-size: 12px; line-height: 1.4; color: #9b2c2c; font-weight: 600; }
+    /* International phone selector: scoped to the enquiry form. */
+    .holo-field .iti { display: block; width: 100%; }
+    .holo-field .iti__selected-country-primary { border-radius: 12px 0 0 12px; }
+    .holo-field .iti__country-selector {
+      z-index: 20; border-radius: 12px; color: var(--ink); font-family: var(--sans);
+      box-shadow: 0 18px 40px -20px rgba(0,39,32,.55);
+    }
+    .holo-field .iti__country-list { color: var(--ink); font-family: var(--sans); }
     .holo-form-footer { margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(0,56,47,.08); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     .holo-privacy { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--body); }
     .holo-privacy img { width: 12px; height: 16px; flex: 0 0 auto; }
@@ -1671,6 +1691,7 @@
       border-color: rgba(143, 216, 189, 0.5); box-shadow: 0 0 0 4px rgba(143, 216, 189, 0.16); background: rgba(7, 27, 23, 0.82);
     }
     html.dark .holo-field input[aria-invalid="true"] { border-color: rgba(255, 140, 140, 0.6); box-shadow: 0 0 0 4px rgba(255, 140, 140, 0.12); }
+    html.dark .holo-field .iti__country-selector { box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85); }
     html.dark .holo-field-error, html.dark .holo-form-status { color: #ff9b9b; }
     html.dark .holo-form-footer { border-top-color: rgba(143, 216, 189, 0.16); }
     html.dark .holo-welcome-icon { background: linear-gradient(180deg, rgba(143, 216, 189, 0.18), rgba(30, 90, 73, 0.35)); border-color: rgba(143, 216, 189, 0.2); }
@@ -2159,7 +2180,7 @@
                     </div>
                     <div class="holo-field">
                       <label for="phone">PHONE NUMBER</label>
-                      <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" required aria-required="true" aria-describedby="phoneError">
+                      <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="Enter your phone number" autocomplete="tel" required aria-required="true" aria-describedby="phoneError">
                       <p class="holo-field-error" id="phoneError" aria-live="polite"></p>
                     </div>
                   </div>
@@ -2276,6 +2297,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.11/dist/js/intlTelInput.min.js"></script>
   <script>
     // ---- Notched travel cards: graceful image fallback ----
     (function () {
@@ -2500,6 +2522,25 @@
       let isFlipped = false;
       let transitioning = false;
 
+      // Countries come from the library's full worldwide dataset. India is the fixed
+      // initial selection; no geolocation or country inference is performed.
+      let phoneInputInstance = null;
+      if (typeof window.intlTelInput === "function") {
+        try {
+          phoneInputInstance = window.intlTelInput(phoneInput, {
+            initialCountry: "in",
+            countryOrder: ["in", "us", "gb", "ae", "de"],
+            countrySearch: true,
+            separateDialCode: true,
+            loadUtils: function () {
+              return import("https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.11/dist/js/utils.js");
+            }
+          });
+        } catch (e) {
+          phoneInputInstance = null;
+        }
+      }
+
       function setStatus(message) { statusEl.textContent = message || ""; }
       function clearError(input, el) { if (el) el.textContent = ""; if (input) input.removeAttribute("aria-invalid"); }
       function setError(input, el, message) { if (el) el.textContent = message; if (input) input.setAttribute("aria-invalid", "true"); }
@@ -2509,12 +2550,48 @@
         catch (e) { return /[A-Za-z]/.test(value); }
       }
       function validName(value) { return value.length >= 2 && hasLetter(value); }
-      function validPhone(value) {
-        if (!value) return false;
-        let local = value.trim();
-        local = local.replace(/^\+91[\s-]?/, "");
-        const digits = local.replace(/[\s-]/g, "");
-        return /^[6-9]\d{9}$/.test(digits);
+      function phoneUnavailableMessage() { return "Phone validation is unavailable. Please try again in a moment."; }
+      function phoneValidationMessage(raw, code) {
+        if (!raw) return "Please enter your phone number.";
+        const validationErrors = (window.intlTelInput && window.intlTelInput.VALIDATION_ERROR) || {};
+        if (code === validationErrors.TOO_SHORT || code === "TOO_SHORT") return "Phone number is too short for the selected country.";
+        if (code === validationErrors.TOO_LONG || code === "TOO_LONG") return "Phone number is too long for the selected country.";
+        if (code === validationErrors.INVALID_COUNTRY_CODE || code === "INVALID_COUNTRY_CODE") return "Invalid country calling code.";
+        return "Please enter a valid phone number for the selected country.";
+      }
+      function validatePhoneInternational() {
+        const raw = phoneInput.value.trim();
+        if (!raw) return Promise.resolve({ ok: false, message: "Please enter your phone number." });
+        if (!phoneInputInstance || !phoneInputInstance.promise) return Promise.resolve({ ok: false, message: phoneUnavailableMessage() });
+        return phoneInputInstance.promise.then(function () {
+          if (typeof phoneInputInstance.isValidNumber !== "function" || typeof phoneInputInstance.getNumber !== "function") {
+            return { ok: false, message: phoneUnavailableMessage() };
+          }
+          if (!phoneInputInstance.isValidNumber()) {
+            let code = null;
+            try { code = phoneInputInstance.getValidationError(); } catch (e) {}
+            return { ok: false, message: phoneValidationMessage(raw, code) };
+          }
+          let normalized = "";
+          try { normalized = phoneInputInstance.getNumber(); } catch (e) {}
+          if (!/^\+[1-9]\d{7,14}$/.test(normalized || "")) {
+            return { ok: false, message: phoneValidationMessage(raw, null) };
+          }
+          return { ok: true, phone: normalized };
+        }).catch(function () {
+          return { ok: false, message: phoneUnavailableMessage() };
+        });
+      }
+      function setBusy(value) {
+        busy = value;
+        submitBtn.disabled = value;
+        if (value) {
+          submitBtn.setAttribute("aria-busy", "true");
+          submitBtn.textContent = "Submitting...";
+        } else {
+          submitBtn.removeAttribute("aria-busy");
+          submitBtn.textContent = "Continue";
+        }
       }
 
       function resetTilt() {
@@ -2581,7 +2658,6 @@
         if (!email) { setError(emailInput, errors.email, "Please enter your email address."); ok = false; }
         else if (!validEmail(email)) { setError(emailInput, errors.email, "Please enter a valid email address."); ok = false; }
         if (!phone) { setError(phoneInput, errors.phone, "Please enter your phone number."); ok = false; }
-        else if (!validPhone(phone)) { setError(phoneInput, errors.phone, "Please enter a valid 10-digit Indian mobile number."); ok = false; }
         return { ok, name, email, phone };
       }
 
@@ -2614,6 +2690,10 @@
           if (statusEl.textContent) setStatus("");
         });
       });
+      phoneInput.addEventListener("countrychange", function () {
+        clearError(phoneInput, errors.phone);
+        if (statusEl.textContent) setStatus("");
+      });
 
       backBtn.addEventListener("click", function () { flipToForm(); });
 
@@ -2629,27 +2709,34 @@
           if (firstInvalid) firstInvalid.focus({ preventScroll: true });
           return;
         }
-        busy = true;
-        submitBtn.disabled = true;
-        submitBtn.setAttribute("aria-busy", "true");
-        submitBtn.textContent = "Submitting...";
+        setBusy(true);
         setStatus("");
-        const url = SCRIPT_URL + "?" + new URLSearchParams({ name: v.name, email: v.email, phone: v.phone });
-        fetch(url, { method: "GET", mode: "no-cors" })
-          .then(function () {
-            // The existing no-cors Apps Script integration returns an opaque response,
-            // so a resolved network request is the success signal this site has always used.
-            flipToWelcome(v.name);
-          })
-          .catch(function () {
-            setStatus("Something went wrong. Please try again in a moment.");
-          })
-          .finally(function () {
-            busy = false;
-            submitBtn.disabled = false;
-            submitBtn.removeAttribute("aria-busy");
-            submitBtn.textContent = "Continue";
-          });
+        validatePhoneInternational().then(function (result) {
+          if (!result.ok) {
+            setError(phoneInput, errors.phone, result.message);
+            setStatus("Please correct the highlighted fields.");
+            phoneInput.focus({ preventScroll: true });
+            setBusy(false);
+            return;
+          }
+          v.phone = result.phone;
+          const url = SCRIPT_URL + "?" + new URLSearchParams({ name: v.name, email: v.email, phone: v.phone });
+          fetch(url, { method: "GET", mode: "no-cors" })
+            .then(function () {
+              // The existing no-cors Apps Script integration returns an opaque response,
+              // so a resolved network request is the success signal this site has always used.
+              flipToWelcome(v.name);
+            })
+            .catch(function () {
+              setStatus("Something went wrong. Please try again in a moment.");
+            })
+            .finally(function () {
+              setBusy(false);
+            });
+        }).catch(function () {
+          setStatus("Something went wrong. Please try again in a moment.");
+          setBusy(false);
+        });
       });
 
       if (typeof reduceMotion.addEventListener === "function") reduceMotion.addEventListener("change", resetTilt);

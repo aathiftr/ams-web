@@ -113,6 +113,9 @@
     }
     main#main-content:focus { outline: none; }
     html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
     body {
       background: var(--paper);
       color: var(--body);
@@ -2248,7 +2251,7 @@
                 </form>
               </section>
 
-              <section class="holo-face holo-back" aria-label="Welcome message">
+              <section class="holo-face holo-back" aria-label="Welcome message" inert aria-hidden="true">
                 <div class="holo-welcome">
                   <div class="holo-welcome-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2558,7 +2561,9 @@
       const statusEl = document.getElementById("formStatus");
       const backBtn = document.getElementById("backToFormBtn");
       const welcomeHeading = document.getElementById("welcomeHeading");
-      if (!shell || !tilt || !card || !form || !submitBtn || !statusEl || !backBtn || !welcomeHeading) return;
+      const frontFace = card ? card.querySelector(".holo-front") : null;
+      const backFace = card ? card.querySelector(".holo-back") : null;
+      if (!shell || !tilt || !card || !form || !submitBtn || !statusEl || !backBtn || !welcomeHeading || !frontFace || !backFace) return;
 
       const nameInput = document.getElementById("name");
       const emailInput = document.getElementById("email");
@@ -2574,6 +2579,8 @@
       let busy = false;
       let isFlipped = false;
       let transitioning = false;
+      let lastFormActivationWasKeyboard = false;
+      let lastFormPointerDown = 0;
 
       // Countries come from the library's full worldwide dataset. India is the fixed
       // initial selection; no geolocation or country inference is performed.
@@ -2667,23 +2674,36 @@
         tilt.style.transform = "";
       }
 
-      function applyFlipState(animateFocus) {
+      function applyFlipState(focusTarget) {
+        const inactiveFace = isFlipped ? frontFace : backFace;
+        if (inactiveFace.contains(document.activeElement)) document.activeElement.blur();
         card.classList.toggle("is-flipped", isFlipped);
         if (isFlipped) {
-          if (animateFocus && !reduceMotion.matches) setTimeout(function () { backBtn.focus({ preventScroll: true }); }, 520);
-          else backBtn.focus({ preventScroll: true });
+          frontFace.setAttribute("inert", "");
+          frontFace.setAttribute("aria-hidden", "true");
+          backFace.removeAttribute("inert");
+          backFace.removeAttribute("aria-hidden");
         } else {
+          backFace.setAttribute("inert", "");
+          backFace.setAttribute("aria-hidden", "true");
+          frontFace.removeAttribute("inert");
+          frontFace.removeAttribute("aria-hidden");
+        }
+        if (focusTarget === "welcome") {
+          if (!reduceMotion.matches) setTimeout(function () { backBtn.focus({ preventScroll: true }); }, 520);
+          else backBtn.focus({ preventScroll: true });
+        } else if (focusTarget === "form") {
           nameInput.focus({ preventScroll: true });
         }
       }
 
-      function flipToWelcome(name) {
+      function flipToWelcome(name, focusOnWelcome) {
         if (isFlipped || transitioning) return;
         welcomeHeading.textContent = "Welcome, " + name + "!";
         isFlipped = true;
         transitioning = !reduceMotion.matches;
         resetTilt();
-        applyFlipState(true);
+        applyFlipState(focusOnWelcome ? "welcome" : null);
         if (transitioning) {
           const done = function () { transitioning = false; card.removeEventListener("transitionend", onEnd); };
           const onEnd = function (e) { if (e.propertyName === "transform") done(); };
@@ -2692,13 +2712,13 @@
         }
       }
 
-      function flipToForm() {
+      function flipToForm(focusOnForm) {
         if (!isFlipped || busy || transitioning) return;
         isFlipped = false;
         transitioning = !reduceMotion.matches;
         resetTilt();
         setStatus("");
-        applyFlipState(false);
+        applyFlipState(focusOnForm ? "form" : null);
         if (transitioning) {
           const done = function () { transitioning = false; card.removeEventListener("transitionend", onEnd); };
           const onEnd = function (e) { if (e.propertyName === "transform") done(); };
@@ -2757,11 +2777,20 @@
         if (statusEl.textContent) setStatus("");
       });
 
-      backBtn.addEventListener("click", function () { flipToForm(); });
+      form.addEventListener("pointerdown", function () {
+        lastFormPointerDown = Date.now();
+        lastFormActivationWasKeyboard = false;
+      });
+      form.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") lastFormActivationWasKeyboard = true;
+      });
+      backBtn.addEventListener("click", function (e) { flipToForm(e.detail === 0); });
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         if (busy || transitioning || isFlipped) return;
+        const focusOnWelcome = lastFormActivationWasKeyboard || (!lastFormPointerDown && submitBtn.matches(":focus-visible"));
+        lastFormActivationWasKeyboard = false;
         const honeypotValue = honeypotInput ? honeypotInput.value.trim() : "";
         if (honeypotValue) return;
         const v = validate();
@@ -2794,7 +2823,7 @@
               try { data = response.json(); } catch (e) {}
               return Promise.resolve(data).then(function (parsed) {
                 if (response.ok && parsed && parsed.success === true) {
-                  flipToWelcome(v.name);
+                  flipToWelcome(v.name, focusOnWelcome);
                   return;
                 }
                 setStatus(submissionErrorMessage(response.status, parsed));
@@ -2812,6 +2841,7 @@
         });
       });
 
+      applyFlipState(null);
       if (typeof reduceMotion.addEventListener === "function") reduceMotion.addEventListener("change", resetTilt);
       else if (typeof reduceMotion.addListener === "function") reduceMotion.addListener(resetTilt);
     })();

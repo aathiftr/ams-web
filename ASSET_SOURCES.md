@@ -4,7 +4,7 @@ The 11 service-card images are stored locally in `assets/` and served same-origi
 
 All source images are from Pexels and are covered by the [Pexels License](https://www.pexels.com/license/): free to use, attribution not required, and modification allowed. Credit is included here voluntarily.
 
-Each downloaded image was centre-cropped to 1600 × 1000, resized, and exported as WebP (quality 82) for consistent card proportions and smaller payloads. The Tourist Visa Processing, Passport Services, Certificate Attestation Service and Emigration Processing images were subsequently replaced with the more purpose-specific sources listed below; the other seven assets were left byte-identical.
+Each downloaded image was centre-cropped to 1600 × 1000, resized, and exported as WebP (quality 82) for consistent card proportions and smaller payloads. The Tourist Visa Processing, Passport Services, Certificate Attestation Service and Emigration Clearance Services images were subsequently replaced with the more purpose-specific sources listed below; the other seven assets were left byte-identical.
 
 | Service | Local asset | Source page | Photographer | Source image URL |
 | --- | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ Each downloaded image was centre-cropped to 1600 × 1000, resized, and exported 
 | Passport Services | `assets/service-passport.webp` | [Close-up of Passports](https://www.pexels.com/photo/8061986/) | Borys Zaitsev | `https://images.pexels.com/photos/8061986/pexels-photo-8061986.jpeg?auto=compress&cs=tinysrgb&w=1800` |
 | Certificate Attestation Service | `assets/service-certificate.webp` | [Diploma and Notebook on a Desk](https://www.pexels.com/photo/8112202/) | Pavel Danilyuk | `https://images.pexels.com/photos/8112202/pexels-photo-8112202.jpeg?auto=compress&cs=tinysrgb&w=1800` |
 | Hotel Booking | `assets/service-hotel-booking.webp` | [Luxurious Hotel Room with Elegant Decor and Ambiance](https://www.pexels.com/photo/34645081/) | Moussa Idrissi | `https://images.pexels.com/photos/34645081/pexels-photo-34645081.jpeg?auto=compress&cs=tinysrgb&w=1800` |
-| Emigration Processing | `assets/service-emigration.webp` | [Cheerful female passenger walking with luggage to departure check-in counter](https://www.pexels.com/photo/3885592/) | Gustavo Fring | `https://images.pexels.com/photos/3885592/pexels-photo-3885592.jpeg?auto=compress&cs=tinysrgb&w=1800` |
+| Emigration Clearance Services | `assets/service-emigration.webp` | [Cheerful female passenger walking with luggage to departure check-in counter](https://www.pexels.com/photo/3885592/) | Gustavo Fring | `https://images.pexels.com/photos/3885592/pexels-photo-3885592.jpeg?auto=compress&cs=tinysrgb&w=1800` |
 | Cab Services | `assets/service-cab.webp` | [Focused taxi driver at cab on street](https://www.pexels.com/photo/5834961/) | Tim Samuel | `https://images.pexels.com/photos/5834961/pexels-photo-5834961.jpeg?auto=compress&cs=tinysrgb&w=1800` |
 | Bus Ticket Booking | `assets/service-bus.webp` | [Vibrant Tourist Bus on Scenic Highway](https://www.pexels.com/photo/31310051/) | Santiago Quiñonez Meza | `https://images.pexels.com/photos/31310051/pexels-photo-31310051.jpeg?auto=compress&cs=tinysrgb&w=1800` |
 | Train Ticket Booking | `assets/service-train.webp` | [Passenger Train at the Platform with a Colonnade](https://www.pexels.com/photo/19790143/) | Kevin Yang | `https://images.pexels.com/photos/19790143/pexels-photo-19790143.jpeg?auto=compress&cs=tinysrgb&w=1800` |

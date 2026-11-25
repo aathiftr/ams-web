@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.11/dist/css/intlTelInput.css">
+  <link rel="stylesheet" href="assets/destination-explorer.css">
   <style>
     :root {
       /* Supplied AMS logo palette — exact brand primitives. */
@@ -687,180 +688,7 @@
     .service li { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.12px; color: var(--ink); line-height: 18px; }
     .service li img { width: 13px; height: 13px; flex-shrink: 0; }
 
-    /* ---------- DESTINATIONS — vanilla adaptation of 21st.dev Airplane Window Gallery ---------- */
-    .dest-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
-    .dest-head .head { display: flex; flex-direction: column; gap: 4px; }
-    #destinations .dest-head .side { max-width: 620px; font-size: 16px; line-height: 26px; }
-
-    /* Cabin shell: ceiling, floor and the row of oval windows. */
-    #destinations .ag-stage {
-      position: relative; isolation: isolate; width: 100%; max-width: 1000px;
-      margin: 56px auto 0; aspect-ratio: 1000 / 540; overflow: hidden;
-      border: 1px solid rgba(43, 46, 51, 0.16); border-radius: 28px;
-      background: linear-gradient(180deg, var(--sage) 0%, rgba(232,245,252,0.72) 20%, var(--paper) 50%, rgba(232,245,252,0.72) 80%, var(--sage) 100%);
-      box-shadow: 0 24px 60px -36px rgba(43, 46, 51, 0.55), inset 0 1px 0 rgba(255,255,255,.75);
-    }
-    #destinations .ag-ceiling {
-      position: absolute; inset: 0 0 auto; height: 10%; z-index: 2;
-      background: linear-gradient(180deg, var(--sage), rgba(240, 238, 232, 0.85));
-      box-shadow: 0 7px 16px -10px rgba(43, 46, 51, .65), inset 0 -1px 0 rgba(43, 46, 51, .12);
-    }
-    #destinations .ag-ceiling::after {
-      content: ""; position: absolute; inset: auto 0 0; height: 1px;
-      background: rgba(43, 46, 51, .16);
-    }
-    #destinations .ag-rivets {
-      position: absolute; inset: auto 0 22%; display: flex; justify-content: space-evenly;
-    }
-    #destinations .ag-rivets i {
-      width: 6px; height: 6px; border-radius: 9999px; background: var(--white);
-      box-shadow: 0 1px 3px rgba(43, 46, 51, .45);
-    }
-    #destinations .ag-floor {
-      position: absolute; inset: auto 0 0; height: 8%; z-index: 2;
-      background: linear-gradient(180deg, var(--paper), var(--sage));
-      box-shadow: inset 0 2px 6px -3px rgba(43, 46, 51, .45);
-    }
-    #destinations .ag-windows {
-      position: absolute; inset: 11% 4% 8%; z-index: 3;
-      display: flex; align-items: center; justify-content: space-evenly; gap: 14px;
-      transition: opacity .35s ease, filter .35s ease;
-    }
-    #destinations .ag-window-col {
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      width: calc((100% - 42px) / 4); max-width: 210px; min-width: 0;
-    }
-    #destinations .ag-seat {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 11px; letter-spacing: .12em; color: var(--label);
-    }
-    #destinations .ag-window {
-      position: relative; display: block; width: 100%; aspect-ratio: 0.72 / 1;
-      padding: 0; border: 0; border-radius: 46% / 34%; cursor: pointer;
-      background: linear-gradient(135deg, var(--white), var(--sage));
-      box-shadow: 0 10px 22px -14px rgba(43, 46, 51, .6);
-      transition: transform .3s ease, box-shadow .3s ease;
-    }
-    #destinations .ag-window:hover,
-    #destinations .ag-window:focus-visible { transform: translateY(-3px); box-shadow: 0 14px 28px -14px rgba(43, 46, 51, .65); }
-    #destinations .ag-window:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; }
-    #destinations .ag-frame {
-      position: absolute; inset: 3.5%; border-radius: 45% / 33%;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,.55), inset 0 3px 12px rgba(43, 46, 51, .4);
-    }
-    #destinations .ag-glass {
-      position: absolute; inset: 7.5%; overflow: hidden; border-radius: 44% / 32%;
-      background: var(--sage); box-shadow: inset 0 2px 8px rgba(43, 46, 51, .3);
-    }
-    #destinations .ag-glass img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; object-position: center; transition: opacity .5s ease, transform .6s ease;
-    }
-    #destinations .ag-window:hover .ag-glass img,
-    #destinations .ag-window:focus-visible .ag-glass img { transform: scale(1.05); }
-    #destinations .ag-sheen {
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.04) 44%, rgba(43,46,51,.22));
-    }
-    /* Shade lifts on hover and while that window's scenery is open. */
-    #destinations .ag-shade {
-      position: absolute; inset: 0; transform: translateY(-42%);
-      transition: transform .4s cubic-bezier(.45, 0, .2, 1);
-      background: linear-gradient(180deg, var(--sage), rgba(232,245,252,0.82) 68%, var(--paper));
-      box-shadow: 0 7px 12px -7px rgba(43, 46, 51, .5);
-    }
-    #destinations .ag-shade::after {
-      content: ""; position: absolute; inset: auto 0 0; height: 9%;
-      background: linear-gradient(180deg, var(--paper), rgba(240,238,232,0.88));
-      box-shadow: 0 2px 6px rgba(43, 46, 51, .3);
-    }
-    #destinations .ag-window:hover .ag-shade,
-    #destinations .ag-window.is-active .ag-shade { transform: translateY(-100%); }
-    #destinations .ag-window-copy { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; width: 100%; }
-    #destinations .ag-window-title { font-size: 14px; line-height: 1.25; font-weight: 600; color: var(--forest); }
-    #destinations .ag-window-location { font-size: 11px; line-height: 1.2; color: var(--label); }
-    #destinations .ag-window-caption { font-size: 11px; line-height: 1.35; color: var(--body); }
-
-    /* Immersive scenery: the selected window's image fills the cabin stage. */
-    #destinations .ag-scenery {
-      position: absolute; inset: 0; z-index: 20; cursor: zoom-out; outline: none;
-      opacity: 0; visibility: hidden; transform: scale(1.015);
-      transition: opacity .45s ease, transform .65s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .65s;
-    }
-    #destinations .ag-scenery.is-open {
-      opacity: 1; visibility: visible; transform: scale(1);
-      transition: opacity .45s ease, transform .65s cubic-bezier(.16, 1, .3, 1), visibility 0s;
-    }
-    #destinations .ag-scenery:focus-visible { outline: 2px solid var(--mint); outline-offset: -4px; }
-    #destinations .ag-scenery-img {
-      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-      transform: scale(1.08); transition: transform .9s cubic-bezier(.16, 1, .3, 1);
-    }
-    #destinations .ag-scenery.is-open .ag-scenery-img { transform: scale(1); }
-    #destinations .ag-scenery-overlay {
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(to top, rgba(43, 46, 51, .92), rgba(43, 46, 51, .38) 45%, transparent 78%);
-    }
-    #destinations .ag-scenery-copy {
-      position: absolute; left: 6%; right: 6%; bottom: 6%; color: #E8F5FC; pointer-events: none;
-    }
-    #destinations .ag-scenery-title { font-family: var(--sans); font-size: 26px; line-height: 1.15; font-weight: 700; letter-spacing: -.02em; }
-    #destinations .ag-scenery-location { font-weight: 400; color: rgba(232, 245, 252, .88); }
-    #destinations .ag-scenery-caption { margin-top: 8px; font-size: 13px; line-height: 1.5; color: rgba(232, 245, 252, .9); }
-    #destinations .ag-scenery-hint {
-      margin-top: 14px; font-size: 10px; font-weight: 600;
-      letter-spacing: .16em; text-transform: uppercase; color: rgba(232, 245, 252, .7);
-    }
-    #destinations .ag-sit-back {
-      position: absolute; right: 16px; top: 16px; z-index: 1;
-      padding: 7px 14px; border: 1px solid rgba(255,255,255,.4); border-radius: 9999px;
-      background: rgba(43, 46, 51, .65); color: #E8F5FC; backdrop-filter: blur(6px);
-      font-size: 12px; font-weight: 600; cursor: pointer; transition: background-color .2s ease;
-    }
-    #destinations .ag-sit-back:hover,
-    #destinations .ag-sit-back:focus-visible { background: rgba(43, 46, 51, .9); }
-    #destinations .ag-sit-back:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
-    #destinations .ag-hint { margin-top: 22px; text-align: center; font-size: 12px; color: var(--label); }
-
-    html.dark #destinations .ag-stage {
-      background: linear-gradient(180deg, #176B94 0%, rgba(23,107,148,0.82) 24%, #2B2E33 52%, rgba(23,107,148,0.82) 78%, #176B94);
-      border-color: rgba(103, 185, 229, .2);
-    }
-    html.dark #destinations .ag-ceiling { background: linear-gradient(180deg, #2B2E33, rgba(23,107,148,0.68)); }
-    html.dark #destinations .ag-floor { background: linear-gradient(180deg, rgba(23,107,148,0.72), #2B2E33); }
-    html.dark #destinations .ag-window { background: linear-gradient(135deg, #176B94, #2B2E33); }
-    html.dark #destinations .ag-shade { background: linear-gradient(180deg, rgba(103,185,229,0.72), rgba(23,107,148,0.62) 70%, #2B2E33); }
-    html.dark #destinations .ag-shade::after { background: linear-gradient(180deg, #2B2E33, rgba(43,46,51,0.92)); }
-    html.dark #destinations .ag-window-title { color: var(--forest); }
-    html.dark #destinations .ag-window-location,
-    html.dark #destinations .ag-window-caption { color: rgba(232, 245, 252, .78); }
-
-    @media (max-width: 800px) {
-      #destinations .ag-stage { aspect-ratio: auto; }
-      #destinations .ag-windows { position: relative; inset: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 16px; padding: 64px 16px 72px; }
-      #destinations .ag-window-col { width: 100%; max-width: none; }
-      #destinations .ag-window { height: 220px; }
-      #destinations .ag-scenery-title { font-size: 22px; }
-    }
-    @media (max-width: 560px) {
-      #destinations .ag-window { height: 190px; }
-      #destinations .ag-windows { gap: 26px 12px; padding: 58px 12px 66px; }
-      #destinations .ag-window-title { font-size: 12px; }
-      #destinations .ag-window-caption { font-size: 10px; }
-      #destinations .ag-scenery-title { font-size: 19px; }
-      #destinations .ag-scenery-caption { font-size: 12px; }
-      #destinations .ag-sit-back { right: 12px; top: 12px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #destinations .ag-window,
-      #destinations .ag-shade,
-      #destinations .ag-glass img,
-      #destinations .ag-scenery,
-      #destinations .ag-scenery-img,
-      #destinations .ag-sit-back { transition: none !important; }
-      #destinations .ag-window:hover,
-      #destinations .ag-window:focus-visible { transform: none; }
-    }
+    /* Destination explorer styles live in assets/destination-explorer.css. */
 
     /* ---------- EDITORIAL ---------- */
     .editorial-section { background: var(--sage); padding: 48px 0; }
@@ -2010,23 +1838,101 @@
           <p class="side">From memorable journeys across India to international escapes, discover inspiring places for your next adventure with AMS Travel Services.</p>
         </div>
 
-        <!-- Airplane cabin gallery — windows are rendered from AMS_DESTINATIONS below. -->
-        <div class="ag-stage" id="agStage">
-          <div class="ag-ceiling" aria-hidden="true"><span class="ag-rivets"><i></i><i></i><i></i><i></i></span></div>
-          <div class="ag-floor" aria-hidden="true"></div>
-          <div class="ag-windows" id="agWindows" aria-label="Destination windows"></div>
-          <div class="ag-scenery" id="agScenery" role="dialog" aria-modal="true" aria-labelledby="agSceneryTitle" tabindex="-1">
-            <img class="ag-scenery-img" id="agSceneryImg" alt="" width="1400" height="933">
-            <div class="ag-scenery-overlay" aria-hidden="true"></div>
-            <div class="ag-scenery-copy">
-              <p class="ag-scenery-title"><span id="agSceneryTitle"></span><span class="ag-scenery-location" id="agSceneryLocation"></span></p>
-              <p class="ag-scenery-caption" id="agSceneryCaption"></p>
-              <p class="ag-scenery-hint">Click anywhere to sit back.</p>
+        <!-- Destination explorer: in-place Domestic / International switch. -->
+        <fieldset class="de-switch">
+          <legend>Explore mode</legend>
+          <div class="de-mode-row">
+            <label class="de-mode">
+              <input type="radio" name="deMode" id="deModeDomestic" value="domestic" checked>
+              <span class="de-mode-dot" aria-hidden="true"></span>
+              <span>Domestic <span class="de-mode-sub">· India by state/UT</span></span>
+            </label>
+            <label class="de-mode">
+              <input type="radio" name="deMode" id="deModeInternational" value="international">
+              <span class="de-mode-dot" aria-hidden="true"></span>
+              <span>International <span class="de-mode-sub">· 195 countries</span></span>
+            </label>
+          </div>
+        </fieldset>
+        <p class="de-status" id="deStatus" role="status" aria-live="polite">Domestic · choose a state or union territory to explore its curated destinations.</p>
+        <noscript><p class="de-status">The destination explorer needs JavaScript. Please use the enquiry form for destination guidance.</p></noscript>
+
+        <div class="de-panel" id="deDomesticPanel">
+          <div class="de-layout">
+            <div class="de-card-surface">
+              <div class="de-panel-head">
+                <div>
+                  <p class="de-kicker">Domestic India</p>
+                  <h3 class="de-panel-title">Explore by state or union territory</h3>
+                  <p class="de-panel-sub">Select a region on the map or use the accessible list. Guides are curated, not exhaustive.</p>
+                </div>
+                <span class="de-type-badge">28 states · 8 UTs</span>
+              </div>
+              <div class="de-map-wrap">
+                <div class="de-map" id="deMap" role="group" aria-label="Interactive map of India state and union territory boundaries"></div>
+              </div>
+              <p class="de-map-note">Illustrative boundaries for discovery only — not a legal boundary record. Every region is also available in the selector below.</p>
+              <label class="de-field" for="deStateSelect">
+                <span>State or union territory</span>
+                <select class="de-control" id="deStateSelect"></select>
+              </label>
             </div>
-            <button type="button" class="ag-sit-back" id="agSitBack">Sit back</button>
+            <div class="de-card-surface">
+              <div class="de-overview" id="deOverview">
+                <h4>Start with a region</h4>
+                <p>Choose any of India's 28 states or 8 union territories to see a short, source-backed guide to places worth exploring.</p>
+              </div>
+              <div class="de-current" id="deCurrent" hidden>
+                <div class="de-current-top">
+                  <h4 class="de-current-name" id="deCurrentName"></h4>
+                  <span class="de-type-badge" id="deCurrentType"></span>
+                </div>
+                <p class="de-count" id="deCurrentCount"></p>
+                <button type="button" class="de-change de-change-region" id="deChangeRegion">Change state/UT</button>
+                <div class="de-cards" id="deRegionCards"></div>
+                <div class="de-detail" id="deRegionDetail" hidden></div>
+              </div>
+            </div>
           </div>
         </div>
-        <p class="ag-hint">Choose a window to look out — no automatic changes.</p>
+
+        <div class="de-panel" id="deInternationalPanel" hidden>
+          <div class="de-intl-layout">
+            <div class="de-card-surface">
+              <div class="de-panel-head">
+                <div>
+                  <p class="de-kicker">International</p>
+                  <h3 class="de-panel-title">Search 195 countries</h3>
+                  <p class="de-panel-sub">Browse sovereign countries and open a curated guide where one is available.</p>
+                </div>
+              </div>
+              <p class="de-coverage" id="deCoverage"></p>
+              <label class="de-field" for="deCountrySearch">
+                <span>Country or ISO code</span>
+                <input class="de-control" type="search" id="deCountrySearch" autocomplete="off" placeholder="e.g. Singapore or SG">
+              </label>
+              <div class="de-country-list" id="deCountryList" role="group" aria-label="Sovereign countries"></div>
+            </div>
+            <div class="de-card-surface">
+              <div class="de-overview" id="deIntlIntro">
+                <h4>Where would you like to go?</h4>
+                <p>Search or browse the country list. Where a verified guide exists you'll see curated destinations; otherwise you'll see a coming-soon note with a direct enquiry link.</p>
+              </div>
+              <div id="deCountryResult" hidden>
+                <div class="de-result-head">
+                  <h4 class="de-current-country" id="deCountryName"></h4>
+                  <button type="button" class="de-change de-change-country" id="deChangeCountry">Change country</button>
+                </div>
+                <div class="de-cards" id="deCountryCards"></div>
+                <div class="de-detail" id="deCountryDetail" hidden></div>
+                <div class="de-empty" id="deCountryEmpty" hidden>
+                  <p>Destination guide coming soon for <strong id="deCountryEmptyName"></strong>. Ask AMS Travel Services about this destination and we'll help you plan.</p>
+                  <a class="de-link" href="#inquiry">Enquire about this destination ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -3783,170 +3689,8 @@
       });
     })();
 
-    // ---- Destination gallery: airplane cabin windows, visitor-controlled only ----
-    (function () {
-      var section = document.getElementById("destinations");
-      if (!section) return;
-      var windowsRoot = section.querySelector("#agWindows");
-      var scenery = section.querySelector("#agScenery");
-      var sceneryImg = section.querySelector("#agSceneryImg");
-      var sceneryTitle = section.querySelector("#agSceneryTitle");
-      var sceneryLocation = section.querySelector("#agSceneryLocation");
-      var sceneryCaption = section.querySelector("#agSceneryCaption");
-      var sitBack = section.querySelector("#agSitBack");
-      if (!windowsRoot || !scenery || !sitBack) return;
-
-      // One source of truth for both the window and the immersive scenery view.
-      var AMS_DESTINATIONS = [
-        {
-          src: "https://images.unsplash.com/photo-1652784392971-d3217be06942?auto=format&fit=crop&w=800&q=80",
-          alt: "Temple architecture in Rameswaram, Tamil Nadu",
-          title: "Rameswaram & Madurai",
-          location: "India",
-          caption: "Explore spiritual landmarks, historic temples, and the cultural richness of Tamil Nadu."
-        },
-        {
-          src: "https://images.unsplash.com/photo-1756009481685-1513779372cf?auto=format&fit=crop&w=800&q=80",
-          alt: "Tea plantations in the hills near Ooty, Tamil Nadu",
-          title: "Ooty & Kodaikanal",
-          location: "India",
-          caption: "Discover misty hills, green landscapes, and relaxing mountain getaways."
-        },
-        {
-          src: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80",
-          alt: "Houseboat on the Kerala backwaters",
-          title: "Kerala",
-          location: "India",
-          caption: "Experience tranquil backwaters, tropical greenery, and peaceful natural scenery."
-        },
-        {
-          src: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
-          alt: "Dubai skyline with modern high-rise buildings",
-          title: "Dubai",
-          location: "United Arab Emirates",
-          caption: "Explore striking city skylines, modern attractions, and international holiday inspiration."
-        }
-      ];
-
-      var buttons = [];
-      var activeIndex = null;
-
-      AMS_DESTINATIONS.forEach(function (item, index) {
-        var seat = document.createElement("span");
-        seat.className = "ag-seat";
-        seat.setAttribute("aria-hidden", "true");
-        seat.textContent = (12 + index) + "A";
-
-        var button = document.createElement("button");
-        button.type = "button";
-        button.className = "ag-window";
-        button.setAttribute("aria-label", "Look out of window " + (12 + index) + "A: " + item.title + ", " + item.location);
-        button.setAttribute("aria-haspopup", "dialog");
-        button.setAttribute("aria-controls", "agScenery");
-        button.setAttribute("aria-expanded", "false");
-
-        var frame = document.createElement("span");
-        frame.className = "ag-frame";
-        var glass = document.createElement("span");
-        glass.className = "ag-glass";
-        var img = document.createElement("img");
-        img.src = item.src;
-        img.alt = item.alt;
-        img.width = 900;
-        img.height = 920;
-        img.loading = "lazy";
-        img.decoding = "async";
-        var sheen = document.createElement("span");
-        sheen.className = "ag-sheen";
-        sheen.setAttribute("aria-hidden", "true");
-        var shade = document.createElement("span");
-        shade.className = "ag-shade";
-        shade.setAttribute("aria-hidden", "true");
-        glass.appendChild(img);
-        glass.appendChild(sheen);
-        glass.appendChild(shade);
-        frame.appendChild(glass);
-        button.appendChild(frame);
-
-        var copy = document.createElement("span");
-        copy.className = "ag-window-copy";
-        var title = document.createElement("span");
-        title.className = "ag-window-title";
-        title.textContent = item.title;
-        var location = document.createElement("span");
-        location.className = "ag-window-location";
-        location.textContent = item.location;
-        var caption = document.createElement("span");
-        caption.className = "ag-window-caption";
-        caption.textContent = item.caption;
-        copy.appendChild(title);
-        copy.appendChild(location);
-        copy.appendChild(caption);
-
-        var col = document.createElement("div");
-        col.className = "ag-window-col";
-        col.appendChild(seat);
-        col.appendChild(button);
-        col.appendChild(copy);
-        windowsRoot.appendChild(col);
-        buttons.push(button);
-        button.addEventListener("click", function () { open(index); });
-      });
-
-      sceneryImg.src = AMS_DESTINATIONS[0].src;
-
-      function open(index) {
-        var item = AMS_DESTINATIONS[index];
-        activeIndex = index;
-        sceneryImg.src = item.src;
-        sceneryImg.alt = item.alt;
-        sceneryTitle.textContent = item.title;
-        sceneryLocation.textContent = "· " + item.location;
-        sceneryCaption.textContent = item.caption;
-        buttons.forEach(function (button, i) {
-          button.classList.toggle("is-active", i === index);
-          button.setAttribute("aria-expanded", i === index ? "true" : "false");
-        });
-        scenery.classList.add("is-open");
-        sitBack.focus({ preventScroll: true });
-      }
-
-      function close() {
-        if (activeIndex === null) return;
-        var button = buttons[activeIndex];
-        scenery.classList.remove("is-open");
-        buttons.forEach(function (item) {
-          item.classList.remove("is-active");
-          item.setAttribute("aria-expanded", "false");
-        });
-        button.focus({ preventScroll: true });
-        activeIndex = null;
-      }
-
-      scenery.addEventListener("click", function (event) {
-        if (event.target === sitBack || sitBack.contains(event.target)) return;
-        close();
-      });
-      sitBack.addEventListener("click", function (event) {
-        event.stopPropagation();
-        close();
-      });
-      document.addEventListener("keydown", function (event) {
-        if (activeIndex === null) return;
-        if (event.key === "Escape") {
-          event.preventDefault();
-          close();
-          return;
-        }
-        if (event.key === "Tab") {
-          var focusables = [scenery, sitBack];
-          var current = focusables.indexOf(document.activeElement);
-          var next = current === -1 ? 0 : (current + (event.shiftKey ? focusables.length - 1 : 1)) % focusables.length;
-          event.preventDefault();
-          focusables[next].focus({ preventScroll: true });
-        }
-      });
-    })();
   </script>
+  <script src="assets/destination-data.js"></script>
+  <script src="assets/destination-explorer.js"></script>
 </body>
 </html>

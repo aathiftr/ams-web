@@ -1580,6 +1580,21 @@
       content: ""; position: absolute; left: 0; top: 7px;
       width: 5px; height: 5px; border-radius: 50%; background: var(--deep);
     }
+    .sme-how { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(0,39,32,0.1); }
+    .sme-how ol { list-style: none; counter-reset: sme-step; margin-top: 8px; display: grid; gap: 6px; }
+    .sme-how li {
+      position: relative; padding-left: 18px; counter-increment: sme-step;
+      font-size: 12px; line-height: 18px; letter-spacing: 0.08px; color: var(--ink);
+    }
+    .sme-how li::before { content: counter(sme-step) "."; position: absolute; left: 0; top: 0; font-weight: 700; color: var(--deep); }
+    .sme-how strong { color: var(--forest); font-weight: 600; }
+    .sme-enquire { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(0,39,32,0.1); }
+    .sme-enquire a {
+      display: inline-block; margin-top: 8px; color: var(--deep);
+      font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;
+    }
+    .sme-enquire a:hover { color: var(--forest); }
+    .sme-enquire a:focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; border-radius: 3px; }
     .sme-noscript { margin-top: 32px; }
     .sme-noscript ol { margin: 16px 0 0 20px; display: grid; gap: 14px; }
     .sme-noscript li { padding-left: 8px; }
@@ -1694,6 +1709,7 @@
       .sme-help-label { font-size: 9px; }
       .sme-help ul { margin-top: 5px; gap: 2px 10px; }
       .sme-help li { font-size: 9px; line-height: 13px; }
+      .sme-about-detailed { overflow-y: auto; }
     }
 
     /* ---------- DARK THEME SURFACES (colour only; layout and motion unchanged) ---------- */
@@ -1749,6 +1765,12 @@
     html.dark .holo-back-btn:hover { background: rgba(143, 216, 189, 0.2); }
     html.dark .sme-about { background: rgba(13, 42, 36, 0.95); }
     html.dark .sme-help { border-top-color: rgba(217, 242, 230, 0.14); }
+    html.dark .sme-how, html.dark .sme-enquire { border-top-color: rgba(217, 242, 230, 0.14); }
+    html.dark .sme-how li, html.dark .sme-how strong { color: rgba(217, 242, 230, 0.92); }
+    html.dark .sme-how li::before { color: #c3ebdf; }
+    html.dark .sme-enquire a { color: #f5fbf6; }
+    html.dark .sme-enquire a:hover { color: #c3ebdf; }
+    html.dark .sme-enquire a:focus-visible { outline-color: #c3ebdf; }
     html.dark .sme-kicker { color: rgba(217, 242, 230, 0.82); }
   </style>
 </head>
@@ -2854,8 +2876,23 @@
       {
         title: "Flight Ticket Booking",
         short: "Domestic and international flight booking assistance.",
-        about: "Help travellers explore suitable domestic and international flight options according to their destinations, dates, preferences, and budget.",
-        help: ["Domestic flight options", "International routes", "Dates, preferences and budget"],
+        aboutLabel: "About the Service",
+        about: "AMS Travel Services assists travellers with domestic and international flight ticket bookings. Customers can get assistance with suitable flight options, travel dates, routes and ticket booking requirements.",
+        helpLabel: "What We Offer",
+        help: [
+          "Domestic Flight Ticket Booking",
+          "International Flight Ticket Booking",
+          "One-way and Round-trip Tickets",
+          "Flight Route and Fare Assistance",
+          "Travel Date and Itinerary Assistance",
+          "Booking Support"
+        ],
+        how: [
+          { title: "Share Your Travel Details", text: "Provide the origin, destination, travel date and passenger details through the existing enquiry process." },
+          { title: "Get Assistance", text: "The AMS team helps you understand suitable flight options and applicable booking requirements." },
+          { title: "Confirm Your Choice", text: "Once the customer agrees to an option and its price, the booking can proceed subject to availability and applicable airline terms." }
+        ],
+        enquire: { label: "Enquire Now", text: "Enquire about Flight Ticket Booking", href: "#inquiry" },
         image: "assets/service-flight.webp",
         alt: "Commercial passenger aircraft at an airport runway"
       },
@@ -3141,14 +3178,40 @@
         stage.appendChild(title);
 
         var about = smeEl("div", "sme-about");
-        about.appendChild(smeEl("span", "eyebrow", "About"));
+        if (service.how || service.enquire) about.classList.add("sme-about-detailed");
+        about.appendChild(smeEl("span", "eyebrow", service.aboutLabel || "About"));
         about.appendChild(smeEl("p", "sme-about-text", service.about));
         var help = smeEl("div", "sme-help");
-        help.appendChild(smeEl("span", "sme-help-label", "What we help with"));
+        help.appendChild(smeEl("span", "sme-help-label", service.helpLabel || "What we help with"));
         var list = smeEl("ul");
         service.help.forEach(function (item) { list.appendChild(smeEl("li", "", item)); });
         help.appendChild(list);
         about.appendChild(help);
+        var enquireLink = null;
+        if (service.how) {
+          var how = smeEl("div", "sme-how");
+          how.appendChild(smeEl("span", "sme-help-label", "How It Works"));
+          var steps = smeEl("ol");
+          steps.setAttribute("role", "list");
+          service.how.forEach(function (step) {
+            var li = smeEl("li");
+            li.appendChild(smeEl("strong", "", step.title));
+            li.appendChild(document.createTextNode(" — " + step.text));
+            steps.appendChild(li);
+          });
+          how.appendChild(steps);
+          about.appendChild(how);
+        }
+        if (service.enquire) {
+          var enquire = smeEl("div", "sme-enquire");
+          enquire.appendChild(smeEl("span", "sme-help-label", service.enquire.label));
+          enquireLink = smeEl("a", "", service.enquire.text);
+          enquireLink.href = service.enquire.href;
+          enquireLink.tabIndex = -1;
+          enquireLink.style.pointerEvents = "none";
+          enquire.appendChild(enquireLink);
+          about.appendChild(enquire);
+        }
         stage.appendChild(about);
 
         scene.appendChild(stage);
@@ -3160,7 +3223,8 @@
           title: title,
           titleFirst: titleFirst,
           titleRest: titleRest,
-          about: about
+          about: about,
+          enquireLink: enquireLink
         };
         return scene;
       });
@@ -3168,6 +3232,13 @@
       scenes.forEach(function (scene) { track.appendChild(scene); });
 
       function clamp01(value) { return Math.max(0, Math.min(1, value)); }
+
+      function setLinkState(scene, visible) {
+        var link = scene.__smeParts.enquireLink;
+        if (!link) return;
+        link.tabIndex = visible ? 0 : -1;
+        link.style.pointerEvents = visible ? "auto" : "none";
+      }
 
       function updateScene(scene) {
         var parts = scene.__smeParts;
@@ -3198,6 +3269,7 @@
         parts.titleRest.style.transform = "translateX(" + textTranslateX + "vw)";
         parts.about.style.opacity = showContent ? String(contentFade) : "0";
         parts.about.style.transform = "translate(-50%, " + Math.round((1 - contentFade) * 18) + "px)";
+        setLinkState(scene, contentFade >= 0.5);
       }
 
       var ticking = false;
@@ -3206,6 +3278,7 @@
         for (var i = 0; i < scenes.length; i++) {
           var rect = scenes[i].getBoundingClientRect();
           if (rect.bottom > -200 && rect.top < (window.innerHeight || 800) + 200) updateScene(scenes[i]);
+          else setLinkState(scenes[i], false);
         }
       }
       function requestUpdate() {
@@ -3216,6 +3289,7 @@
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         track.classList.add("sme-static");
+        scenes.forEach(function (scene) { setLinkState(scene, true); });
       } else {
         window.addEventListener("scroll", requestUpdate, { passive: true });
         window.addEventListener("resize", requestUpdate);

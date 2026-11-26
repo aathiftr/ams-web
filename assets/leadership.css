@@ -14,7 +14,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: clamp(32px, 5vw, 80px);
-  align-items: center;
+  align-items: start;
 }
 
 .leadership-portrait {
@@ -50,9 +50,6 @@
 }
 
 .leadership-profile-panel {
-  position: relative;
-  z-index: 2;
-  margin-left: clamp(-112px, -8vw, -56px);
   padding: clamp(28px, 3.75vw, 44px);
   border-radius: 24px;
   border: 1px solid rgba(23, 107, 148, 0.14);
@@ -139,15 +136,14 @@ html.dark .leadership-profile-panel {
 }
 
 .leadership-logo-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
   gap: 12px;
   min-width: 0;
-  min-height: 160px;
+  min-height: 196px;
   margin: 0;
-  padding: 22px 16px;
+  padding: 24px 18px;
   border-radius: 16px;
   border: 1px solid rgba(23, 107, 148, 0.14);
   background: var(--brand-white);
@@ -156,13 +152,19 @@ html.dark .leadership-profile-panel {
 
 .leadership-logo-card img {
   display: block;
-  width: min(100%, 200px);
-  height: 84px;
-  max-width: 200px;
+  width: 100%;
+  max-width: 220px;
+  height: 100%;
+  max-height: 110px;
+  min-height: 0;
   object-fit: contain;
 }
 
 .leadership-logo-card figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 600;
@@ -190,10 +192,6 @@ html.dark .leadership-profile-panel {
   .leadership-content {
     max-width: none;
   }
-
-  .leadership-profile-panel {
-    margin-left: 0;
-  }
 }
 
 @media (max-width: 520px) {
@@ -216,11 +214,11 @@ html.dark .leadership-profile-panel {
   }
 
   .leadership-logo-card {
-    min-height: 132px;
+    min-height: 168px;
     padding: 18px 10px;
   }
 
   .leadership-logo-card img {
-    height: 64px;
+    max-height: 88px;
   }
 }

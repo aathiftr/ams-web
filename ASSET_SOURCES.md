@@ -49,3 +49,11 @@ Each downloaded image was centre-cropped to 1600 × 1000, resized, and exported 
 | Cab Services | `assets/service-cab.webp` | [Focused taxi driver at cab on street](https://www.pexels.com/photo/5834961/) | Tim Samuel | `https://images.pexels.com/photos/5834961/pexels-photo-5834961.jpeg?auto=compress&cs=tinysrgb&w=1800` |
 | Bus Ticket Booking | `assets/service-bus.webp` | [Vibrant Tourist Bus on Scenic Highway](https://www.pexels.com/photo/31310051/) | Santiago Quiñonez Meza | `https://images.pexels.com/photos/31310051/pexels-photo-31310051.jpeg?auto=compress&cs=tinysrgb&w=1800` |
 | Train Ticket Booking | `assets/service-train.webp` | [Passenger Train at the Platform with a Colonnade](https://www.pexels.com/photo/19790143/) | Kevin Yang | `https://images.pexels.com/photos/19790143/pexels-photo-19790143.jpeg?auto=compress&cs=tinysrgb&w=1800` |
+
+---
+
+# Leadership portrait and membership marks
+
+`assets/ams-managing-director.webp` is the supplied portrait of Mohamed Ismail S. It is served same-origin and displayed with a CSS crop only; the source file is unchanged.
+
+`assets/fotto-logo-transparent.png` and `assets/rec-membership-logo.png` are two separate native-resolution crops of the original marks supplied on a temporary local membership card. The crops retain the source artwork, colours, proportions, shapes and visible lettering; nothing was redrawn or expanded. The full card was used only as a local visual reference and is neither stored in this repository nor published on the site.

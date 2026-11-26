@@ -53,36 +53,53 @@
   position: relative;
   z-index: 2;
   margin-left: clamp(-112px, -8vw, -56px);
-  padding: clamp(24px, 3.5vw, 40px);
-  border-radius: 20px;
+  padding: clamp(28px, 3.75vw, 44px);
+  border-radius: 24px;
   border: 1px solid rgba(23, 107, 148, 0.14);
   background: var(--white);
   box-shadow: 0 18px 40px rgba(23, 107, 148, 0.10), var(--shadow-lift);
 }
 
 html.dark .leadership-profile-panel {
+  background: #33373D;
+  border-color: rgba(103, 185, 229, 0.22);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
 .leadership-eyebrow {
   display: inline-block;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 }
 
 .leadership-content .h2 {
-  margin: 0 0 24px;
+  margin: 0 0 18px;
 }
 
 .leadership-name {
-  margin: 0;
+  position: relative;
+  display: inline-block;
+  margin: 0 0 10px;
+  padding-bottom: 10px;
   font-family: var(--serif);
-  font-size: 34px;
-  line-height: 42px;
+  font-size: clamp(32px, 3vw, 38px);
+  line-height: 1.14;
+  letter-spacing: -0.4px;
   color: var(--forest);
 }
 
+.leadership-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 46px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--deep), var(--brand-blue));
+}
+
 .leadership-role {
-  margin: 6px 0 0;
+  margin: 0;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 600;
@@ -93,7 +110,7 @@ html.dark .leadership-profile-panel {
 }
 
 .leadership-intro {
-  margin: 20px 0 0;
+  margin: 18px 0 0;
   font-size: 16px;
   line-height: 27px;
   color: var(--body);
@@ -126,12 +143,12 @@ html.dark .leadership-profile-panel {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
   min-width: 0;
-  min-height: 148px;
+  min-height: 160px;
   margin: 0;
   padding: 22px 16px;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid rgba(23, 107, 148, 0.14);
   background: var(--brand-white);
   box-shadow: var(--shadow-card);
@@ -139,14 +156,10 @@ html.dark .leadership-profile-panel {
 
 .leadership-logo-card img {
   display: block;
-  width: auto;
-  height: 62px;
-  max-width: 100%;
+  width: min(100%, 200px);
+  height: 84px;
+  max-width: 200px;
   object-fit: contain;
-}
-
-.leadership-logo-card:first-child img {
-  height: 50px;
 }
 
 .leadership-logo-card figcaption {
@@ -203,15 +216,11 @@ html.dark .leadership-profile-panel {
   }
 
   .leadership-logo-card {
-    min-height: 124px;
+    min-height: 132px;
     padding: 18px 10px;
   }
 
   .leadership-logo-card img {
-    height: 50px;
-  }
-
-  .leadership-logo-card:first-child img {
-    height: 38px;
+    height: 64px;
   }
 }

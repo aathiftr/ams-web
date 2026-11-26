@@ -1829,6 +1829,11 @@
 
     <!-- DESTINATION INSPIRATION -->
     <section class="section" id="destinations">
+      <div class="de-globe" aria-hidden="true" data-state="loading" data-mode="domestic" data-motion="animated" data-arcs="">
+        <div class="de-globe-static"></div>
+        <canvas class="de-globe-canvas" role="presentation"></canvas>
+        <svg class="de-globe-labels" aria-hidden="true" focusable="false"></svg>
+      </div>
       <div class="container">
         <div class="dest-head">
           <div class="head">
@@ -3692,5 +3697,6 @@
   </script>
   <script src="assets/destination-data.js"></script>
   <script src="assets/destination-explorer.js"></script>
+  <script type="module" src="assets/destination-globe.js"></script>
 </body>
 </html>

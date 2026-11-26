@@ -20,6 +20,12 @@ Local adaptation: label, legend, grid, scale, the embedded stylesheet and other 
 
 Flags are Unicode regional-indicator emoji derived from each country's ISO alpha-2 code. No flag API or external image host is used. Country buttons always show the full country name and ISO code as well as the flag, so identity remains readable when a platform does not render flag glyphs.
 
+### Rotating globe
+
+`assets/vendor/cobe/index.esm.js` is the unmodified pinned `cobe@2.0.1` ESM build from the [shuding/cobe](https://github.com/shuding/cobe) repository (release tarball `https://registry.npmjs.org/cobe/-/cobe-2.0.1.tgz`, registry integrity `sha512-aaa6vcIlaC8C1SF50LDH0Anybo/EAXnrxqe+bwvr4+YUtZydqjeBjTTD7ziCCkbRrRGSns3I3F6cZsf3W+L+ag==`). Its SHA-256 is `B4706C2A8772C5983F0872E02BBB707E551E093B32AD7C01D61DD661765097EE`. The accompanying `LICENSE` and `package.json` are copied from the same release. cobe is licensed under the [MIT License](https://opensource.org/license/mit) © 2021 Shu Ding. It is served same-origin from `assets/vendor/cobe/`; no CDN or external globe/API request is made at runtime.
+
+Globe marker coordinates are approximate city-centre WGS84 reference points cross-checked against the [MapTools major-city directory](https://www.maptools.site/cities), [GPS Pins coordinate directory](https://gps-pins.org/en/coordinates) and a published [India city latitude/longitude reference](https://prohithar.com/latitude_longitude.html). They are decorative visual aids only and are not used as a travel-data source or substituted for the curated destination guides above. cobe's optional CSS-anchor helper emits two fixed inline style strings; their exact SHA-256 hashes are added to `style-src` in `vercel.json`, with no directive, source-host or unsafe-keyword change.
+
 ---
 
 # Service card image sources

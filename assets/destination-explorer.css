@@ -588,3 +588,213 @@ html.dark #destinations .de-detail {
   }
   #destinations .de-card:hover { transform: none !important; }
 }
+
+/* Rotating Earth — decorative, clipped to this section and behind all controls. */
+#destinations {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+#destinations > .container {
+  position: relative;
+  z-index: 2;
+}
+#destinations .de-globe {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint style;
+}
+#destinations .de-globe canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: .38;
+}
+#destinations .de-globe-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+#destinations .de-globe-label {
+  pointer-events: none;
+  transition: opacity .18s linear;
+}
+#destinations .de-globe-label circle {
+  fill: #67B9E5;
+  stroke: #F8FCFF;
+  stroke-width: 1.5;
+}
+#destinations .de-globe-label text {
+  fill: #176B94;
+  stroke: #F8FCFF;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+#destinations .de-globe[data-motion="static"] .de-globe-label { transition: none; }
+#destinations .de-globe[data-state="fallback"] canvas,
+#destinations .de-globe[data-state="fallback"] .de-globe-labels { display: none; }
+#destinations .de-globe-static {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  pointer-events: none;
+}
+#destinations .de-globe[data-state="fallback"] .de-globe-static { display: grid; }
+#destinations .de-globe-static::before,
+#destinations .de-globe-static::after {
+  content: "";
+  position: absolute;
+  width: min(74vw, 660px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+#destinations .de-globe-static::before {
+  background:
+    radial-gradient(circle at 34% 28%, rgba(103, 185, 229, .42), transparent 38%),
+    radial-gradient(circle at 66% 70%, rgba(23, 107, 148, .20), transparent 44%),
+    radial-gradient(circle, rgba(232, 245, 252, .16) 0 62%, transparent 72%);
+  border: 1px solid rgba(103, 185, 229, .22);
+  box-shadow: inset -28px -18px 60px rgba(43, 46, 51, .18), 0 0 80px rgba(103, 185, 229, .10);
+}
+#destinations .de-globe-static::after {
+  background-image: radial-gradient(rgba(103, 185, 229, .38) .9px, transparent 1px);
+  background-size: 13px 13px;
+  mask-image: radial-gradient(circle, #000 0 62%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle, #000 0 62%, transparent 72%);
+  opacity: .7;
+}
+
+/* Liquid glass — section-local only, built from the existing vanilla controls. */
+#destinations .de-mode,
+#destinations .de-control,
+#destinations .de-country,
+#destinations .de-change {
+  background-color: rgba(255, 255, 255, .62);
+  border-color: rgba(43, 46, 51, .22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78), 0 10px 26px -20px rgba(43, 46, 51, .72);
+  -webkit-backdrop-filter: blur(14px) saturate(1.24);
+  backdrop-filter: blur(14px) saturate(1.24);
+}
+#destinations .de-mode {
+  background-image: linear-gradient(145deg, rgba(255, 255, 255, .72), rgba(232, 245, 252, .44));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .88), 0 12px 30px -22px rgba(43, 46, 51, .68);
+}
+#destinations .de-mode:has(input:checked) {
+  background-image: linear-gradient(145deg, rgba(23, 107, 148, .96), rgba(16, 74, 104, .96));
+  background-color: rgba(16, 74, 104, .94);
+  border-color: rgba(255, 255, 255, .68);
+  color: #FFFFFF;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .42), 0 14px 32px -18px rgba(23, 107, 148, .72);
+}
+#destinations .de-mode:hover,
+#destinations .de-control:hover,
+#destinations .de-country:hover {
+  border-color: rgba(23, 107, 148, .62);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .86), 0 14px 30px -20px rgba(23, 107, 148, .62);
+}
+#destinations .de-mode:active,
+#destinations .de-change:active,
+#destinations .de-country:active {
+  transform: translateY(1px) scale(.99);
+  box-shadow: inset 0 2px 5px rgba(43, 46, 51, .16), 0 6px 16px -14px rgba(43, 46, 51, .5);
+}
+#destinations .de-mode:has(input:disabled),
+#destinations .de-control:disabled,
+#destinations .de-change:disabled,
+#destinations .de-country:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  filter: saturate(.5);
+  transform: none;
+}
+#destinations .de-change {
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid rgba(23, 107, 148, .3);
+  border-radius: 9999px;
+  text-decoration: none;
+  color: #176B94;
+}
+#destinations .de-change:hover { color: #176B94; }
+html.dark #destinations .de-mode,
+html.dark #destinations .de-control,
+html.dark #destinations .de-country,
+html.dark #destinations .de-change {
+  background-color: rgba(43, 46, 51, .74);
+  border-color: rgba(103, 185, 229, .26);
+  box-shadow: inset 0 1px 0 rgba(232, 245, 252, .14), 0 12px 30px -20px rgba(0, 0, 0, .8);
+}
+html.dark #destinations .de-mode {
+  background-image: linear-gradient(145deg, rgba(43, 46, 51, .84), rgba(23, 107, 148, .28));
+  color: #FFFFFF;
+}
+html.dark #destinations .de-mode:has(input:checked) {
+  background-image: linear-gradient(145deg, rgba(23, 107, 148, .96), rgba(16, 74, 104, .96));
+  background-color: rgba(16, 74, 104, .94);
+  color: #FFFFFF;
+  border-color: rgba(232, 245, 252, .72);
+}
+html.dark #destinations .de-change { color: #67B9E5; }
+html.dark #destinations .de-change:hover { color: #67B9E5; }
+html.dark #destinations .de-globe canvas { opacity: .32; }
+html.dark #destinations .de-globe-label circle {
+  fill: #67B9E5;
+  stroke: #2B2E33;
+}
+html.dark #destinations .de-globe-label text {
+  fill: #E8F5FC;
+  stroke: #2B2E33;
+}
+html.dark #destinations .de-globe-static::before {
+  box-shadow: inset -28px -18px 60px rgba(0, 0, 0, .46), 0 0 80px rgba(103, 185, 229, .12);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  #destinations .de-mode,
+  #destinations .de-control,
+  #destinations .de-country,
+  #destinations .de-change { background-color: #FFFFFF; }
+  #destinations .de-mode:has(input:checked) { background-image: none; background-color: #176B94; }
+  html.dark #destinations .de-mode,
+  html.dark #destinations .de-control,
+  html.dark #destinations .de-country,
+  html.dark #destinations .de-change { background-color: #2B2E33; }
+  html.dark #destinations .de-mode:has(input:checked) { background-image: none; background-color: #176B94; }
+}
+
+@media (max-width: 900px) {
+  #destinations .de-globe canvas { opacity: .28; }
+  html.dark #destinations .de-globe canvas { opacity: .24; }
+}
+@media (max-width: 700px) {
+  #destinations .de-globe canvas { opacity: .22; }
+  html.dark #destinations .de-globe canvas { opacity: .20; }
+  #destinations .de-globe-label[data-rank="4"],
+  #destinations .de-globe-label[data-rank="5"],
+  #destinations .de-globe-label[data-rank="6"] { display: none; }
+  #destinations .de-globe-static::before,
+  #destinations .de-globe-static::after { width: 88vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #destinations .de-mode,
+  #destinations .de-control,
+  #destinations .de-country,
+  #destinations .de-change,
+  #destinations .de-globe-label { transition: none !important; }
+  #destinations .de-mode:active,
+  #destinations .de-change:active,
+  #destinations .de-country:active { transform: none !important; }
+}
